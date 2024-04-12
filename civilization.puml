@@ -1,0 +1,120 @@
+@startuml Civilization
+
+Interface Unite {
+    getNom() : string
+    getPuissance() : int
+    getPV() : int
+    getPortee() : int
+    attaquer(Unite) : void
+    seDeplacer(Tuile) : void
+    getDeplacementPossible() : []
+    getAvantage() : []Unite
+    prendreDegat() : int
+}
+
+
+Class Tuile {
+    x : int
+    y : int
+    occupation : bool
+    x() : int
+    y() : int
+    getOccupation() : bool
+    changerOccupation() : void
+}
+
+
+Interface Contenu {
+    getModificateurCombat() : int
+    getModificateurDeplacement() : int
+    getImage() : 
+    getEtat() : bool
+}
+
+class Ville {
+    nom : string
+    joueur : Joueur
+    nbHabitant : int
+    getNom() : string
+    getNbHabitant() : int
+    getCroissance() : int
+    getPV() : int
+    evoluer() : void
+}
+
+struct Production {
+    materiel : int
+    science : int
+    culture : int
+    foi : int
+    nourriture : int
+}
+
+Interface ConstructionDeVille {
+    getCout() : int
+}
+
+
+Interface Quartier
+
+
+Interface Amenagement {
+    getNombreDeTour() : int
+    getConstructionPossibleSur() : []Terrain
+}
+
+
+Interface Terrain
+
+
+Abstract class Personnage {
+    nom : String
+    getBonus()
+    getNom() : String
+}
+
+
+Class Joueur {
+    nom : string
+    personnage : Personnage
+    getProduction() : production
+    getNom() : String
+    getPersonnage() : Personnage
+}
+
+Class ArbreTechnologique
+
+Abstract Class Technologie {
+    nom : string
+    getCout() : int
+    action() : void
+}
+
+
+Unite ..> Tuile : getPosition() 
+
+Tuile *--> Contenu : getContenu()
+Tuile o-- Unite
+
+Contenu <|-- Quartier
+Contenu <|-- Amenagement
+Contenu <|-- Terrain
+Contenu ..> Production : getProduction()
+
+Ville "[0,1]" o-->"*" Tuile
+Ville ..> ConstructionDeVille : getContruction()
+Ville ..> Production : getProduction()
+
+ConstructionDeVille <|-- Quartier
+ConstructionDeVille <|-- Unite
+
+Joueur *-- "*" Ville : getJoueur()
+Joueur *-- Personnage
+Joueur *-- ArbreTechnologique
+Joueur ..> Technologie : getRecherche()
+
+ArbreTechnologique *-- "[]" Technologie
+
+
+
+@enduml
