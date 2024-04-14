@@ -1,4 +1,4 @@
-package civilization;
+package civ.game;
 
 /**
  * Classe Personnage representant les personnages historiques incarnés par les joueurs.

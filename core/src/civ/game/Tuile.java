@@ -1,4 +1,4 @@
-package civilization;
+package civ.game;
 
 /**
  * Classe Tuile permettant de contruire des objets tuile

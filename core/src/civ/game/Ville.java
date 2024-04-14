@@ -1,4 +1,4 @@
-package civilization;
+package civ.game;
 
 /**
  * Classe Ville permettant de generer les villes des joueurs et leurs actions associées.

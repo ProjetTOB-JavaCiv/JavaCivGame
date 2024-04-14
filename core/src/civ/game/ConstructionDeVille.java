@@ -1,4 +1,4 @@
-package civilization;
+package civ.game;
 
 /**
  * Interface ConstructionDeVille permettant de regrouper tout ce qui peut etre construit au 

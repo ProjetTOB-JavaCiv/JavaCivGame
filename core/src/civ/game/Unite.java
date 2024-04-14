@@ -1,4 +1,4 @@
-package civilization;
+package civ.game;
 
 /**
  * InterfaceUnite permettant de definir les actions de base realisable par tout type d'unité

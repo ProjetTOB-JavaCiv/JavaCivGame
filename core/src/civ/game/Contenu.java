@@ -1,4 +1,4 @@
-package civilization;
+package civ.game;
 
 /**
  * Interface Contenu permettant de regrouper tout les types etant contenu dans une tuile.
