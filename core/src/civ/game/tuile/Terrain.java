@@ -35,5 +35,5 @@ public interface Terrain{
      * Permet d'obtenir les caracteristique possible pour ce type de terrain
      * @return une liste contenant toutes les caracteristiques possible pour ce terrain
      */
-    List<Caracteristique> getCaracteristiquesPossibles();
+    List<Class<Caracteristique>> getCaracteristiquesPossibles();
 }

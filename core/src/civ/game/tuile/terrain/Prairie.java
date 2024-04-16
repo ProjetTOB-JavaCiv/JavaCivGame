@@ -6,7 +6,6 @@ import java.util.List;
 import civ.game.Production;
 import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.Caracteristique;
-import civ.game.tuile.contenu.caracteristique.*;
 
 public class Prairie implements Terrain{
     Boolean colline;
@@ -34,12 +33,19 @@ public class Prairie implements Terrain{
         return Nature.TERRESTRE;
     }
 
-    public List<Caracteristique> getCaracteristiquesPossibles() {
-        List<Caracteristique> possible = new ArrayList<Caracteristique>();
-        possible.add(new Bois());
-        possible.add(new ForetTropicale());
-        possible.add(new Marais());
-        possible.add(new PlaineInnondable());
+    @SuppressWarnings("unchecked")
+    public List<Class<Caracteristique>> getCaracteristiquesPossibles() {
+        List<Class<Caracteristique>> possible = new ArrayList<Class<Caracteristique>>();
+        try {
+            possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.Base"));
+            possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.Bois"));
+            possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.ForetTropicale"));
+            possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.Marais"));
+            possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.PlaineInnondable"));
+        } catch (ClassNotFoundException e) {
+            System.out.println("La classe n'as pas ete trouvée");
+        }
+        
         return possible;
     }
 }

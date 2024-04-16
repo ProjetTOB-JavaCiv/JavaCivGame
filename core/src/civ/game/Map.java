@@ -15,17 +15,24 @@ public class Map{
      * Constructeur du type map retournant une carte aleatoire
      */
     public Map(int largeur, int hauteur) {
-        for(int x = 0; x >= largeur; x++ ) {
+        for(int x = 0; x < largeur; x++ ) {
 
             ligne.add(new ArrayList<Tuile>());
 
-            for(int y = 0; y >= hauteur; y++) {
+            for(int y = 0; y < hauteur; y++) {
 
                 Terrain terrain = Map.chooseRandomTerrain();
 
-                Caracteristique c = terrain.getCaracteristiquesPossibles().get(
+                Class<Caracteristique> carac = terrain.getCaracteristiquesPossibles().get(
                     (int)(Math.random()*terrain.getCaracteristiquesPossibles().size()));
-                ligne.get(x).add(new Tuile(x, y, c, terrain));
+                
+                try {
+                    Caracteristique c = carac.getConstructor().newInstance();
+                    ligne.get(x).add(new Tuile(x, y, c, terrain));
+                } catch (Exception e) {
+                    System.out.println("Probleme d'instanciation caracteristiques");
+                    e.printStackTrace();
+                }
             }
         }
     }

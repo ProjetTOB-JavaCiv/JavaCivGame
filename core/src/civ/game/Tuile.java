@@ -18,8 +18,8 @@ public class Tuile {
     private Contenu contenu;
     /** le type de terrain de la tuile */
     private Terrain terrain;
-    /** Vrai si une unité se trouve sur la tuile, faux sinon */
-    private Boolean occupation = false;
+    /** l'unite se trouvant sur la tuile, null si aucune */
+    private Unite occupant = null;
 
 
 
@@ -76,18 +76,18 @@ public class Tuile {
     }
 
     /**
-     * permet d'obtenir l'etat d'occupation de la tuile.
-     * @return l'etat d'occupation de la tuile.
+     * Permet d'obtenir l'unité occupant de la tuile.
+     * @return l'occupant de la tuile, null si aucun.
      */
-    public Boolean getOccupation() {
-        return this.occupation;
+    public Unite getOccupant() {
+        return this.occupant;
     }
 
-    /** 
-     * Permet de changer l'etat d'occupation de la tuile.
+    /** Permet de definir l'occupant de la tuile
+     * @param unite l'unité occupant nouvellement la tuile
      */
-    public void changerOccupation() {
-        this.occupation = !this.occupation;
+    public void setOccupant(Unite unite) {
+        this.occupant = unite;
     }
 
     /** Permet d'obtenir la production de la tuile
@@ -95,5 +95,19 @@ public class Tuile {
      */
     public Production getProduction() {
         return Production.add(this.contenu.getProduction(), this.terrain.getProduction());
+    }
+
+    /**Permet d'obtenir la quantité de point de mouvement a depenser pour sortir de cette case
+     * @return la quantité de point de mouvement
+     */
+    public int getModificateurDeplacement() {
+        return 1 + this.contenu.getModificateurDeplacement() + this.terrain.getModificateurDeplacement();
+    }
+
+    /** Permet d'obtenir le modificateur de combat de la tuile
+     * @return le modificateur de force mélée de la tuile
+     */
+    public int getModificateurCombat() {
+        return this.contenu.getModificateurCombat() + this.terrain.getModificateurCombat();
     }
 }

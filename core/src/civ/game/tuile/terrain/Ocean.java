@@ -27,8 +27,14 @@ public class Ocean implements Terrain{
         return Nature.MARITIME;
     }
 
-    public List<Caracteristique> getCaracteristiquesPossibles() {
-        List<Caracteristique> possible = new ArrayList<Caracteristique>();
+    @SuppressWarnings("unchecked")
+    public List<Class<Caracteristique>> getCaracteristiquesPossibles() {
+        List<Class<Caracteristique>> possible = new ArrayList<Class<Caracteristique>>();
+        try {
+            possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.Base"));
+        } catch (ClassNotFoundException e) {
+            System.out.println("La classe n'as pas ete trouvée");
+        }
         return possible;
     }
 }
