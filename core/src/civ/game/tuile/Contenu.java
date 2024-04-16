@@ -1,4 +1,6 @@
-package civ.game;
+package civ.game.tuile;
+
+import civ.game.Production;
 
 /**
  * Interface Contenu permettant de regrouper tout les types etant contenu dans une tuile.
@@ -18,5 +20,11 @@ public interface Contenu {
      * @return le modificateur de deplacement
      */
     int getModificateurDeplacement();
+
+    /** 
+     * Permet d'obtenir la production du contenu de la tuile
+     * @return Un objet Production resumant la production du contenu de la tuile
+     */
+    Production getProduction();
 
 }

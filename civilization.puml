@@ -23,12 +23,17 @@ Class Tuile {
     changerOccupation() : void
 }
 
+Class Map {
+    get(int x, int y) : Tuile
+    getAdjacence(Tuile t) : Set<Tuile>
+}
 
-Interface Contenu {
+
+Interface Terrain {
     getModificateurCombat() : int
     getModificateurDeplacement() : int
     getImage() : 
-    getEtat() : bool
+    getNature() : int
 }
 
 class Ville {
@@ -48,10 +53,18 @@ struct Production {
     culture : int
     foi : int
     nourriture : int
+    or : int
+
+    <u> add(Production p1, Production p2) : Production </u>
 }
 
 Interface ConstructionDeVille {
     getCout() : int
+}
+
+Interface Contenu {
+    getModificateurCombat() : int
+    getModificateurDeplacement() : int
 }
 
 
@@ -63,8 +76,7 @@ Interface Amenagement {
     getConstructionPossibleSur() : []Terrain
 }
 
-
-Interface Terrain
+Interface Caracteristique
 
 
 Abstract class Personnage {
@@ -93,13 +105,16 @@ Abstract Class Technologie {
 
 Unite ..> Tuile : getPosition() 
 
+Tuile *--> Terrain : getTerrain()
 Tuile *--> Contenu : getContenu()
 Tuile o-- Unite
 
 Contenu <|-- Quartier
 Contenu <|-- Amenagement
-Contenu <|-- Terrain
+Contenu <|-- Caracteristique
 Contenu ..> Production : getProduction()
+
+Terrain ..> Production : getProduction()
 
 Ville "[0,1]" o-->"*" Tuile
 Ville ..> ConstructionDeVille : getContruction()
@@ -115,6 +130,6 @@ Joueur ..> Technologie : getRecherche()
 
 ArbreTechnologique *-- "[]" Technologie
 
-
+Map *--> "[]" Tuile
 
 @enduml
