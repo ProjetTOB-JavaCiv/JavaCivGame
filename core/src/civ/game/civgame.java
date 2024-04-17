@@ -1,5 +1,7 @@
 package civ.game;
 
+import civ.game.tuile.Terrain;
+import civ.game.tuile.contenu.Caracteristique;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -13,11 +15,21 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.ArrayList;
+
 public class civgame implements ApplicationListener {
 	SpriteBatch tile_batch;
 	SpriteBatch character_batch;
 	Texture grass_img;
+	Texture desert_img;
 	Texture dirt_img;
+	Texture lac_img;
+	Texture montagne_img;
+	Texture prairie_img;
+	Texture plaine_img;
+	Texture ocean_img;
+	Texture toundra_img;
+
 	Texture character_img;
 	Music maxwellcat;
 	Camera camera;
@@ -27,8 +39,8 @@ public class civgame implements ApplicationListener {
 		new Vector3(1, 1, 1)
 	);
 
-	int row = 10000;
-	int col = 10000;
+	int row = 300;
+	int col = 300;
 	int bi = 0;
 	int bj = 0;
 	int posx = 0;
@@ -53,16 +65,20 @@ public class civgame implements ApplicationListener {
 	
 	@Override
 	public void create () {
-		for (int i = 0; i < map.length; i++) {
-			for (int j = 0; j < map[i].length; j++) {
-				map[i][j] = (int)(Math.random()*2);
-			}
-		}
+		Map mapList = Map.creerMapAleatoire(row, col);
+		map = mapList.getTableau();
 
 		tile_batch = new SpriteBatch();
 		character_batch = new SpriteBatch();
 		grass_img = new Texture("grass.jpg");
 		dirt_img = new Texture("dirt.jpg");
+		desert_img = new Texture("desert.jpg");
+		lac_img = new Texture("lac.jpg");
+		montagne_img = new Texture("marron.jpg");
+		prairie_img = new Texture("prairie.jpg");
+		plaine_img = new Texture("plaine.jpg");
+		ocean_img = new Texture("ocean.jpg");
+		toundra_img = new Texture("toundra.jpg");
 		
 		maxwellcat = Gdx.audio.newMusic(Gdx.files.internal("maxwell.mp3"));
 		maxwellcat.setLooping(true);
@@ -95,9 +111,19 @@ public class civgame implements ApplicationListener {
 				k = map[0].length-(j+1);
 				//k = jmax-(j+1);
 				if (map[i][k] == 0) {
-					tile_batch.draw(grass_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
+					tile_batch.draw(desert_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
 				} else if (map[i][k] == 1) {
-					tile_batch.draw(dirt_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
+					tile_batch.draw(lac_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
+				} else if (map[i][k] == 2) {
+					tile_batch.draw(montagne_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
+				} else if (map[i][k] == 3) {
+					tile_batch.draw(ocean_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
+				} else if (map[i][k] == 4) {
+					tile_batch.draw(plaine_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
+				} else if (map[i][k] == 5) {
+					tile_batch.draw(prairie_img, sprite_size*j, sprite_size*i, sprite_size, sprite_size);
+				} else if (map[i][k] == 6) {
+					tile_batch.draw(toundra_img, sprite_size * j, sprite_size * i, sprite_size, sprite_size);
 				}
 			}
 		}
