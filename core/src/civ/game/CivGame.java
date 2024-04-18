@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 public class CivGame extends Game {
 
     Stage stage;
-    SpriteBatch tile_batch;
     SpriteBatch character_batch;
     public BitmapFont font;
 
