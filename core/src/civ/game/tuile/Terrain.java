@@ -32,7 +32,7 @@ public interface Terrain{
     Production getProduction();
 
     /**
-     * Permet d'obtenir les caracteristique possible pour ce type de terrain
+     * Permet d'obtenir les classes de caracteristique possible pour ce type de terrain
      * @return une liste contenant toutes les caracteristiques possible pour ce terrain
      */
     List<Class<Caracteristique>> getCaracteristiquesPossibles();

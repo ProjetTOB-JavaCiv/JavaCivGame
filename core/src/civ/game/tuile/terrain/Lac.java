@@ -7,6 +7,7 @@ import civ.game.Production;
 import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.Caracteristique;
 
+/** Classe representant les terrains Lac et Cote */
 public class Lac implements Terrain{
     
     public int getModificateurCombat() {

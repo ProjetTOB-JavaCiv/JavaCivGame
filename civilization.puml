@@ -1,4 +1,6 @@
-@startuml Civilization
+@startuml Civilization 
+
+'Attention peut ne pas etre parfaitement a jour, Se referer a javadoc pour plus de precision
 
 Interface Unite {
     getNom() : string
@@ -16,11 +18,10 @@ Interface Unite {
 Class Tuile {
     x : int
     y : int
-    occupation : bool
+    occupant : Unite
     x() : int
     y() : int
-    getOccupation() : bool
-    changerOccupation() : void
+    getOccupant() : Unite
 }
 
 Class Map {
