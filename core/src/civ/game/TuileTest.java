@@ -15,8 +15,8 @@ import org.junit.Assert.*;
  */
 public class TuileTest {
     Tuile tuileSimple;
-    Contenu base, bois, foretTropicale, marais, oasis, plaineInnondable;
-    Terrain desert, lac, montagne, ocean, plaine, prairie, toundra;
+    Contenu base, bois;
+    Terrain ocean;
     Production productionTuile, productionAttendue;
 
     @Before
@@ -31,35 +31,35 @@ public class TuileTest {
 
     @Test
     public void testPosition() {
-        assertEquals(tuileSimple.x(), 1);
-        assertEquals(tuileSimple.y(), 1);
+        Assert.assertEquals(tuileSimple.x(), 1);
+        Assert.assertEquals(tuileSimple.y(), 1);
     }
 
 
     @Test public void testContenu() {
-        assertEquals(tuileSimple.getContenu(), new Bois());
+        Assert.assertEquals(tuileSimple.getContenu(), new Bois());
         tuileSimple.setContenu(base);
-        assertEquals(tuileSimple.getContenu(), new Base());
+        Assert.assertEquals(tuileSimple.getContenu(), new Base());
         tuileSimple.setContenu(bois);
-        assertEquals(tuileSimple.getContenu(), new Bois());
+        Assert.assertEquals(tuileSimple.getContenu(), new Bois());
     }
 
     @Test public void testTerrain() {
-        assertEquals(tuileSimple.getTerrain(), new Ocean());
+        Assert.assertEquals(tuileSimple.getTerrain(), new Ocean());
     }
 
     @Test public void testOccupant() {
-        assertEquals(tuileSimple.getOccupant(), null);
+        Assert.assertNull(tuileSimple.getOccupant());
     }
 
     @Test public void testProduction() {
         productionTuile = tuileSimple.getProduction();
-        assertEquals(productionTuile, productionAttendue);
+        Assert.assertEquals(productionTuile, productionAttendue);
     }
 
     @Test public void testModificateurs() {
-        assertEquals(tuileSimple.getModificateurCombat(), 3);
-        assertEquals(tuileSimple.getModificateurDeplacement(), 1);
+        Assert.assertEquals(tuileSimple.getModificateurCombat(), 3);
+        Assert.assertEquals(tuileSimple.getModificateurDeplacement(), 1);
     }
 
 }
