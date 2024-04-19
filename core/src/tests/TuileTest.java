@@ -1,4 +1,5 @@
-package civ.game;
+import civ.game.Production;
+import civ.game.Tuile;
 import civ.game.tuile.contenu.caracteristique.Base;
 import civ.game.tuile.Contenu;
 import civ.game.tuile.Terrain;
@@ -6,7 +7,6 @@ import civ.game.tuile.contenu.caracteristique.Bois;
 import civ.game.tuile.terrain.Ocean;
 
 import org.junit.*;
-import org.junit.Assert.*;
 
 /**
  * Classe de tests unitaires TestTuile permettant de tester la classe Tuile.
