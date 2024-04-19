@@ -81,9 +81,9 @@ public class Map{
      */
     public Set<Tuile> getAdjacence(Tuile t) {
         Set<Tuile> adjacence = new HashSet<Tuile>();
-        for (int i = -1; i>1; i++) {
-            for(int j = -1; j>1; j++) {
-                adjacence.add(get(t.x() + i, t.y() + j));
+        for (int i = -1; i<=1; i++) {
+            for(int j = -1; j<=1; j++) {
+                adjacence.add(get(Math.min(Math.max(t.x() + i, 0), this.ligne.size() - 1) , Math.min(Math.max(t.y() + j, 0), this.ligne.get(1).size() - 1))); // les min et max sont la pour contenir les effets de bords
             }
         }
 
@@ -96,4 +96,31 @@ public class Map{
     private static Boolean chooseRandomColline() {
         return Math.random() > 0.5;
     }
+
+    public int distance(Tuile t1, Tuile t2) {
+        return 0;
+        
+    }
+
+    /** Application de l'algorithme de dijkstra pour trouver le plus cours chemin entre 2 tuile
+     * 
+     */
+
+    public List<Tuile> dijkstra(Tuile t1, Tuile t2, Set<Tuile> dejaParcouru, Set<Tuile> aParcourir) {
+
+        aParcourir.addAll(this.getAdjacence(t1));
+        dejaParcouru.add(t1);
+        aParcourir.removeAll(dejaParcouru);
+        aParcourir.removeIf(t -> (t.getTerrain().getNature() == Nature.INFRANCHISSABLE));
+
+        if(aParcourir.isEmpty()) {
+            
+        }
+
+    
+
+        return new ArrayList<Tuile>();
+    }
+
+
 }

@@ -7,6 +7,8 @@ import civ.game.Production;
 import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.Caracteristique;
 
+
+/** Classe representant les terrains ocean */
 public class Ocean implements Terrain{
     
     public int getModificateurCombat() {

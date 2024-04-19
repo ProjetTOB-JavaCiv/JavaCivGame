@@ -7,9 +7,15 @@ import civ.game.Production;
 import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.Caracteristique;
 
+/** Classe representant les terrain Desert */
 public class Desert implements Terrain{
+    /** Represente si le terrain a des colline ou non */
     private Boolean colline;
 
+    /**
+     * Constructeur de la classe Desert
+     * @param colline true si le terrain a des colline, false sinon
+     */
     public Desert(Boolean colline) {
         this.colline = colline;
     }
@@ -38,6 +44,7 @@ public class Desert implements Terrain{
         try {
             possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.Base"));
             possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.Oasis"));
+            possible.add((Class<Caracteristique>)Class.forName("civ.game.tuile.contenu.caracteristique.PlaineInnondable"));
         } catch (ClassNotFoundException e) {
             System.out.println("La classe n'as pas ete trouvée");
         }

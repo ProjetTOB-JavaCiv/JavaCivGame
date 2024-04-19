@@ -97,7 +97,7 @@ public class Tuile {
         return Production.add(this.contenu.getProduction(), this.terrain.getProduction());
     }
 
-    /**Permet d'obtenir la quantité de point de mouvement a depenser pour sortir de cette case
+    /**Permet d'obtenir la quantité de point de mouvement a depenser pour entrer sur cette case
      * @return la quantité de point de mouvement
      */
     public int getModificateurDeplacement() {
