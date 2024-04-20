@@ -25,8 +25,8 @@ public class Carte{
                 Terrain terrain = Carte.chooseRandomTerrain();
 
                 Class<Caracteristique> carac = terrain.getCaracteristiquesPossibles().get(
-                    (int)(Math.random()*terrain.getCaracteristiquesPossibles().size()));
-                
+                        (int)(Math.random()*terrain.getCaracteristiquesPossibles().size()));
+
                 try {
                     Caracteristique c = carac.getConstructor().newInstance();
                     ligne.get(x).add(new Tuile(x, y, c, terrain));
@@ -38,7 +38,7 @@ public class Carte{
         }
     }
 
-    /** 
+    /**
      * Permet d'obtenir la tuile située au coordonnée (x , y)
      * @param x la coordonnée x recherchée
      * @param y la coordonnée y recherchée
@@ -75,7 +75,7 @@ public class Carte{
         }
     }
 
-    
+
     /**
      * Permet d'obtenir toute les tuiles adjacentes a celle ci
      * @return l'ensemble des tuiles adjacente
@@ -92,7 +92,7 @@ public class Carte{
 
         return adjacence;
     }
-    
+
 
     private static Boolean chooseRandomColline() {
         return Math.random() > 0.5;
@@ -100,7 +100,7 @@ public class Carte{
 
     public int distance(Tuile t1, Tuile t2) {
         return 0;
-        
+
     }
 
 

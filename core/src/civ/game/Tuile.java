@@ -4,7 +4,7 @@ import civ.game.tuile.Contenu;
 import civ.game.tuile.Terrain;
 
 /**
- * Classe Tuile permettant de contruire des objets tuile
+ * Classe Tuile permettant de contruire des objets tuile.
  * @author Theophane Chollet
  * @version 0.0
  */
@@ -24,7 +24,7 @@ public class Tuile {
 
 
     /**
-     * Constructeur d'une tuile
+     * Constructeur d'une tuile.
      * 
      * @param x position x de la tuile 
      * @param y position y de la tuile
@@ -86,29 +86,29 @@ public class Tuile {
         return this.occupant;
     }
 
-    /** Permet de definir l'occupant de la tuile
-     * @param unite l'unité occupant nouvellement la tuile
+    /** Permet de definir l'occupant de la tuile.
+     * @param unite l'unité occupant nouvellement la tuile.
      */
     public void setOccupant(Unite unite) {
         this.occupant = unite;
     }
 
-    /** Permet d'obtenir la production de la tuile
-     * @return un objet production resumant la production de la tuile
+    /** Permet d'obtenir la production de la tuile.
+     * @return un objet production resumant la production de la tuile.
      */
     public Production getProduction() {
         return Production.add(this.contenu.getProduction(), this.terrain.getProduction());
     }
 
-    /**Permet d'obtenir la quantité de point de mouvement a depenser pour entrer sur cette case
-     * @return la quantité de point de mouvement
+    /**Permet d'obtenir la quantité de point de mouvement a depenser pour sortir de cette case.
+     * @return la quantité de point de mouvement.
      */
     public int getModificateurDeplacement() {
         return 1 + this.contenu.getModificateurDeplacement() + this.terrain.getModificateurDeplacement();
     }
 
-    /** Permet d'obtenir le modificateur de combat de la tuile
-     * @return le modificateur de force mélée de la tuile
+    /** Permet d'obtenir le modificateur de combat de la tuile.
+     * @return le modificateur de force mélée de la tuile.
      */
     public int getModificateurCombat() {
         return this.contenu.getModificateurCombat() + this.terrain.getModificateurCombat();
