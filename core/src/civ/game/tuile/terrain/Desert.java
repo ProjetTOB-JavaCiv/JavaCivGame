@@ -13,6 +13,13 @@ public class Desert implements Terrain{
     private Boolean colline;
 
     /**
+     * Constructeur par défaut de la classe Desert.
+     */
+    public Desert() {
+        this.colline = false;
+    }
+
+    /**
      * Constructeur de la classe Desert
      * @param colline true si le terrain a des colline, false sinon
      */

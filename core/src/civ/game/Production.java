@@ -4,10 +4,10 @@ package civ.game;
  * Classe Production permettant de structurer la facon de recuperer la production
  * des differentes tuiles / villes / joueurs.
  * @authors Theophane Chollet, Elisa Ciocarlan
- * @version 1.0
+ * @version 1.1
  */
 public class Production {
-    
+    // Attributs
     /** Ressource de construction */
     public int materiel = 0;
     /** Ressource de technologie */
@@ -21,6 +21,7 @@ public class Production {
     /** ressource d'or */
     public int or = 0;
 
+    // Constructeurs
     /**
      * Constructeur par défaut d'un objet Production.
      */
@@ -52,8 +53,59 @@ public class Production {
         this.or = or;
     }
 
+
+    // Getters
     /**
-     * Permet d'ajouter 2 production et de stocker le resultat dans un 3e objet
+     * Obtenir la valeur de matériel.
+     * @return un entier, la valeur de matériel.
+     */
+    public int getMateriel() {
+        return this.materiel;
+    }
+
+    /**
+     * La valeur de science.
+     * @return un entier, la valeur de science.
+     */
+    public int getScience() {
+        return this.science;
+    }
+
+    /**
+     * La valeur de foi.
+     * @return un entier, la valeur de foi.
+     */
+    public int getFoi() {
+        return this.foi;
+    }
+
+    /**
+     * Obtenir la valeur de nourriture.
+     * @return un entier, la valeur de nourriture.
+     */
+    public int getNourriture() {
+        return this.nourriture;
+    }
+
+    /**
+     * La valeur de culture.
+     * @return un entier, la valeur de culture.
+     */
+    public int getCulture() {
+        return this.culture;
+    }
+
+    /**
+     * La valeur d'or'.
+     * @return un entier, la valeur d'or'.
+     */
+    public int getOr() {
+        return this.or;
+    }
+
+    // Méthodes
+    /**
+     * Permet d'ajouter 2 productions et de stocker le resultat dans un 3e objet.
      * @param p1 production 1
      * @param p2 production 2
      * @return un objet contenant la somme des productions p1 et p2
@@ -69,5 +121,15 @@ public class Production {
         sum.or = p1.or + p2.or;
 
         return sum;
+    }
+
+    /**
+     * Permet de vérifier que 2 productions sont égales.
+     * @param p production
+     * @return un booléen, vrai si les attributs de this et p ont la même valeur, faux sinon.
+     */
+    public boolean estEgale(Production p) {
+        return this.materiel == p.materiel && this.nourriture == p.nourriture && this.foi == p.foi
+                && this.science == p.science && this.culture == p.culture && this.or == p.or;
     }
 }

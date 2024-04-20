@@ -127,7 +127,7 @@ public abstract class Unite implements ConstructionDeVille{
      * Permet de calculer les deplacement possible de maniere recursive
     * @param map la carte du jeu
     * @param t la tuile a partir de laquelle on lance le calcul
-    * @param pMrestant le nombre de point de mouvement restant
+    * @param pMRestant le nombre de point de mouvement restant
     * @return les deplacements possible a partir d'une tuile et d'un certain nombre de point de mouvement
     */
     protected Set<Tuile> calculDeplacement(Carte map, Tuile t, int pMRestant, boolean iDeplacement) {
