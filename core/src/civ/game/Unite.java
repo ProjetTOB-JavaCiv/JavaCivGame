@@ -46,6 +46,7 @@ public abstract class Unite implements ConstructionDeVille{
         this.proprietaire = proprietaire;
         this.PORTEE_DEPLACEMENT = porteeDeplacement;
         this.COUT = cout;
+        this.position.setOccupant(this);
     }
 
     /**

@@ -7,7 +7,7 @@ import civ.game.Production;
 import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.Caracteristique;
 
-/** Classe representant les terrain Desert */
+/** Classe representant les terrains Deserts */
 public class Desert implements Terrain{
     /** Represente si le terrain a des colline ou non */
     private Boolean colline;

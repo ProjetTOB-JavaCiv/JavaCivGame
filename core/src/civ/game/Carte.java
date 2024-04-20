@@ -6,22 +6,23 @@ import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.Caracteristique;
 import civ.game.tuile.terrain.*;
 
-public class Map{
+/** Classe decrivant la carte du jeu */
+public class Carte{
 
     private List<List<Tuile>> ligne = new ArrayList<List<Tuile>>();
 
 
     /** 
-     * Constructeur du type map retournant une carte aleatoire
+     * Constructeur du type carte retournant une carte aleatoire
      */
-    public Map(int largeur, int hauteur) {
+    public Carte(int largeur, int hauteur) {
         for(int x = 0; x < largeur; x++ ) {
 
             ligne.add(new ArrayList<Tuile>());
 
             for(int y = 0; y < hauteur; y++) {
 
-                Terrain terrain = Map.chooseRandomTerrain();
+                Terrain terrain = Carte.chooseRandomTerrain();
 
                 Class<Caracteristique> carac = terrain.getCaracteristiquesPossibles().get(
                     (int)(Math.random()*terrain.getCaracteristiquesPossibles().size()));
@@ -55,7 +56,7 @@ public class Map{
 
         switch(rand) {
             case 0:
-                return new Desert(Map.chooseRandomColline());
+                return new Desert(Carte.chooseRandomColline());
             case 1:
                 return new Lac();
             case 2:
@@ -63,11 +64,11 @@ public class Map{
             case 3:
                 return new Ocean();
             case 4: 
-                return new Plaine(Map.chooseRandomColline());
+                return new Plaine(Carte.chooseRandomColline());
             case 5: 
-                return new Prairie(Map.chooseRandomColline());
+                return new Prairie(Carte.chooseRandomColline());
             case 6:
-                return new Toundra(Map.chooseRandomColline());
+                return new Toundra(Carte.chooseRandomColline());
             default:
                 return new Plaine(false);
 
@@ -100,26 +101,6 @@ public class Map{
     public int distance(Tuile t1, Tuile t2) {
         return 0;
         
-    }
-
-    /** Application de l'algorithme de dijkstra pour trouver le plus cours chemin entre 2 tuile
-     * 
-     */
-
-    public List<Tuile> dijkstra(Tuile t1, Tuile t2, Set<Tuile> dejaParcouru, Set<Tuile> aParcourir) {
-
-        aParcourir.addAll(this.getAdjacence(t1));
-        dejaParcouru.add(t1);
-        aParcourir.removeAll(dejaParcouru);
-        aParcourir.removeIf(t -> (t.getTerrain().getNature() == Nature.INFRANCHISSABLE));
-
-        if(aParcourir.isEmpty()) {
-            
-        }
-
-    
-
-        return new ArrayList<Tuile>();
     }
 
 

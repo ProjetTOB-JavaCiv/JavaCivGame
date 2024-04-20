@@ -71,6 +71,9 @@ public class Tuile {
         this.contenu = newContenu;
     }
 
+    /** Permet de recuperer le terrain de la tuile
+     * @return le terrain de la tuile
+     */
     public Terrain getTerrain() {
         return this.terrain;
     }

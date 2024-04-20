@@ -7,7 +7,7 @@ import civ.game.Production;
 import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.Caracteristique;
 
-/** Classe representant les terrain montagneux */
+/** Classe representant les terrains montagneux */
 public class Montagne implements Terrain{
     
     public int getModificateurCombat() {
