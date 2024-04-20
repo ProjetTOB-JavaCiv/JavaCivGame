@@ -2,8 +2,8 @@ package civ.game;
 
 import java.util.*;
 
+import civ.game.exception.DeplacementException;
 import civ.game.tuile.terrain.Nature;
-import civ.game.unite.Militaire;
 
 /**
  * Super class Unite permettant de definir les actions de base realisable par tout type d'unité
@@ -23,14 +23,12 @@ public abstract class Unite implements ConstructionDeVille{
     /** Le nombre de point de mouvement restant a l'unité */
     protected int pm;
     /** indicateur permettant de savoir si l'unité s'est deja deplacer dans le tour */
-    protected boolean indicateurDeplacement;
+    protected boolean indicateurDeplacement = false;
     protected int experience;
     /** La quantité de tuile que peut parcoourir une unité en un tour */
     protected final int PORTEE_DEPLACEMENT;
     /** le cout en materiel pour produire l'unité */
     protected final int COUT;
-    /** Resume les avantage d'une unite contre les autres types d'unité */
-    protected Map<Class<Militaire>, Integer> avantage;
 
 
     /** Constructeur de la classe Unite
@@ -47,6 +45,7 @@ public abstract class Unite implements ConstructionDeVille{
         this.PORTEE_DEPLACEMENT = porteeDeplacement;
         this.COUT = cout;
         this.position.setOccupant(this);
+        this.pm = this.PORTEE_DEPLACEMENT;
     }
 
     /**
@@ -97,11 +96,20 @@ public abstract class Unite implements ConstructionDeVille{
     * Pre : destination in getDeplacementPossible()
     * @param destination tuile de destination de l'unité
     */
-    public void seDeplacer(Carte map, Tuile destination) {
-        if (this.getDeplacementPossible(map).contains(destination)) {
+    public void seDeplacer(Carte map, Tuile destination) throws DeplacementException {
+        if (this.getDeplacementPossible(map).contains(destination) && destination.getOccupant() == null) {
             this.position.setOccupant(null);
             this.position = destination;
             this.position.setOccupant(this);
+        } else {
+            if(!this.getDeplacementPossible(map).contains(destination)) {
+                throw new DeplacementException("Point de mouvement insuffisant.");
+            } else if(destination.getOccupant() != null) {
+                throw new DeplacementException("La case de destination est deja occupée.");
+            } else {
+                throw new DeplacementException("Deplacement impossible.");
+            }
+            
         }
     }
 
@@ -122,13 +130,13 @@ public abstract class Unite implements ConstructionDeVille{
     * @param pMrestant le nombre de point de mouvement restant
     * @return les deplacements possible a partir d'une tuile et d'un certain nombre de point de mouvement
     */
-    protected Set<Tuile> calculDeplacement(Carte map, Tuile t, int pMRestant, boolean indicateurDeplacement) {
+    protected Set<Tuile> calculDeplacement(Carte map, Tuile t, int pMRestant, boolean iDeplacement) {
         Set<Tuile> deplacementPossible = new HashSet<Tuile>();
-        Set<Tuile> adjacence = map.getAdjacence(this.position);
+        Set<Tuile> adjacence = map.getAdjacence(t);
         adjacence.removeIf(e -> (e.getTerrain().getNature() != this.getNatureDeplacement()));
 
         // Si elle ne s'est pas deja deplacer ce tour ci
-        if (!indicateurDeplacement) {
+        if (!iDeplacement) {
             // on regarde tous les endroits ou on peut aller
             deplacementPossible.addAll(adjacence);
 
@@ -138,8 +146,8 @@ public abstract class Unite implements ConstructionDeVille{
                 Tuile next  = i.next();
                 deplacementPossible.addAll(calculDeplacement(map, next, pMRestant-next.getModificateurDeplacement(), true));
             }
-        } else if (pMRestant > 0) { // Sinon si il nous reste des points de mouvement.
-            // on regarde tous les endroits ou on peut aller
+        } else if (pMRestant > 0) { // Sinon s'il nous reste des points de mouvement.
+            // on retire tout les endroit qui sont trop loin
             adjacence.removeIf(e -> (e.getModificateurDeplacement() > pMRestant));
             deplacementPossible.addAll(adjacence);
 
@@ -152,19 +160,6 @@ public abstract class Unite implements ConstructionDeVille{
             
         }
         return deplacementPossible;
-    }
-
-    /**
-     * Permet d'obtenir l'ensemble des types d'unité contre lesquels l'unité a un avantage
-    * @return l'ensemble des types d'unité contre lesquels l'unité a un avantage
-    */
-    public Integer getAvantage(Militaire adversaire) {
-        if(avantage.containsKey(adversaire.getClass())) {
-            return avantage.get(adversaire.getClass());
-        } else {
-            return 0;
-        }
-        
     }
  
  

@@ -15,7 +15,7 @@ public class Guerrier extends CombatRapproche{
      */
     public Guerrier(String nom, Tuile position, Joueur proprietaire) {
         super(nom, position, proprietaire, 20);
-        this.ajouterAvantage("civ.game.unite.classUnite.terrestre.AntiCavalerie", 5);
+        this.ajouterAvantage("civ.game.unite.classeUnite.terrestre.AntiCavalerie", 5);
         this.forceMelee = 20;
     }
     

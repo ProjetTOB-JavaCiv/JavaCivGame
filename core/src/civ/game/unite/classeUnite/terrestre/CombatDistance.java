@@ -1,7 +1,9 @@
 package civ.game.unite.classeUnite.terrestre;
 
+import civ.game.Carte;
 import civ.game.Joueur;
 import civ.game.Tuile;
+import civ.game.exception.AttaqueException;
 import civ.game.unite.Militaire;
 import civ.game.unite.classeUnite.ClasseTerrestre;
 
@@ -31,14 +33,25 @@ public abstract class CombatDistance extends ClasseTerrestre{
      * Methode d'attaque d'une autre unité à distance 
      * @param autre unité à attaquer
      */
-    public void attaquerDistance(Militaire autre) {
-        if (pm > 0 && indicateurCombat) {
+    public void attaquerDistance(Carte carte, Militaire autre) throws AttaqueException {
+        if (pm > 0 && !indicateurCombat && carte.distanceAbsolue(this.position, autre.getPosition()) <= this.portee) {
             boolean fatal = autre.subirDegat(20*(3*this.getPuissanceDistance() + autre.getPuissanceMelee(this))/(3*autre.getPuissanceMelee(this) + this.getPuissanceDistance()));
             if (fatal){
                 this.experience ++;
             }
             this.pm = 0;
-            this.indicateurCombat = false;
+            this.indicateurCombat = true;
+        }else {
+            if (pm <= 0) {
+                throw new AttaqueException("Aucune action restante.");
+            } else if(indicateurCombat) {
+                throw new AttaqueException("Attaque impossible car l'unité a deja attaqué ce tour-ci");
+            } else if(carte.distanceAbsolue(this.position, autre.getPosition()) > portee) {
+                throw new AttaqueException("L'unité ciblée est trop loin");    
+            } else {   
+                throw new AttaqueException("Attaque impossible.");
+            }
+            
         }
         
     }

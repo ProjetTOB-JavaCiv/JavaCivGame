@@ -98,10 +98,29 @@ public class Carte{
         return Math.random() > 0.5;
     }
 
-    public int distance(Tuile t1, Tuile t2) {
-        return 0;
+    /**
+     * Permet de calculer la distance entre 2 tuile sans prendre en compte les modifications de terrain.
+     * @param t1 la premiere tuile
+     * @param t2 la 2e tuile
+     * @return la distance entre les 2
+     */
+    public int distanceAbsolue(Tuile t1, Tuile t2) {
+        Set<Tuile> visites = new HashSet<Tuile>();
+        Set<Tuile> bords = new HashSet<Tuile>();
+        int distance = 0;
+        visites.add(t1);
+        bords.add(t1);
 
+        while(!visites.contains(t2)) {
+            Set<Tuile> bordsIterable = new HashSet<Tuile>(bords);
+            for (Tuile t : bordsIterable) {
+                bords.addAll(this.getAdjacence(t));
+            }
+            bords.removeAll(visites);
+            visites.addAll(bords);
+            distance++;
+        }
+        return distance;
     }
-
 
 }

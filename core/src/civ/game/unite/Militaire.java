@@ -1,8 +1,13 @@
 package civ.game.unite;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import civ.game.Carte;
 import civ.game.Joueur;
 import civ.game.Tuile;
 import civ.game.Unite;
+import civ.game.exception.AttaqueException;
 
 /**
  * Classe abstraite permettant de regrouper les actions effectuables par les unités militaires
@@ -11,8 +16,10 @@ public abstract class Militaire extends Unite{
 
     /** La force en combat de mélée de l'unite */
     protected int forceMelee;
-    /** Indicateur permettant de savoir si l'unite s'est deplacée ce tour */
-    protected boolean indicateurCombat;
+    /** Indicateur permettant de savoir si l'unite a deja attaqué ce tour */
+    protected boolean indicateurCombat = false;
+    /** Resume les avantage d'une unite contre les autres types d'unité */
+    protected Map<Class<Militaire>, Integer> avantage = new HashMap<Class<Militaire>,Integer>();
 
 
     /**
@@ -27,7 +34,7 @@ public abstract class Militaire extends Unite{
      * @return la puissance de l'unité en combat de mélée.
      */
     public int getPuissanceMelee(Militaire autre) {
-        return (this.forceMelee + this.position.getModificateurCombat() + this.getAvantage(autre)) * (this.pv / 100);
+        return (this.forceMelee + this.position.getModificateurCombat() + this.getAvantage(autre)) * (1 + this.pv / 100);
     }
 
 
@@ -45,23 +52,45 @@ public abstract class Militaire extends Unite{
      * Methode d'attaque d'une autre unité en mélée
      * @param autre unité à attaquer
      */
-    public void attaquerMelee(Unite autre) {
-        if (pm > 0 && indicateurCombat) {
+    public void attaquerMelee(Carte carte, Unite autre) throws AttaqueException {
+        if (this.pm > 0 && !this.indicateurCombat && carte.getAdjacence(this.getPosition()).contains(autre.getPosition())) {
             if(autre instanceof Militaire) {
                 boolean fatal = ((Militaire)autre).subirDegat(20*(3*this.getPuissanceMelee((Militaire)autre) + ((Militaire)autre).getPuissanceMelee(this))
                     /(3*((Militaire)autre).getPuissanceMelee(this) + this.getPuissanceMelee((Militaire)autre)));
                 if (fatal){
                     this.experience ++;
                 }else {
-                    ((Militaire)autre).attaquerMelee(this);
+                    ((Militaire)autre).riposte(this);
                 }
             } else if(autre instanceof Civil) {
                 ((Civil)autre).capturer(this);
             }
             this.pm = 0;
-            this.indicateurCombat = false;
+            this.indicateurCombat = true;
+        } else {
+            if (this.pm <= 0) {
+                throw new AttaqueException("Aucune action restante.");
+            } else if(this.indicateurCombat) {
+                throw new AttaqueException("Attaque impossible car l'unité a deja attaqué ce tour-ci");
+            } else if(!carte.getAdjacence(this.getPosition()).contains(autre.getPosition())) {
+                throw new AttaqueException("L'unité ciblée est trop loin");    
+            } else {   
+                throw new AttaqueException("Attaque impossible.");
+            }
+            
         }
         
+    }
+
+    /**
+     * Permet de riposter a une attaque de melée.
+     * @param autre l'unité attaquante
+    */
+    public void riposte(Militaire autre) {
+        boolean fatal = ((Militaire)autre).subirDegat(20*(3*this.getPuissanceMelee((Militaire)autre) + ((Militaire)autre).getPuissanceMelee(this))/(3*((Militaire)autre).getPuissanceMelee(this) + this.getPuissanceMelee((Militaire)autre)));
+        if (fatal){
+            this.experience ++;
+        }
     }
 
     @Override
@@ -70,7 +99,7 @@ public abstract class Militaire extends Unite{
     */
     public void debutTour() {
         this.pm = this.PORTEE_DEPLACEMENT;
-        this.indicateurCombat = true;
+        this.indicateurCombat = false;
         this.indicateurDeplacement = false;
     }
 
@@ -86,5 +115,18 @@ public abstract class Militaire extends Unite{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Permet d'obtenir l'ensemble des types d'unité contre lesquels l'unité a un avantage
+    * @return l'ensemble des types d'unité contre lesquels l'unité a un avantage
+    */
+    public Integer getAvantage(Militaire adversaire) {
+        if(avantage.containsKey(adversaire.getClass().getSuperclass())) {
+            return avantage.get(adversaire.getClass().getSuperclass());
+        } else {
+            return 0;
+        }
+        
     }
 }
