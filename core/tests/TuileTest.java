@@ -6,8 +6,6 @@ import civ.game.tuile.Terrain;
 import civ.game.tuile.contenu.caracteristique.Bois;
 import civ.game.tuile.terrain.Ocean;
 
-import org.junit.*;
-
 /**
  * Classe de tests unitaires TestTuile permettant de tester la classe Tuile.
  * @author Elisa Ciocarlan
