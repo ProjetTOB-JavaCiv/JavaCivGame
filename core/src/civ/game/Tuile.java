@@ -1,7 +1,8 @@
-package civ.game;
+package game;
 
-import civ.game.tuile.Contenu;
-import civ.game.tuile.Terrain;
+
+import game.tuile.Contenu;
+import game.tuile.Terrain;
 
 /**
  * Classe Tuile permettant de contruire des objets tuile

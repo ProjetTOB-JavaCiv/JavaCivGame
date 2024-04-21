@@ -1,4 +1,4 @@
-package civ.game;
+package game;
 
 /**
  * Classe regroupant toutes les actions relative au joueur directement

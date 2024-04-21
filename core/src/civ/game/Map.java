@@ -1,11 +1,13 @@
-package civ.game;
+package game;
 
 import java.util.*;
 
-import civ.game.tuile.Terrain;
-import civ.game.tuile.contenu.Caracteristique;
-import civ.game.tuile.contenu.caracteristique.*;
-import civ.game.tuile.terrain.*;
+import game.tuile.Terrain;
+import game.tuile.contenu.Caracteristique;
+import game.tuile.contenu.caracteristique.Base;
+import game.tuile.terrain.Ocean;
+import game.tuile.terrain.Plaine;
+import game.tuile.terrain.Montagne;
 
 
 public class Map{

@@ -1,13 +1,13 @@
-package civ.game.tuile.terrain;
+package game.tuile.terrain;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import civ.game.Production;
-import civ.game.tuile.Terrain;
-import civ.game.tuile.contenu.Caracteristique;
+import game.Production;
+import game.tuile.Terrain;
+import game.tuile.contenu.Caracteristique;
 
-public class Lac implements Terrain{
+public class Lac implements Terrain {
     
     public int getModificateurCombat() {
         return 0;

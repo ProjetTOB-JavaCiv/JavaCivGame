@@ -1,6 +1,8 @@
-package civ.game;
+package screen;
 
 
+import game.CivGame;
+import game.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
@@ -20,10 +22,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+
+import game.CivGame;
 
 public class EcranJeu implements Screen {
     final CivGame jeu;
@@ -75,13 +78,13 @@ public class EcranJeu implements Screen {
     int sprite_size = 5;
     int move_speed = 20000;
 
-    public EcranJeu (final CivGame jeu) {
+    public EcranJeu (CivGame jeu) {
         this.jeu = jeu;
         stage = new Stage();
 
         Map mapList = Map.creerMapAleatoire(row, col);
         map = mapList.getTableau();
-        
+
         grass_img = new Texture("grass.jpg");
         dirt_img = new Texture("dirt.jpg");
         desert_img = new Texture("desert.jpg");
@@ -99,7 +102,7 @@ public class EcranJeu implements Screen {
 
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.translate(Gdx.graphics.getWidth()/2, Gdx.graphics.getHeight()/2, 0);
+        camera.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
     }
 
     @Override

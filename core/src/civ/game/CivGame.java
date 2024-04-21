@@ -1,14 +1,15 @@
-package civ.game;
+package game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import screen.EcranJeu;
 
 
 public class CivGame extends Game {
 
-    Stage stage;
+    public Stage stage; //j'ai foutu public en deuspi mais est ce que on fait on va pas plutot faire un getter ?
     SpriteBatch character_batch;
     public BitmapFont font;
 
