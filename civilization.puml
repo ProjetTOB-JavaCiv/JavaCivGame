@@ -1,0 +1,135 @@
+@startuml Civilization
+
+Interface Unite {
+    getNom() : string
+    getPuissance() : int
+    getPV() : int
+    getPortee() : int
+    attaquer(Unite) : void
+    seDeplacer(Tuile) : void
+    getDeplacementPossible() : []
+    getAvantage() : []Unite
+    prendreDegat() : int
+}
+
+
+Class Tuile {
+    x : int
+    y : int
+    occupation : bool
+    x() : int
+    y() : int
+    getOccupation() : bool
+    changerOccupation() : void
+}
+
+Class Map {
+    get(int x, int y) : Tuile
+    getAdjacence(Tuile t) : Set<Tuile>
+}
+
+
+Interface Terrain {
+    getModificateurCombat() : int
+    getModificateurDeplacement() : int
+    getImage() : 
+    getNature() : int
+}
+
+class Ville {
+    nom : string
+    joueur : Joueur
+    nbHabitant : int
+    getNom() : string
+    getNbHabitant() : int
+    getCroissance() : int
+    getPV() : int
+    evoluer() : void
+}
+
+struct Production {
+    materiel : int
+    science : int
+    culture : int
+    foi : int
+    nourriture : int
+    or : int
+
+    <u> add(Production p1, Production p2) : Production </u>
+}
+
+Interface ConstructionDeVille {
+    getCout() : int
+}
+
+Interface Contenu {
+    getModificateurCombat() : int
+    getModificateurDeplacement() : int
+}
+
+
+Interface Quartier
+
+
+Interface Amenagement {
+    getNombreDeTour() : int
+    getConstructionPossibleSur() : []Terrain
+}
+
+Interface Caracteristique
+
+
+Abstract class Personnage {
+    nom : String
+    getBonus()
+    getNom() : String
+}
+
+
+Class Joueur {
+    nom : string
+    personnage : Personnage
+    getProduction() : production
+    getNom() : String
+    getPersonnage() : Personnage
+}
+
+Class ArbreTechnologique
+
+Abstract Class Technologie {
+    nom : string
+    getCout() : int
+    action() : void
+}
+
+
+Unite ..> Tuile : getPosition() 
+
+Tuile *--> Terrain : getTerrain()
+Tuile *--> Contenu : getContenu()
+Tuile o-- Unite
+
+Contenu <|-- Quartier
+Contenu <|-- Amenagement
+Contenu <|-- Caracteristique
+Contenu ..> Production : getProduction()
+
+Terrain ..> Production : getProduction()
+
+Ville "[0,1]" o-->"*" Tuile
+Ville ..> ConstructionDeVille : getContruction()
+Ville ..> Production : getProduction()
+
+ConstructionDeVille <|-- Quartier
+ConstructionDeVille <|-- Unite
+
+Joueur *-- "*" Ville : getJoueur()
+Joueur *-- Personnage
+Joueur *-- ArbreTechnologique
+Joueur ..> Technologie : getRecherche()
+
+ArbreTechnologique *-- "[]" Technologie
+
+Map *--> "[]" Tuile
+
+@enduml

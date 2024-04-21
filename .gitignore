@@ -1,0 +1,6 @@
+.class
+tmp
+
+# Ignore jetbrain IDE files edition
+.idea
+
