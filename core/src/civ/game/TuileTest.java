@@ -26,7 +26,6 @@ class TuileTest {
 
     @BeforeEach
     void setUp() {
-        // Tuile simple
         bois = new Bois();
         base = new Base();
         foret = new ForetTropicale();

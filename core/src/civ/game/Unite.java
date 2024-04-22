@@ -18,14 +18,14 @@ public abstract class Unite implements ConstructionDeVille{
     protected Joueur proprietaire;
     /** La tuile sur laquelle se trouve l'unite */
     protected Tuile position;
-    /** Le nombre de pv actuel de l'unité */
+    /** Le nombre de points de vie actuel de l'unité */
     protected int pv = 100;
     /** Le nombre de point de mouvement restant a l'unité */
     protected int pm;
-    /** indicateur permettant de savoir si l'unité s'est deja deplacer dans le tour */
+    /** indicateur permettant de savoir si l'unité s'est deja deplacée dans le tour */
     protected boolean indicateurDeplacement = false;
     protected int experience;
-    /** La quantité de tuile que peut parcoourir une unité en un tour */
+    /** La quantité de tuile que peut parcourir une unité en un tour */
     protected final int PORTEE_DEPLACEMENT;
     /** le cout en materiel pour produire l'unité */
     protected final int COUT;
@@ -46,8 +46,10 @@ public abstract class Unite implements ConstructionDeVille{
         this.COUT = cout;
         this.position.setOccupant(this);
         this.pm = this.PORTEE_DEPLACEMENT;
+        this.experience = 0;
     }
 
+    // Getters
     /**
      * Permet d'obtenir le nom de l'unité.
     * @return le nom de l'unité.
@@ -88,9 +90,25 @@ public abstract class Unite implements ConstructionDeVille{
     public int getPV() {
         return this.pv;
     }
- 
- 
 
+    /**
+     * Permet d'obtenir les points de pm de l'unité.
+     * @return les pm restants de l'unité.
+     */
+    public int getPm() {
+        return this.pm;
+    }
+
+    /**
+     * Permet d'obtenir l'indicateur de déplacement de l'unité.
+     * @return l'indicateur de déplacement de l'unité.
+     */
+    public boolean getIndicateurDeplacement() {
+        return this.indicateurDeplacement;
+    }
+
+
+    //Méthodes
     /**
     * methode de deplacement de l'unité sur une tuile
     * Pre : destination in getDeplacementPossible()
@@ -164,7 +182,7 @@ public abstract class Unite implements ConstructionDeVille{
  
  
     /** 
-     * Permet de condenser toute les actions de debut de tour de l'unité
+     * Permet de condenser toutes les actions de debut de tour de l'unité.
     */
     public void debutTour() {
         this.pm = this.PORTEE_DEPLACEMENT;
