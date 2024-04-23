@@ -1,13 +1,16 @@
-package civ.game.tuile;
+package game.tuile;
 
 import java.util.List;
-
-import civ.game.Production;
-import civ.game.tuile.contenu.Caracteristique;
-import civ.game.tuile.terrain.Nature;
+import game.Production;
+import game.tuile.contenu.Caracteristique;
 
 public interface Terrain{
-        /**
+
+    public enum Nature {
+        TERRESTRE, MARITIME, INFRANCHISSABLE
+    }
+
+    /**
      * permet d'obtenir comment la tuile influe sur la puissance de l'unité qui s'y trouve.
      * @return le modificateur de puissance
      */
@@ -25,8 +28,9 @@ public interface Terrain{
      */
     Nature getNature();
 
-    /** 
+    /**
      * Permet d'obtenir la production du terrain.
+     *
      * @return Un objet Production resumant la production du terrain.
      */
     Production getProduction();

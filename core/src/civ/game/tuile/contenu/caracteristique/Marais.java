@@ -1,7 +1,7 @@
-package civ.game.tuile.contenu.caracteristique;
+package game.tuile.contenu.caracteristique;
 
-import civ.game.Production;
-import civ.game.tuile.contenu.Caracteristique;
+import game.tuile.contenu.Caracteristique;
+import game.Production;
 
 public class Marais implements Caracteristique{
     

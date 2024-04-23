@@ -1,4 +1,4 @@
-package civ.game;
+package game;
 
 import java.util.*;
 

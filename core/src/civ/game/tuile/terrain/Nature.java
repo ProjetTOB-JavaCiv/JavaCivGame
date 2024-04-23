@@ -1,4 +1,4 @@
-package civ.game.tuile.terrain;
+package game.tuile.terrain;
 
 
 /**

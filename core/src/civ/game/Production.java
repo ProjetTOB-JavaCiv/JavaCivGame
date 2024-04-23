@@ -1,4 +1,4 @@
-package civ.game;
+package game;
 
 /**
  * Classe Production permettant de structurer la facon de recuperer la production
