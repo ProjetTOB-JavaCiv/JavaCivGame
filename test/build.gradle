@@ -1,0 +1,19 @@
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    sourceSets.test.java.srcDirs = [ "src/" ]
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    
+    maxHeapSize = '1G'
+
+    testLogging {
+        events "failed", "passed", "skipped", "standardError","standardOut", "started"
+    }
+}
+
+eclipse.project.name = appName + "-test"
