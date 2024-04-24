@@ -66,6 +66,5 @@ project(":test") {
         implementation project(":core")
         implementation "org.junit.jupiter:junit-jupiter:$junitVersion"
         testImplementation "org.junit.jupiter:junit-jupiter:$junitVersion"
-        testRuntimeOnly "org.junit.platform:junit-platform-launcher"
     }
 }
