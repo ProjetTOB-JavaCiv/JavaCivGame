@@ -2,6 +2,9 @@ package com.javaciv.server;
 
 import java.util.Set;
 
+/** Interface définisant ce qu'est une unité.
+ *  Interface qui va être implémenté par les classe "Military" et "Civilian"
+ */
 public interface Unite {
 
     /** Le nom de l'unité */
