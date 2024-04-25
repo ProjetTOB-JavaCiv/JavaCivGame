@@ -1,7 +1,7 @@
 package com.javaciv.type;
 
 public enum MilitaryUniteType {
-    LANCIER(0), CHEVALIER(1), ARCHER(2), CATAPULTE(i:3);
+    LANCIER(0), CHEVALIER(1), ARCHER(2), CATAPULTE(3);
 
     int typeId = 0;
 

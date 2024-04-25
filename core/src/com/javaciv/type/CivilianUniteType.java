@@ -1,7 +1,7 @@
 package com.javaciv.type;
 
 public enum CivilianUniteType {
-    OUVRIER(0), COLON(1)
+    OUVRIER(0), COLON(1);
 
     int typeId = 0;
 
