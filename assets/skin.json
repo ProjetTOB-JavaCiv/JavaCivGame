@@ -1,0 +1,29 @@
+{
+	com.badlogic.gdx.graphics.g2d.BitmapFont: { 
+		default: { file: "arial.fnt" }
+	},
+	com.badlogic.gdx.graphics.Color: {
+		white: { r: 1, g: 1, b: 1, a: 1 },
+		blue1: { r: 0.24, g: 0.38, b: 1, a: 1 },
+		blue2: { r: 0.14, g: 0.28, b: 1, a: 1 }
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+		buttonUp: { name: rect, color: blue1 }
+		buttonDown: { name: rect, color: blue2 }
+		window: { name: rect, color: white }
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+		default: {
+			font: default,
+			fontColor: white,
+			up: buttonUp,
+			down : buttonDown
+		}
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
+		default: {
+			titleFont: default,
+			background: window
+		}
+	}
+}

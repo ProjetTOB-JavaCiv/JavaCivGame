@@ -6,7 +6,7 @@ public class Server implements Actor {
     private WorldMap worldMap;
 
     public Server() {
-        this.worldMap = new WorldMap(300, 300);
+        this.worldMap = new WorldMap(100, 100);
     }
 
     public WorldMap getWorldMap() {

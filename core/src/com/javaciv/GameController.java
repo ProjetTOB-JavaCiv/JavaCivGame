@@ -7,24 +7,16 @@ import com.javaciv.client.Client;
 import com.javaciv.client.ClientController;
 import com.javaciv.client.ClientView;
 
-public class JavaCiv extends Game {
+public class GameController extends Game {
 	
 	private Client client;
 	private ClientController controller;
 	private ClientView view;
 
-	private SpriteBatch tileBatch;
-	private Texture[] tileTextures;
-
-    private int renderDistance = 40;
-    private int zoom = 5;
-    private int moveSpeed = 2000;
-
-	public JavaCiv(Client client) {
+	public GameController(Client client) {
 
 		this.client = client;
 		this.controller = new ClientController(client);
-		//this.view = ;
 	}
 
 	public Client getClient() {
@@ -36,8 +28,7 @@ public class JavaCiv extends Game {
 	 */
 	@Override
 	public void create() {
-		this.tileBatch = new SpriteBatch();
-		this.setScreen(new ClientView(controller, client.getWorldMap(), this.tileBatch, tileTextures, renderDistance, zoom, moveSpeed));
+		this.setScreen(new ClientView(controller, client.getWorldMap()));
 	}
 
 	/**
