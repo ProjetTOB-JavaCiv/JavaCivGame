@@ -19,6 +19,26 @@ public class Tile {
      * Le type de terrain de la tuile.
     */
     private Terrain terrain;
+    /** 
+     * L'unité militaire étant sur la case
+     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+    */
+    private Military miliratyOnTile;
+    /**
+     * L'unité civile étant sur la case
+     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+    */
+    private Civilian civilianOnTile;
+
+    /**
+     * Booléen qui décrit si une tuille est occupé par une unité militaire
+     */
+    private boolean isMilitaryUnitOnTile = false;
+
+    /**
+     * Booléen qui décrit si une tuille est occupé par une unité civile
+     */
+    private boolean isCivilianUnitOnTile = false;
 
     /**
      * Constructeur d'une tuile.
@@ -58,5 +78,54 @@ public class Tile {
 
     public void print() {
         System.out.print("[" + this.x + "," + this.y + "|" + this.terrain.toInt() + "]");
+    }
+
+    /**
+     * Permet d'obtenir l'unite civile qui est sur la tuile
+     * @return l'unite civile qui est sur la tuile
+     */
+    public Civilian getCivilianOnTile() {
+        return this.civilianOnTile;
+    }
+
+    /**
+     * Permet d'obtenir l'unite militaire qui est sur la tuile
+     * @return l'unite militaire qui est sur la tuile
+     */
+    public Military getMiliratyOnTile() {
+        return this.miliratyOnTile;
+    }
+
+    /**
+     * Permet de savoir si une unité civile est sur la tuile
+     * @return boolean indiquant si une unité civile est sur la tuile
+     */
+    public boolean getIsCivilianUnitOnTile() {
+        return this.isCivilianUnitOnTile;
+    }
+
+    /**
+     * Permet de savoir si une unité militaire est sur la tuile
+     * @return boolean indiquant si une unité militaire est sur la tuile
+     */
+    public boolean getIsMilitaryUnitOnTile() {
+        return this.isMilitaryUnitOnTile;
+    }
+
+    /**
+     * Set une unité militaire sur la tuille
+     * @param unit Unité militaire
+     */
+    public void setMilitaryUnitOnTile(Military unit) {
+        this.isMilitaryUnitOnTile = true;
+        this.miliratyOnTile = unit;
+    }
+    /**
+     * Set une unité civile sur la tuille
+     * @param unit Unité civile
+     */
+    public void setCivilianUnitOnTile(Civilian unit) {
+        this.isCivilianUnitOnTile = true;
+        this.civilianOnTile = unit;
     }
 }
