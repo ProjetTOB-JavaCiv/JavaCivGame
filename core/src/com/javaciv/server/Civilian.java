@@ -54,4 +54,24 @@ public class Civilian implements Unite {
     public Set<Tile> getPossibleMovement(WorldMap map) {
         return null;
     }
+
+    public String getNom() {
+        return this.name;
+    }
+
+    public Tile getPosition() {
+        return this.position;
+    }
+
+    public int getActionPoint() {
+        return this.actionPoint;
+    }
+
+    public int getBaseActionPoint() {
+        return this.BASE_ACTION_POINT;
+    }
+
+    public int getCost() {
+        return this.PRODUCTION_COST;
+    }
 }

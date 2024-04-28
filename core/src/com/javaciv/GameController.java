@@ -1,8 +1,7 @@
 package com.javaciv;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import com.javaciv.client.Client;
 import com.javaciv.client.ClientController;
 import com.javaciv.client.ClientView;

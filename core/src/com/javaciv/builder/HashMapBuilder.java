@@ -1,3 +1,4 @@
+package com.javaciv.builder;
 import java.util.HashMap;
 
 import com.javaciv.server.Civilian;
