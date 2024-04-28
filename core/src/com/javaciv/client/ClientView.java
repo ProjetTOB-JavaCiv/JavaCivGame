@@ -90,11 +90,11 @@ public class ClientView implements Screen {
 
 
         this.menuButtons = new Actor[] {
-            new TextButton("1", this.skin, "default"),
-            new TextButton("2", this.skin, "default"),
-            new TextButton("3", this.skin, "default"),
-            new TextButton("4", this.skin, "default"),
-            new TextButton("5", this.skin, "default")
+            new TextButton("Bouton 1", this.skin, "default"),
+            new TextButton("Bouton 2", this.skin, "default"),
+            new TextButton("Bouton 3", this.skin, "default"),
+            new TextButton("Bouton 4", this.skin, "default"),
+            new TextButton("Bouton 5", this.skin, "default")
         };
 
         this.coordinates = new Label("[x, y]", this.skin, "default");
@@ -147,7 +147,7 @@ public class ClientView implements Screen {
             this.tileMenu.add(button).padTop(2*padding).width(160);
         }
         this.tileMenu.right().top();
-        //this.tileMenu.setVisible(false);
+        this.tileMenu.setVisible(false);
 
         //this.tileMenu.setDebug(true);
 

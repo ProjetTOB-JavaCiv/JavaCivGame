@@ -11,9 +11,9 @@ public class ClientController implements InputProcessor {
 
     private Vector2 movement = new Vector2(0, 0);
 
-    private float zoom = 0;
+    private float zoom = 1.0f;
 
-    private boolean displayTileMenu = false;
+    private boolean displayTileMenu = true;
 
     private Vector2 coordinates = new Vector2(0, 0);
 
