@@ -1,4 +1,7 @@
-package com.javaciv.server;
+package com.javaciv.server.unite;
+
+import com.javaciv.server.Tile;
+import com.javaciv.server.WorldMap;
 
 import java.util.Set;
 
@@ -66,10 +69,4 @@ public interface Unite {
      * @return les deplacements possible a partir d'une tuile et d'un certain nombre de point de mouvement
      */
     Set<Tile> calculMovement(WorldMap map, Tile currentTile, int remaningActionPoint, boolean iDeplacement);
-
-    /**
-     * Permet d'obtenir les informations géographique du terrain sur lequel cette unité peut se deplacer
-     * @return la nature du terrain sur lequel cette unité peut se deplacer
-     */
-    abstract public Tile getNatureDeplacement();
 }
