@@ -5,7 +5,8 @@
 	com.badlogic.gdx.graphics.Color: {
 		white: { r: 1, g: 1, b: 1, a: 1 },
 		blue1: { r: 0.24, g: 0.38, b: 1, a: 1 },
-		blue2: { r: 0.14, g: 0.28, b: 1, a: 1 }
+		blue2: { r: 0.14, g: 0.28, b: 1, a: 1 },
+		black: { r: 0, g: 0, b: 0, a: 1 }
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
 		buttonUp: { name: rect, color: blue1 }
@@ -18,6 +19,12 @@
 			fontColor: white,
 			up: buttonUp,
 			down : buttonDown
+		}
+	},
+	com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+		default: {
+			font: default,
+			fontColor: black
 		}
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {

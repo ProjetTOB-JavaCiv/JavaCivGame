@@ -13,8 +13,46 @@ public class ClientController implements InputProcessor {
 
     private float zoom = 0;
 
+    private boolean displayTileMenu = false;
+
+    private Vector2 coordinates = new Vector2(0, 0);
+
+    private void move(Vector2 movement) {
+        Vector2 newMovement = new Vector2(0, 0);
+
+        newMovement.x = this.getMovement().x + movement.x;
+        newMovement.y = this.getMovement().y + movement.y;
+
+        this.movement = newMovement.nor();
+    }
+
+    private void stop(Vector2 movement) {
+        Vector2 newMovement = new Vector2(0, 0);
+
+        newMovement.x = this.getMovement().x - movement.x * Math.abs(this.getMovement().x);
+        newMovement.y = this.getMovement().y - movement.y * Math.abs(this.getMovement().y);
+
+        this.movement = newMovement.nor();
+    }
+
     public ClientController(Client client) {
         this.client = client;
+    }
+
+    public float getZoom() {
+        return this.zoom;
+    }
+
+    public Vector2 getMovement() {
+        return this.movement;
+    }
+
+    public boolean getDisplayTileMenu() {
+        return this.displayTileMenu;
+    }
+
+    public Vector2 getClickCoordinates() {
+        return this.coordinates;
     }
 
     public boolean keyDown(int keycode) {
@@ -71,38 +109,14 @@ public class ClientController implements InputProcessor {
         return false;
     }
 
-    public float getZoom() {
-        return this.zoom;
-    }
-
-    public Vector2 getMovement() {
-        return this.movement;
-    }
-
-    public void move(Vector2 movement) {
-        Vector2 newMovement = new Vector2(0, 0);
-
-        newMovement.x = this.getMovement().x + movement.x;
-        newMovement.y = this.getMovement().y + movement.y;
-
-        this.movement = newMovement.nor();
-    }
-
-    public void stop(Vector2 movement) {
-        Vector2 newMovement = new Vector2(0, 0);
-
-        newMovement.x = this.getMovement().x - movement.x * Math.abs(this.getMovement().x);
-        newMovement.y = this.getMovement().y - movement.y * Math.abs(this.getMovement().y);
-
-        this.movement = newMovement.nor();
-    }
-
     public boolean keyTyped (char character) {
         return false;
     }
 
     public boolean touchDown (int x, int y, int pointer, int button) {
         System.out.println("Touch down at (" + x + ", " + y + ")");
+        displayTileMenu = true;
+        this.coordinates = new Vector2(x, y);
         return false;
     }
 
@@ -121,8 +135,6 @@ public class ClientController implements InputProcessor {
     public boolean mouseMoved (int x, int y) {
         return false;
     }
-
-    private float lastZoom;
 
     public boolean scrolled (float amountX, float amountY) {
         if (amountY > 0.7 && amountY < 14) {

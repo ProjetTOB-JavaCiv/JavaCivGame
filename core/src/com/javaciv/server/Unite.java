@@ -10,7 +10,7 @@ public interface Unite {
     /**
      * Le nom de l'unité
      */
-    String getNom();
+    //String getNom();
 
     /**
      * Le joueur possedant l'unité
@@ -20,27 +20,27 @@ public interface Unite {
     /**
      * La tuile sur laquelle se trouve l'unite
      */
-    Tile getPosition();
+    //Tile getPosition();
 
     /**
      * Le nombre de points de vie actuel de l'unité
      */
-    int getPV();
+    //int getPV();
 
     /**
      * Le nombre de point de mouvement restant a l'unité
      */
-    int getActionPoint();
+    //int getActionPoint();
 
     /**
      * La quantité de tuile que peut parcourir une unité en un tour
      */
-    int getRange();
+    //int getRange();
     
     /**
      * le cout en materiel pour produire l'unité
      */
-    int getCost();
+    //int getCost();
 
     /**
      * methode de deplacement de l'unité sur une tuile

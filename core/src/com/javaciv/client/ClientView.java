@@ -9,17 +9,21 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -28,6 +32,11 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+
+import java.util.Arrays;
+
 import com.javaciv.server.WorldMap;
 
 public class ClientView implements Screen {
@@ -55,8 +64,14 @@ public class ClientView implements Screen {
 
     private Skin skin;
     private Table menuBar;
+    private Table tileMenu;
 
-    private TextButton[] menuButtons;
+    private Actor[] menuButtons;
+    private Actor[] tileMenuButtons;
+
+    private Label coordinates;
+
+    private TextureRegionDrawable backgroundTexture;
 
     public ClientView(ClientController controller, WorldMap map) {
         loadConfiguration("config.txt");
@@ -74,7 +89,7 @@ public class ClientView implements Screen {
 
 
 
-        this.menuButtons = new TextButton[] {
+        this.menuButtons = new Actor[] {
             new TextButton("1", this.skin, "default"),
             new TextButton("2", this.skin, "default"),
             new TextButton("3", this.skin, "default"),
@@ -82,32 +97,63 @@ public class ClientView implements Screen {
             new TextButton("5", this.skin, "default")
         };
 
+        this.coordinates = new Label("[x, y]", this.skin, "default");
+        this.coordinates.setAlignment(Align.center);
+
+        this.tileMenuButtons = new Actor[] {
+            this.coordinates,
+            new TextButton("Action 1", this.skin, "default"),
+            new TextButton("Action 2", this.skin, "default")
+        };
+
         int padding = 10;
 
+        Pixmap background = new Pixmap(1,1,Pixmap.Format.LuminanceAlpha);
+        background.setColor(new Color(1, 1, 1, 0.5f));
+        background.fill();
+        this.backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
+
+        // Menu bar
         this.menuBar = new Table();
+        this.menuBar.setBackground(this.backgroundTexture);
         this.menuBar.setBounds(
             0,
             Gdx.graphics.getHeight() - this.menuButtons[0].getHeight() - 2 * padding,
             Gdx.graphics.getWidth(),
             this.menuButtons[0].getHeight() + 2 * padding
         );
-        this.menuBar.defaults().padRight(0);
-
-        for(TextButton button : this.menuButtons) {
+        this.menuBar.defaults().padRight(0).padTop(padding);
+        for(Actor button : this.menuButtons) {
             this.menuBar.add(button).padLeft(padding).padTop(padding).width(188);
         }
-
         this.menuBar.left().top();
 
         //this.menuBar.setDebug(true);
 
+        // Tile menu
+        this.tileMenu = new Table();
+        this.tileMenu.setBackground(this.backgroundTexture);
+        this.tileMenu.setBounds(
+            Gdx.graphics.getWidth() - 160 - padding,
+            0,
+            160 + 3*padding,
+            3 * (this.tileMenuButtons[0].getHeight() + 2*padding)
+        );
+        this.tileMenu.defaults().padTop(0).padRight(2*padding).fillX().center();
+        this.tileMenu.row();
+        this.tileMenu.add(this.tileMenuButtons[0]).padTop(padding);
+        for(Actor button : Arrays.copyOfRange(this.tileMenuButtons, 1, this.tileMenuButtons.length)) {
+            this.tileMenu.row();
+            this.tileMenu.add(button).padTop(2*padding).width(160);
+        }
+        this.tileMenu.right().top();
+        //this.tileMenu.setVisible(false);
+
+        //this.tileMenu.setDebug(true);
+
         this.mapStage = new Stage(new ScreenViewport());
         this.menuStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
-        //this.camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        //this.camera.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
-
-        //this.camera = new OrthographicCamera();
         this.camera = (OrthographicCamera) this.mapStage.getViewport().getCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.update();
@@ -141,6 +187,20 @@ public class ClientView implements Screen {
         this.camera.position.y = Math.max(this.camera.position.y, this.camera.zoom * Gdx.graphics.getHeight() / 2);
         this.camera.position.y = Math.min(this.camera.position.y, this.camera.zoom * (map.getHeight() * this.tileSize - Gdx.graphics.getHeight() / 2));        
 
+        this.coordinates.setText(
+            "["
+            + (int) (
+                (this.controller.getClickCoordinates().x * this.camera.zoom +
+                this.camera.position.x - (this.camera.zoom * Gdx.graphics.getWidth() / 2)
+                ) / this.tileSize)
+            + ", "
+            + (int) (
+                (this.camera.position.y + (this.camera.zoom * Gdx.graphics.getHeight() / 2) -
+                this.controller.getClickCoordinates().y * this.camera.zoom
+                ) / this.tileSize)
+            + "]"
+        );
+
         Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -154,6 +214,12 @@ public class ClientView implements Screen {
 
         // Render Menu
         this.menuStage.addActor(this.menuBar);
+        if (this.controller.getDisplayTileMenu()) {
+            this.tileMenu.setVisible(true);
+        } else {
+            this.tileMenu.setVisible(false);
+        }
+        this.menuStage.addActor(this.tileMenu);
 
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
