@@ -2,6 +2,8 @@ package com.javaciv.server;
 
 import java.util.Set;
 
+import com.javaciv.server.Unite;
+
 /**
  * Classe représentant une unité militaire, cette classe est une implémentation
  * de la classe Unité,

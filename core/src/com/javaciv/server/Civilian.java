@@ -2,6 +2,8 @@ package com.javaciv.server;
 
 import java.util.Set;
 
+import com.javaciv.server.Unite;
+
 /**
  * 
  */
