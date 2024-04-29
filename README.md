@@ -38,6 +38,14 @@ Pour générer la documentation du projet dans le dossier `./doc` on peut utilis
 ./gradlew doc
 ```
 
+### UML
+
+Pour générer un diagramme UML du projet dans le dossier `./uml` on peut utiliser la commande :
+
+```bash
+./gradlew generateClassDiagrams
+```
+
 ## Architecture
 
 Ce projet est basé sur une architecture Client-Serveur et utilise les design patterns Proxy et ModelViewControler.

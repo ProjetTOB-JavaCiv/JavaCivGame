@@ -7,3 +7,11 @@ java {
 
     eclipse.project.name = appName + "-core"
 }
+
+classDiagrams {
+    diagram {
+        name "JavaCiv Class Diagram"
+        include classes().insideOfProject()
+        writeTo file('../uml/javaciv.puml')
+    }
+}
