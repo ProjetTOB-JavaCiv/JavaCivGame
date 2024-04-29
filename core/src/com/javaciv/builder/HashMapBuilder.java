@@ -1,10 +1,12 @@
 package com.javaciv.builder;
 import java.util.HashMap;
 
-import com.javaciv.server.Civilian;
-import com.javaciv.server.Military;
 import com.javaciv.type.CivilianUniteType;
 import com.javaciv.type.MilitaryUniteType;
+
+import gameElement.Civilian;
+import gameElement.Military;
+import gameElement.Player;
 
 /**
  * Classe permettant de construire une hashmap contenant l'ensemble des unités militaires
@@ -12,12 +14,18 @@ import com.javaciv.type.MilitaryUniteType;
  */
 public class HashMapBuilder {
 
+    /** Objet étant un joueur non défini, ainsi on construit la hashmap selon un player
+     * non défini.
+     */
+    static Player undefinedPlayer = new Player("undefined");
+
     static HashMap<MilitaryUniteType, Military> buildHashMapMilitary() {
         HashMap<MilitaryUniteType, Military> map = new HashMap<MilitaryUniteType, Military>();
 
         //Ajout de l'ensemble des unités à la hashmap
         map.put(MilitaryUniteType.LANCIER, new Military(
             "Lancier",
+            undefinedPlayer,
             2,
             100,
             10,
@@ -27,6 +35,7 @@ public class HashMapBuilder {
 
         map.put(MilitaryUniteType.ARCHER, new Military(
             "Archer",
+            undefinedPlayer,
             2,
             140,
             15,
@@ -36,6 +45,7 @@ public class HashMapBuilder {
 
         map.put(MilitaryUniteType.CHEVALIER, new Military(
             "Chevalier",
+            undefinedPlayer,
             4,
             140,
             10,
@@ -52,12 +62,14 @@ public class HashMapBuilder {
         //Ajout de l'ensemble des unités à la hashmap
         map.put(CivilianUniteType.OUVRIER, new Civilian(
             "Ouvrier",
+            undefinedPlayer,
             2,
             100
         ));
 
         map.put(CivilianUniteType.COLON, new Civilian(
             "Colon",
+            undefinedPlayer,
             2,
             250
         ));

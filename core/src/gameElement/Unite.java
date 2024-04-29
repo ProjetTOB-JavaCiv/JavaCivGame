@@ -1,6 +1,9 @@
-package com.javaciv.server;
+package gameElement;
 
 import java.util.Set;
+
+import com.javaciv.server.Tile;
+import com.javaciv.server.WorldMap;
 
 /** Interface définisant ce qu'est une unité.
  *  Interface qui va être implémenté par les classe "Military" et "Civilian"

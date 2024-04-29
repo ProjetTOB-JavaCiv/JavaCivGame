@@ -1,8 +1,10 @@
-package com.javaciv.server;
+package gameElement;
 
 import java.util.Set;
 
-import com.javaciv.server.Unite;
+import com.javaciv.server.Terrain;
+import com.javaciv.server.Tile;
+import com.javaciv.server.WorldMap;
 
 /**
  * 
@@ -12,7 +14,7 @@ public class Civilian implements Unite {
     /** Le nom de l'unité */
     String name;
     /** Le joueur possedant l'unité */
-    //Player owner;
+    Player owner;
     /** La tuile sur laquelle se trouve l'unite */
     Tile position;
     /** Le nombre de point de mouvement restant a l'unité */
@@ -24,10 +26,10 @@ public class Civilian implements Unite {
     /** le cout en materiel pour produire l'unité */
     final int PRODUCTION_COST;
 
-    public Civilian(String namen, int BASE_ACTION_POINT, int PRODUCTION_COST) {
+    public Civilian(String name, Player owner, int BASE_ACTION_POINT, int PRODUCTION_COST) {
         this.name = name;
         this.position = new Tile(0, 0, Terrain.TERRESTRE);
-        //this.owner = owner;
+        this.owner = owner;
         this.BASE_ACTION_POINT = BASE_ACTION_POINT;
         this.PRODUCTION_COST = PRODUCTION_COST;
         this.position.setCivilianUnitOnTile(this);
@@ -55,22 +57,34 @@ public class Civilian implements Unite {
         return null;
     }
 
+    /**
+     * Renvoie le nom de l'unité
+     * @return le nom de l'unité
+     */
     public String getNom() {
         return this.name;
     }
 
+    /** Retourne le joueur qui possède l'unité*/
+    public Player getOwner() {
+        return this.owner;
+    }
+    /** Renvoie la tuile sur laquelle se trouve l'unite */
     public Tile getPosition() {
         return this.position;
     }
 
+    /** Renvoie le nombre de points d'action restant a l'unité */
     public int getActionPoint() {
         return this.actionPoint;
     }
 
+    /** Renvoie le nombre de point d'action initiale de l'unité */
     public int getBaseActionPoint() {
         return this.BASE_ACTION_POINT;
     }
 
+    /** Renvoie le cout en production pour produire l'unité */
     public int getCost() {
         return this.PRODUCTION_COST;
     }

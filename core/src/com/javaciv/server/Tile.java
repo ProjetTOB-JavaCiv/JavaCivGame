@@ -1,5 +1,8 @@
 package com.javaciv.server;
 
+import gameElement.Civilian;
+import gameElement.Military;
+
 /**
  * Cette classe représente une tuile.
  * Une tuile correspond à une case de la carte du monde,

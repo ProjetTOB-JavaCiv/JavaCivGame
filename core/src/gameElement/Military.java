@@ -1,8 +1,10 @@
-package com.javaciv.server;
+package gameElement;
 
 import java.util.Set;
 
-import com.javaciv.server.Unite;
+import com.javaciv.server.Terrain;
+import com.javaciv.server.Tile;
+import com.javaciv.server.WorldMap;
 
 /**
  * Classe représentant une unité militaire, cette classe est une implémentation
@@ -15,7 +17,7 @@ public class Military implements Unite {
     /** Le nom de l'unité */
     String name;
     /** Le joueur possedant l'unité */
-    //Player owner;
+    Player owner;
     /** La tuile sur laquelle se trouve l'unite */
     Tile position;
     /** Le nombre de points de vie actuel de l'unité */
@@ -34,10 +36,10 @@ public class Military implements Unite {
     final int PRODUCTION_COST;
     
     //TODO: Finir le constructeur -> Problème de paramètre trop nombreux.
-    public Military(String name, int BASE_ACTION_POINT, int PRODUCTION_COST, int attack, int pv, int defense) {
+    public Military(String name, Player owner, int BASE_ACTION_POINT, int PRODUCTION_COST, int attack, int pv, int defense) {
         this.name = name;
         this.position = new Tile(0, 0, Terrain.TERRESTRE);
-        //this.owner = owner;
+        this.owner = owner;
         this.BASE_ACTION_POINT = BASE_ACTION_POINT;
         this.PRODUCTION_COST = PRODUCTION_COST;
         this.position.setMilitaryUnitOnTile(this);
@@ -66,23 +68,64 @@ public class Military implements Unite {
     public Set<Tile> getPossibleMovement(WorldMap map) {
         return null;
     }
-
+    /**
+     * Renvoie le nom de l'unité
+     * @return le nom de l'unité
+     */
     public String getNom() {
         return this.name;
     }
 
+    /** Retourne le joueur qui possède l'unité*/
+    public Player getOwner() {
+        return this.owner;
+    }
+
+    /**
+     * Renvoie la tuile sur laquelle se trouve l'unite
+     */
     public Tile getPosition() {
         return this.position;
     }
 
+    /**
+     * Renvoie le nombre de points d'attaque de l'unité
+     */
+    public int getAttack() {
+        return this.attack;
+    }
+
+    /**
+     * Retourne le nombre de points de vie actuel de l'unité
+     */
+    public int getPV() {
+        return this.pv;
+    }
+
+    /**
+     * Renvoie le nombre de points de défense de l'unité
+     */
+    public int getDefense() {
+        return this.defense;
+    }
+
+    /**
+     * Renvoie le nombre de points d'action restant a l'unité
+     */
     public int getActionPoint() {
         return this.actionPoint;
     }
 
+    /**
+     * Renvoie le nombre de point d'action initiale de l'unité
+     */
     public int getBaseActionPoint() {
         return this.BASE_ACTION_POINT;
     }
 
+    /**
+     * Renvoie le cout en production pour produire l'unité
+     */
     public int getCost() {
         return this.PRODUCTION_COST;
     }
