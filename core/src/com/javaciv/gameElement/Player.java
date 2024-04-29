@@ -45,45 +45,18 @@ public class Player {
         this.name = name;
     }
 
-    /** Méthode actualisant le nombre d'or du joueur produit en 1 tour
-     * (cf. updateCulturePointPerTurn() pour les détails)
-     */
-    private void updateGoldPointPerTurn() {
-        this.goldPointPerTurn = 0;
-        for (City city : this.cities) {
-            this.goldPointPerTurn += city.getGoldPerTurnProd();
-        }
-    }
-
     /** 
      * Méthode actualisant le nombre de point de culture du joueur produit en 1 tour.
      * Sachant que les villes produissent la culture, on fait la somme
      * de l'ensemble des production de culture des villes pour connaitre
      * la quantité de culture par tour d'une civilisation.
      */ 
-    private void updateCulturePointPerTurn() {
+    private void updatePointPerTurn() {
         this.culturePointPerTurn = 0;
         for (City city : this.cities) {
             this.culturePointPerTurn += city.getCulturePerTurnProd();
-        }
-    }
-
-    /** Méthode actualisant le nombre de point de science du joueur produit en 1 tour.
-     * (cf. updateCulturePointPerTurn() pour les détails)
-     */
-    private void updateSciencePointPerTurn() {
-        this.sciencePointPerTurn = 0;
-        for (City city : this.cities) {
             this.sciencePointPerTurn += city.getSciencePerTurnProd();
-        }
-    }
-
-    /** Méthode actualisant le nombre de point de foi du joueur produit en 1 tour.
-     * (cf. updateCulturePointPerTurn() pour les détails)
-     */
-    private void updateFaithPointPerTurn() {
-        this.faithPointPerTurn = 0;
-        for (City city : this.cities) {
+            this.goldPointPerTurn += city.getGoldPerTurnProd();
             this.faithPointPerTurn += city.getFaithPerTurnProd();
         }
     }
