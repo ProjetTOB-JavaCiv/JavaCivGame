@@ -63,7 +63,7 @@ public class City {
     //TODO : Ecrire les méthodes d'actualisation des ressources prod par tour en fonction des batiments et des tuilles
 
     /** Méthode actualisant la nourriture produit par une ville en rab */
-    private void setFoodProductedPerTurn() {
+    private void setFoodProducted() {
         this.producedFood += this.foodPerTurnProd - population;
     }
 
@@ -91,6 +91,11 @@ public class City {
             this.producedFood = 0;
         }
     }
+
+    private void setProducedCulture() {
+        this.producedCulture += this.culturePerTurnProd;
+    }
+
 
     public int getCulturePerTurnProd() {
         return this.culturePerTurnProd;
