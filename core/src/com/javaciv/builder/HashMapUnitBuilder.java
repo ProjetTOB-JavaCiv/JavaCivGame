@@ -4,8 +4,8 @@ import java.util.HashMap;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
 import com.javaciv.gameElement.Player;
-import com.javaciv.type.CivilianUniteType;
-import com.javaciv.type.MilitaryUniteType;
+import com.javaciv.type.UniteType;
+import com.javaciv.type.UniteType;
 
 /**
  * Classe permettant de construire une hashmap contenant l'ensemble des unités militaires
@@ -18,11 +18,11 @@ public class HashMapUnitBuilder {
      */
     static Player undefinedPlayer = new Player("undefined");
 
-    static HashMap<MilitaryUniteType, Military> buildHashMapMilitary() {
-        HashMap<MilitaryUniteType, Military> map = new HashMap<MilitaryUniteType, Military>();
+    static HashMap<UniteType, Military> buildHashMapMilitary() {
+        HashMap<UniteType, Military> map = new HashMap<UniteType, Military>();
 
         //Ajout de l'ensemble des unités à la hashmap
-        map.put(MilitaryUniteType.LANCIER, new Military(
+        map.put(UniteType.LANCIER, new Military(
             "Lancier",
             undefinedPlayer,
             2,
@@ -32,7 +32,7 @@ public class HashMapUnitBuilder {
             25
         ));
 
-        map.put(MilitaryUniteType.ARCHER, new Military(
+        map.put(UniteType.ARCHER, new Military(
             "Archer",
             undefinedPlayer,
             2,
@@ -42,7 +42,7 @@ public class HashMapUnitBuilder {
             10
         ));
 
-        map.put(MilitaryUniteType.CHEVALIER, new Military(
+        map.put(UniteType.CHEVALIER, new Military(
             "Chevalier",
             undefinedPlayer,
             4,
@@ -55,18 +55,18 @@ public class HashMapUnitBuilder {
         return map;
     }
 
-    static HashMap<CivilianUniteType, Civilian> buildHashMapCivilan() {
-        HashMap<CivilianUniteType, Civilian> map = new HashMap<CivilianUniteType, Civilian>();
+    static HashMap<UniteType, Civilian> buildHashMapCivilan() {
+        HashMap<UniteType, Civilian> map = new HashMap<UniteType, Civilian>();
 
         //Ajout de l'ensemble des unités à la hashmap
-        map.put(CivilianUniteType.OUVRIER, new Civilian(
+        map.put(UniteType.OUVRIER, new Civilian(
             "Ouvrier",
             undefinedPlayer,
             2,
             100
         ));
 
-        map.put(CivilianUniteType.COLON, new Civilian(
+        map.put(UniteType.COLON, new Civilian(
             "Colon",
             undefinedPlayer,
             2,
