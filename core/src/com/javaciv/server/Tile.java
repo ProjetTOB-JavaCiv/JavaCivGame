@@ -1,7 +1,7 @@
 package com.javaciv.server;
 
-import gameElement.Civilian;
-import gameElement.Military;
+import com.javaciv.gameElement.Civilian;
+import com.javaciv.gameElement.Military;
 
 /**
  * Cette classe représente une tuile.

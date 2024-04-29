@@ -1,4 +1,4 @@
-package gameElement;
+package com.javaciv.gameElement;
 
 import java.util.List;
 import java.util.ArrayList;
