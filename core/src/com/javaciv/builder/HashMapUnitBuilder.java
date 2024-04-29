@@ -1,18 +1,17 @@
 package com.javaciv.builder;
 import java.util.HashMap;
 
+import com.javaciv.gameElement.Civilian;
+import com.javaciv.gameElement.Military;
+import com.javaciv.gameElement.Player;
 import com.javaciv.type.CivilianUniteType;
 import com.javaciv.type.MilitaryUniteType;
-
-import gameElement.Civilian;
-import gameElement.Military;
-import gameElement.Player;
 
 /**
  * Classe permettant de construire une hashmap contenant l'ensemble des unités militaires
  * de l'application. 
  */
-public class HashMapBuilder {
+public class HashMapUnitBuilder {
 
     /** Objet étant un joueur non défini, ainsi on construit la hashmap selon un player
      * non défini.
