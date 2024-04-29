@@ -104,4 +104,8 @@ public class City {
         return this.faithPerTurnProd;
     }
 
+    public int getSciencePerTurnProd() {
+        return this.sciencePerTurnProd;
+    }
+
 }

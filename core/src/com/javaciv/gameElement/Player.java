@@ -13,14 +13,22 @@ public class Player {
     
     /** Nom de la civilisation */
     String name;
-    /** Nombre d'or de la civilisation */
-    int goldPoint;
+    /** Nombre d'or de la civilisation, on commence avec 10 golds */
+    int goldPoint = 10;
     /** Nombre de point de culture de la civilisation */
     int culturePoint = 0;
     /** Nombre de point de science de la civilisation */
     int sciencePoint = 0;
     /** Nombre de point de foi de la civilisation */
     int faithPoint = 0;
+    /** Nombre d'or produit par une civilisation en 1 tour */
+    int goldPointPerTurn;
+    /** Nombre de point de culture produit par une civilisation en 1 tour */
+    int culturePointPerTurn;
+    /** Nombre de point de science produit par une civilisation en 1 tour */
+    int sciencePointPerTurn;
+    /** Nombre de point de foi par une civilisation en 1 tour */
+    int faithPointPerTurn;
 
     /** Liste comprenant l'ensemble des villes d'un joueur */
     List<City> cities = new ArrayList<City>();
@@ -35,15 +43,50 @@ public class Player {
      */
     public Player(String name) {
         this.name = name;
-        this.goldPoint = 10;
+    }
+
+    /** Méthode actualisant le nombre d'or du joueur produit en 1 tour
+     * (cf. updateCulturePointPerTurn() pour les détails)
+     */
+    private void updateGoldPointPerTurn() {
+        this.goldPointPerTurn = 0;
+        for (City city : this.cities) {
+            this.goldPointPerTurn += city.getGoldPerTurnProd();
+        }
     }
 
     /** 
-     * Méthode actualisant le nombre de point de culture du joueur.
+     * Méthode actualisant le nombre de point de culture du joueur produit en 1 tour.
      * Sachant que les villes produissent la culture, on fait la somme
      * de l'ensemble des production de culture des villes pour connaitre
      * la quantité de culture par tour d'une civilisation.
      */ 
+    private void updateCulturePointPerTurn() {
+        this.culturePointPerTurn = 0;
+        for (City city : this.cities) {
+            this.culturePointPerTurn += city.getCulturePerTurnProd();
+        }
+    }
+
+    /** Méthode actualisant le nombre de point de science du joueur produit en 1 tour.
+     * (cf. updateCulturePointPerTurn() pour les détails)
+     */
+    private void updateSciencePointPerTurn() {
+        this.sciencePointPerTurn = 0;
+        for (City city : this.cities) {
+            this.sciencePointPerTurn += city.getSciencePerTurnProd();
+        }
+    }
+
+    /** Méthode actualisant le nombre de point de foi du joueur produit en 1 tour.
+     * (cf. updateCulturePointPerTurn() pour les détails)
+     */
+    private void updateFaithPointPerTurn() {
+        this.faithPointPerTurn = 0;
+        for (City city : this.cities) {
+            this.faithPointPerTurn += city.getFaithPerTurnProd();
+        }
+    }
 
     public String getName() {
         return this.name;
