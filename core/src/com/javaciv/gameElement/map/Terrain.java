@@ -1,4 +1,4 @@
-package com.javaciv.server;
+package com.javaciv.gameElement.map;
 
 /**
  * Cette énumération représente un type de terrain pour les tuiles
@@ -15,4 +15,5 @@ public enum Terrain {
     public int toInt() {
         return terrain;
     }
+
 }

@@ -5,7 +5,6 @@ import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
 import com.javaciv.gameElement.Player;
 import com.javaciv.type.UniteType;
-import com.javaciv.type.UniteType;
 
 /**
  * Classe permettant de construire une hashmap contenant l'ensemble des unités militaires
@@ -18,7 +17,7 @@ public class HashMapUnitBuilder {
      */
     static Player undefinedPlayer = new Player("undefined");
 
-    static HashMap<UniteType, Military> buildHashMapMilitary() {
+    public static HashMap<UniteType, Military> buildHashMapMilitary() {
         HashMap<UniteType, Military> map = new HashMap<UniteType, Military>();
 
         //Ajout de l'ensemble des unités à la hashmap
@@ -55,7 +54,7 @@ public class HashMapUnitBuilder {
         return map;
     }
 
-    static HashMap<UniteType, Civilian> buildHashMapCivilan() {
+    public static HashMap<UniteType, Civilian> buildHashMapCivilan() {
         HashMap<UniteType, Civilian> map = new HashMap<UniteType, Civilian>();
 
         //Ajout de l'ensemble des unités à la hashmap

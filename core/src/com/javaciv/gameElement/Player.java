@@ -52,7 +52,12 @@ public class Player {
      * la quantité de culture par tour d'une civilisation.
      */ 
     private void updatePointPerTurn() {
+        
         this.culturePointPerTurn = 0;
+        this.sciencePointPerTurn = 0;
+        this.goldPointPerTurn = 0;
+        this.faithPointPerTurn = 0;
+        
         for (City city : this.cities) {
             this.culturePointPerTurn += city.getCulturePerTurnProd();
             this.sciencePointPerTurn += city.getSciencePerTurnProd();

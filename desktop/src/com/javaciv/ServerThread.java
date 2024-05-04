@@ -1,7 +1,7 @@
 package com.javaciv;
 
 import com.javaciv.server.Server;
-import com.javaciv.server.WorldMap;
+import com.javaciv.gameElement.map.WorldMap;
 
 public class ServerThread extends Thread {
     private Server server;

@@ -1,4 +1,4 @@
-package com.javaciv.server;
+package com.javaciv.gameElement.map;
 
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;

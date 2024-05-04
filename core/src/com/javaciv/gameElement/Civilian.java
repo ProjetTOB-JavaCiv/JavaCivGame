@@ -2,9 +2,9 @@ package com.javaciv.gameElement;
 
 import java.util.Set;
 
-import com.javaciv.server.Terrain;
-import com.javaciv.server.Tile;
-import com.javaciv.server.WorldMap;
+import com.javaciv.gameElement.map.Terrain;
+import com.javaciv.gameElement.map.Tile;
+import com.javaciv.gameElement.map.WorldMap;
 
 /**
  * 

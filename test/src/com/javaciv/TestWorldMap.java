@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 
-import com.javaciv.server.WorldMap;
+import com.javaciv.gameElement.map.WorldMap;
 
 public class TestWorldMap {
     public WorldMap map;

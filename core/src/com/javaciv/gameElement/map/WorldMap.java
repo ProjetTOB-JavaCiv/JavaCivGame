@@ -1,4 +1,4 @@
-package com.javaciv.server;
+package com.javaciv.gameElement.map;
 
 import java.util.ArrayList;
 

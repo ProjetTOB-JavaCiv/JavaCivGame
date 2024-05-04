@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.javaciv.gameElement.map.WorldMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.files.FileHandle;
@@ -26,8 +27,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import java.util.Arrays;
-
-import com.javaciv.server.WorldMap;
 
 public class ClientView implements Screen {
     private ClientController controller;

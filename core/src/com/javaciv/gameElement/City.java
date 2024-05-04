@@ -2,7 +2,8 @@ package com.javaciv.gameElement;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.javaciv.server.Tile;
+
+import com.javaciv.gameElement.map.Tile;
 
 /**
  * Classe représentant une ville dans le jeu.

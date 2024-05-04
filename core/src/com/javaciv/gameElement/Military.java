@@ -2,9 +2,9 @@ package com.javaciv.gameElement;
 
 import java.util.Set;
 
-import com.javaciv.server.Terrain;
-import com.javaciv.server.Tile;
-import com.javaciv.server.WorldMap;
+import com.javaciv.gameElement.map.Terrain;
+import com.javaciv.gameElement.map.Tile;
+import com.javaciv.gameElement.map.WorldMap;
 
 /**
  * Classe représentant une unité militaire, cette classe est une implémentation
@@ -72,7 +72,7 @@ public class Military implements Unite {
      * Renvoie le nom de l'unité
      * @return le nom de l'unité
      */
-    public String getNom() {
+    public String getName() {
         return this.name;
     }
 
