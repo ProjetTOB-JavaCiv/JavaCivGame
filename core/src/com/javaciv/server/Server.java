@@ -1,9 +1,9 @@
 package com.javaciv.server;
 
-import com.javaciv.Actor;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.GameInterface;
 
-public class Server implements Actor {
+public class Server implements GameInterface {
     private WorldMap worldMap;
 
     public Server() {

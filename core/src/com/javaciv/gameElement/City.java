@@ -42,7 +42,7 @@ public class City {
     /** Culture produite par une ville depuis lfoodNeededForNewCitizenPlusa dernière extension de territoire */
     int producedCulture = 0;
     /** Nombre de point de culture nécessaire pour obtenir une nouvelle tuile */
-    int cultureNeededForNewTile = 50;    
+    int cultureNeededForNewTile = 50;
 
     //TODO : Ajouter des batiments.
     //Build infrastructure;

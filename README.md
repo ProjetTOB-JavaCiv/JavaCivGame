@@ -49,3 +49,5 @@ Pour générer un diagramme UML du projet dans le dossier `./uml` on peut utilis
 ## Architecture
 
 Ce projet est basé sur une architecture Client-Serveur et utilise les design patterns Proxy et ModelViewControler.
+
+Voici un diagramme de classe du projet :

@@ -13,5 +13,6 @@ classDiagrams {
         name "JavaCiv Class Diagram"
         include classes().insideOfProject()
         writeTo file('../uml/javaciv.puml')
+        renderTo file('../uml/javaciv.png')
     }
 }

@@ -26,8 +26,7 @@ public class Infrastructure {
      *
      *
     */
-    public void Batiment( int productionCost, int food, int culture,
-                          int faith, int science, int gold) {
+    public void Batiment( int productionCost, int food, int culture, int faith, int science, int gold) {
         this.productionCost = productionCost;
         this.food = food;
         this.culture = culture;
