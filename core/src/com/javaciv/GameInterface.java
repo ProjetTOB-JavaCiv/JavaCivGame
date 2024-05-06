@@ -1,6 +1,6 @@
 package com.javaciv;
 
-import com.javaciv.server.WorldMap;
+import com.javaciv.gameElement.map.WorldMap;
 
 /**
  * Cette interface représente un jeu
