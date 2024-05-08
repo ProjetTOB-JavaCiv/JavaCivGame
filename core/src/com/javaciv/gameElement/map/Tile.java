@@ -95,7 +95,7 @@ public class Tile {
      * Permet d'obtenir l'unite militaire qui est sur la tuile
      * @return l'unite militaire qui est sur la tuile
      */
-    public Military getMiliratyOnTile() {
+    public Military getMilitaryOnTile() {
         return this.miliratyOnTile;
     }
 
