@@ -16,7 +16,7 @@ import com.javaciv.gameElement.Player;
 public class TestUnite {
    
     // Declaration des variables utiles
-    Military lancier;
+    Military lancier, lancier2;
     Player player;
     HashMap<UniteType, Military> map;
     Tile tile;
