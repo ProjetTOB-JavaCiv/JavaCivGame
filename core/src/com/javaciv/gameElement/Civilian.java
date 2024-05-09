@@ -61,7 +61,7 @@ public class Civilian implements Unite {
      * Renvoie le nom de l'unité
      * @return le nom de l'unité
      */
-    public String getNom() {
+    public String getName() {
         return this.name;
     }
 
@@ -69,6 +69,7 @@ public class Civilian implements Unite {
     public Player getOwner() {
         return this.owner;
     }
+
     /** Renvoie la tuile sur laquelle se trouve l'unite */
     public Tile getPosition() {
         return this.position;
