@@ -16,7 +16,7 @@ public class Infrastructure {
     int gold;
 
 
-    /** Constructeur de la classe Batiment
+    /** Constructeur de la classe Infrastructure
      * @param productionCost : entier du cout nécessaire en production pour produire le batiment
      * @param food : entier du nombre de points de nourriture aporté par le batiment à une ville
      * @param culture  :  entier du nombre de points de culture aporté par le baitment à une ville
@@ -26,7 +26,7 @@ public class Infrastructure {
      *
      *
     */
-    public void Batiment( int productionCost, int food, int culture, int faith, int science, int gold) {
+    public Infrastructure( int productionCost, int food, int culture, int faith, int science, int gold) {
         this.productionCost = productionCost;
         this.food = food;
         this.culture = culture;
