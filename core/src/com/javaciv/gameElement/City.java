@@ -52,7 +52,7 @@ public class City {
 
     /**
      * Constructeur d'une ville
-     * @param position position de la ville
+     * @param cityPosition position de la ville
      */
     public City(Tile cityPosition) {
         this.position = cityPosition;
@@ -64,7 +64,7 @@ public class City {
     //TODO : Ecrire les méthodes d'actualisation des ressources prod par tour en fonction des batiments et des tuilles
 
     /** Méthode actualisant la nourriture produit par une ville en rab */
-    private void setFoodProducted() {
+    private void setFoodProduced() {
         this.producedFood += this.foodPerTurnProd - population;
     }
 
@@ -79,7 +79,7 @@ public class City {
     /** Méthode capable de change le nombre d'habitant d'une ville
      * en fonction de la quantité de nourriture disponible.
      */
-    private void refreshPopulation() {
+    public void refreshPopulation() {
         //cas où le rab de nourriture est suffisant pour produire un nouvel habitant
         if (this.producedFood >= this.foodNeededForNewCitizen) {
             this.population++;
@@ -92,6 +92,11 @@ public class City {
             this.producedFood = 0;
         }
     }
+
+    /** Méthode pour obtenir le nombre d'habitants.
+     * @return population
+     */
+    public int getPopulation() {return this.population;}
 
     private void setProducedCulture() {
         this.producedCulture += this.culturePerTurnProd;
