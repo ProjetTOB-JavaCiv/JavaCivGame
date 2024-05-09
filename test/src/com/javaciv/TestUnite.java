@@ -4,11 +4,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import com.javaciv.builder.HashMapUnitBuilder;
 import com.javaciv.type.UniteType;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.Terrain;
 import com.javaciv.gameElement.Military;
+import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Player;
 
 
@@ -16,58 +18,85 @@ import com.javaciv.gameElement.Player;
 public class TestUnite {
    
     // Declaration des variables utiles
-    Military lancier, lancier2;
-    Player player;
+    Military military;
+    Civilian civilian;
+    Player player1, player2;
     HashMap<UniteType, Military> map;
-    Tile tile;
     Terrain nature;
    
+    @BeforeEach
+    void setUp() {
+        player1 = new Player("Joueur1");
+        player2 = new Player("Joueur2");
+        military = new Military("militaire", player1, 11, 22, 3, 100, 5);
+        civilian = new Civilian("civil", player2, 10, 20);
+    }
+
     @Test
-    //Test juste si l'execution de buildHashMapMilitary fonctionne, à finir.
+        //Test juste si l'execution de buildHashMapMilitary fonctionne, à finir.
     void testBuilder() {
         map = HashMapUnitBuilder.buildHashMapMilitary();
     }
 
-    // Declaration des variables utiles
-
-    /* 
-    @BeforeEach
-    void setUp() {
-        marais = new Marais();
-        lac = new Lac();
-        joueur = new Joueur("Joueur", null ); // A modifier quand Personnage sera implémentée
-        tuile = new Tuile(1,1, marais, lac);
-        lancier = new Lancier("lancier", tuile, joueur);
-    } */
-
     @Test
     void getName() {
-        assertEquals("lancier", lancier.getName());
+        assertEquals("militaire", military.getName());
+        assertEquals("civil", civilian.getName());
     }
 
     @Test
     void getOwner() {
-        assertEquals(lancier.getOwner(), player);
+        assertEquals(military.getOwner(), player1);
+        assertEquals(civilian.getOwner(), player2);
     }
 
     @Test
     void getPosition() {
-        assertEquals(lancier.getPosition(), tile);
+        assertEquals(military.getPosition().getX(), 0);
+        assertEquals(military.getPosition().getY(), 0);
+        assertEquals(military.getPosition().getTerrain(), Terrain.TERRESTRE);
+        assertEquals(civilian.getPosition().getX(), 0);
+        assertEquals(civilian.getPosition().getY(), 0);
+        assertEquals(civilian.getPosition().getTerrain(), Terrain.TERRESTRE);
     }
 
     @Test
     void getCost() {
-        assertEquals(lancier.getCost(), 65);
+        assertEquals(military.getCost(), 22);
+        assertEquals(civilian.getCost(), 20);
+    }
+
+
+    @Test
+    void getActionPoint() {
+        assertEquals(military.getActionPoint(), 11);
+        assertEquals(civilian.getActionPoint(), 10);
+    }
+
+    @Test
+    void getBaseActionPoint() {
+        assertEquals(military.getActionPoint(), 11);
+        assertEquals(civilian.getBaseActionPoint(), 10);
+    }
+
+    @Test
+    void getAttack() {
+        assertEquals(military.getAttack(), 3);
     }
 
     @Test
     void getPV() {
-        assertEquals(lancier.getPV(), 100);
+        assertEquals(military.getPV(), 100);
     }
 
     @Test
-    void getActionPoint() {
-        assertEquals(lancier.getActionPoint(), 2);
+    void getDefense() {
+        assertEquals(military.getDefense(), 5);
+    }
+
+    @Test
+    void getCalculMovement() {
+        // TO DO
     }
 
     @Test
@@ -76,23 +105,13 @@ public class TestUnite {
     }
 
     @Test
-    void getDeplacementPossible() {
-        // TO DO
-    }
-
-    @Test
-    void calculDeplacement() {
-        // TO DO
-    }
-
-    @Test
-    void debutTour() {
-        assertEquals(lancier.getActionPoint(), 2);
-        //assertFalse(lancier.getIndicateurDeplacement());
-    }
-
-    @Test
     void getNatureDeplacement() {
-        assertEquals(lancier.getNatureDeplacement(), nature.TERRESTRE);
+        // TO DO
     }
+
+    @Test
+    void getPossibleMovement() {
+        // TO DO
+    }
+
 }
