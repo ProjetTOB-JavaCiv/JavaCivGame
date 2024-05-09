@@ -6,9 +6,6 @@ import com.javaciv.type.UniteType;
 import com.javaciv.gameElement.Unite;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.Terrain;
-import com.javaciv.gameElement.Military;
-import com.javaciv.gameElement.Civilian;
-import com.javaciv.gameElement.Player;
 import com.javaciv.gameElement.City;
 
 class TestCity {
