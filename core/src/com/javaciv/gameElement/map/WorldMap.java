@@ -3,6 +3,8 @@ package com.javaciv.gameElement.map;
 import java.util.ArrayList;
 
 import com.javaciv.Utils;
+import com.javaciv.builder.HashMapLand;
+import com.javaciv.type.LandType;
 
 /**
  * Cette classe représente la carte du monde du jeu.
@@ -37,13 +39,13 @@ public class WorldMap {
     }
 
     /**
-     * Génère un type de terrain aléatoire.
-     * @return le type de terrain généré
+     * Génère une tuille aléatoire
+     * @return la tuille avec un type de terrain généré aléatoire
      */
-    private Terrain randomTerrain() {
-        int randomInt = Utils.randomInt(Terrain.values().length);
-        // On utilise l'entier aléatoire pour choisir un terrain
-        return Terrain.values()[randomInt];
+    private Tile randomTile() {
+        int randomInt = Utils.randomInt(LandType.values().length);
+        // On utilise l'entier aléatoire pour choisir un terrain et on cherche dans la hashMap a quoi cela correspond
+        return HashMapLand.getLand(LandType.values()[randomInt]);
     }
 
     /**
@@ -55,11 +57,11 @@ public class WorldMap {
         int sproutsCount = 10;
 
         for (int i = 0; i < sproutsCount; i++) {
-            sprouts.add(new Tile(
-                Utils.randomInt(this.width),
-                Utils.randomInt(this.height),
-                randomTerrain()
-            ));
+            Tile newTile = randomTile();
+            newTile.setX(Utils.randomInt(this.width));
+            newTile.setY(Utils.randomInt(this.height));
+
+            sprouts.add(newTile);
         }
 
         return sprouts;
@@ -74,9 +76,14 @@ public class WorldMap {
     private Tile[] generateRandomMap(int h, int w) {
         Tile[] worldMap = new Tile[h * w];
         for (int i = 0; i < h; i++) {
-            for (int j = 0; j < w; j++) {
+            for (int j = 0; j < w; j++) { 
+                //Génération d'une tuille aléatoire au position (x, y)
+                Tile newTile = randomTile();
+                newTile.setX(i);
+                newTile.setY(j);
+                
                 // Ici on convertit les index de la matrice en abscisse et ordonnée (on transpose la matrice)
-                worldMap[j + i * w] = new Tile(j, i, randomTerrain());
+                worldMap[j + i * w] = newTile;
             }
         }
         return worldMap;

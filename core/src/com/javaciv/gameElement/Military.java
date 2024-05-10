@@ -2,9 +2,10 @@ package com.javaciv.gameElement;
 
 import java.util.Set;
 
-import com.javaciv.gameElement.map.Terrain;
+import com.javaciv.builder.HashMapLand;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.type.LandType;
 
 /**
  * Classe représentant une unité militaire, cette classe est une implémentation
@@ -38,7 +39,7 @@ public class Military implements Unite {
     //TODO: Finir le constructeur -> Problème de paramètre trop nombreux.
     public Military(String name, Player owner, int BASE_ACTION_POINT, int PRODUCTION_COST, int attack, int pv, int defense) {
         this.name = name;
-        this.position = new Tile(0, 0, Terrain.TERRESTRE);
+        this.position = HashMapLand.getLand(LandType.PLAINE);
         this.owner = owner;
         this.BASE_ACTION_POINT = BASE_ACTION_POINT;
         this.PRODUCTION_COST = PRODUCTION_COST;

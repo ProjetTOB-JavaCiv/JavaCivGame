@@ -2,9 +2,10 @@ package com.javaciv.gameElement;
 
 import java.util.Set;
 
-import com.javaciv.gameElement.map.Terrain;
+import com.javaciv.builder.HashMapLand;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.type.LandType;
 
 /**
  * 
@@ -28,7 +29,7 @@ public class Civilian implements Unite {
 
     public Civilian(String name, Player owner, int BASE_ACTION_POINT, int PRODUCTION_COST) {
         this.name = name;
-        this.position = new Tile(0, 0, Terrain.TERRESTRE);
+        this.position = HashMapLand.getLand(LandType.PLAINE);
         this.owner = owner;
         this.BASE_ACTION_POINT = BASE_ACTION_POINT;
         this.PRODUCTION_COST = PRODUCTION_COST;

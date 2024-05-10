@@ -11,41 +11,6 @@ import com.javaciv.gameElement.map.WorldMap;
 public interface Unite {
 
     /**
-     * Le nom de l'unité
-     */
-    //String getNom();
-
-    /**
-     * Le joueur possedant l'unité
-     */
-    //Joueur getOwner();
-
-    /**
-     * La tuile sur laquelle se trouve l'unite
-     */
-    //Tile getPosition();
-
-    /**
-     * Le nombre de points de vie actuel de l'unité
-     */
-    //int getPV();
-
-    /**
-     * Le nombre de point de mouvement restant a l'unité
-     */
-    //int getActionPoint();
-
-    /**
-     * La quantité de tuile que peut parcourir une unité en un tour
-     */
-    //int getRange();
-    
-    /**
-     * le cout en materiel pour produire l'unité
-     */
-    //int getCost();
-
-    /**
      * methode de deplacement de l'unité sur une tuile
      * Pre : destination in getDeplacementPossible()
      * @param destination tuile de destination de l'unité

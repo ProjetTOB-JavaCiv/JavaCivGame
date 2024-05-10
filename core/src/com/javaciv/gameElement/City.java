@@ -14,6 +14,12 @@ public class City {
 
     /** Position de la ville */
     Tile position;
+    /** Nom de la ville */
+    String name = "ville";
+    /** Point de vie de la ville */
+    int health = 100;
+    /** Puissance d'attaque de la ville */
+    int attack = 10;
     
     /** Nombre de points de science produit par une ville chaque tour */
     int sciencePerTurnProd;
@@ -61,7 +67,16 @@ public class City {
         this.population = 1;
     }
 
-    //TODO : Ecrire les méthodes d'actualisation des ressources prod par tour en fonction des batiments et des tuilles
+    // TODO : Faire les méthodes de production d'unité.
+
+    /* ============================== METHODE LIEE AUX TUILLES ============================== */
+
+    private void addTile() {
+        
+    }
+
+
+    /* ============================== METHODE LIEE AUX HABITANTS ============================ */
 
     /** Méthode actualisant la nourriture produit par une ville en rab */
     private void setFoodProduced() {
@@ -99,6 +114,19 @@ public class City {
     public int getPopulation() {
         return this.population;
     }
+
+    /* ================================================================================ */
+    
+    /** Méthode permettant de construire une infrastructure dans une ville
+     * @param infrastructure infrastructure à construire
+     */
+    private void buildInfrastructure(Infrastructure infrastructure) {
+        this.infrastructures.add(infrastructure);
+        this.updatePointPerTurnProd(infrastructure.getFood(), infrastructure.getCulture(), 
+        infrastructure.getFaith(), infrastructure.getScience(), infrastructure.getGold(), infrastructure.getProduction());
+    }
+
+
 
     /** Méthode actualisant les points de culture produit depuis la dernière expension du territoire
      * @return producedCulure
@@ -144,4 +172,7 @@ public class City {
         return this.sciencePerTurnProd;
     }
 
+    public void renameCity(String newName) {
+        this.name = newName;
+    }
 }
