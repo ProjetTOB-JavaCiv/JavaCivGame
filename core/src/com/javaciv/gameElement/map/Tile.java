@@ -10,36 +10,43 @@ import com.javaciv.gameElement.Military;
  * ainsi que du type de terrain qu'elle représente
  */
 public class Tile {
-    /**
-     * La position x de la tuile;
+    /** La position x de la tuile;
      */
     private int x;
-    /**
-     * La position y de la tuile.
+    /** La position y de la tuile.
      */
     private int y;
-    /**
-     * Le type de terrain de la tuile.
+    /** Le type de terrain de la tuile.
     */
     private Terrain terrain;
-    /** 
-     * L'unité militaire étant sur la case
+    /** L'unité militaire étant sur la case.
      * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
     */
+
+    /** Nombre de points de nourriture de la tuille */
+    int food;
+    /** Nombre de points de culture de la tuille */
+    int culture;
+    /** Nombre de points de foi de la tuille */
+    int faith;
+    /** Nombre de points de science de la tuille */
+    int science;
+    /** Nombre de points d'or de la tuille */
+    int gold;
+    /** Nombre de points de production de la tuille */
+    int production;
+
     private Military miliratyOnTile;
-    /**
-     * L'unité civile étant sur la case
+    /** L'unité civile étant sur la case.
      * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
     */
     private Civilian civilianOnTile;
 
-    /**
-     * Booléen qui décrit si une tuille est occupé par une unité militaire
+    /** Booléen qui décrit si une tuille est occupé par une unité militaire
      */
     private boolean isMilitaryUnitOnTile = false;
 
-    /**
-     * Booléen qui décrit si une tuille est occupé par une unité civile
+    /** Booléen qui décrit si une tuille est occupé par une unité civile
      */
     private boolean isCivilianUnitOnTile = false;
 
@@ -70,6 +77,30 @@ public class Tile {
      */
     public int getY() {
         return this.y;
+    }
+
+    public int getFood() {
+        return this.food;
+    }
+
+    public int getCulture() {
+        return this.culture;
+    }
+
+    public int getScience() {
+        return this.science;
+    }
+
+    public int getFaith() {
+        return this.faith;
+    }
+
+    public int getGold() {
+        return this.gold;
+    }
+
+    public int getProduction() {
+        return this.production;
     }
 
     /** Permet de recuperer le terrain de la tuile

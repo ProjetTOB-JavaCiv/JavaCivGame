@@ -8,7 +8,7 @@ public class HashMapInfrastuctureBuilder {
     
     public static HashMap<InfrastructureType, Infrastructure> buildHashMapInfrastructure() {
 
-        HashMap<InfrastructureType, Infrastructure> map = new HashMap<Infrastructure, InfrastructureType>();
+        HashMap<InfrastructureType, Infrastructure> map = new HashMap<InfrastructureType, Infrastructure>();
 
         map.put(InfrastructureType.GRENIER, new Infrastructure(
         200, 
@@ -38,6 +38,8 @@ public class HashMapInfrastuctureBuilder {
         3));
 
         // TODO : Ajout des batiments avec des bonus
+
+        return map;
 
     }
 }

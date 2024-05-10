@@ -68,7 +68,8 @@ public class Infrastructure {
     }
 
     /** Permet d'obtenir le nombre de points d'or aporté par le batiment à une ville
-     * @return le nombre de point de foi aporté par le batiment à une ville*/
+     * @return le nombre de point de foi aporté par le batiment à une ville
+     * */
     public int getGold() {
         return this.gold;
     }
@@ -78,5 +79,12 @@ public class Infrastructure {
      */
     public int getScience() {
         return this.science;
+    }
+
+    /** Permet d'obtenir le nombre de points de production aporté par le batiment à une ville
+     * @return le nombre de point de production aporté par le batiment à une ville
+     */
+    public int getProduction() {
+        return this.production;
     }
 }
