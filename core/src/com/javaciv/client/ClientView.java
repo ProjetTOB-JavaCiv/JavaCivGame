@@ -69,9 +69,13 @@ public class ClientView implements Screen {
         this.map = map;
 
         this.tileTextures = new Texture[] {
+            //TODO : Mettre les textures dans un dossier + Faire correspondre les textures avec les types de terrain
             new Texture(Gdx.files.internal("Grass.png")),
             new Texture(Gdx.files.internal("Grass1.png")),
-            new Texture(Gdx.files.internal("Dirt.png"))
+            new Texture(Gdx.files.internal("Dirt.png")),
+            new Texture(Gdx.files.internal("Water.png")),
+            new Texture(Gdx.files.internal("Sand.png")),
+            new Texture(Gdx.files.internal("Mountain.png"))
         };
 
         this.skin = new Skin(Gdx.files.internal("skin.json"));
@@ -267,7 +271,7 @@ public class ClientView implements Screen {
                 cell.setTile(
                     new StaticTiledMapTile(
                         new TextureRegion(
-                            this.tileTextures[map.at(i, j).getTerrain().toInt()], 0, 0, this.tileSize, this.tileSize
+                            this.tileTextures[map.at(i, j).getLand().toInt()], 0, 0, this.tileSize, this.tileSize
                         )
                     )
                 );
