@@ -10,7 +10,7 @@ import com.javaciv.type.UniteType;
  * Classe permettant de construire une hashmap contenant l'ensemble des unités militaires
  * de l'application. 
  */
-public class HashMapUnitBuilder {
+public class HashMapUnit {
 
     /** Objet étant un joueur non défini, ainsi on construit la hashmap selon un player
      * non défini.
