@@ -7,7 +7,7 @@ public class Server implements GameInterface {
     private WorldMap worldMap;
 
     public Server() {
-        this.worldMap = new WorldMap(200, 200);
+        this.worldMap = new WorldMap(100, 100);
     }
 
     public WorldMap getWorldMap() {

@@ -1,10 +1,13 @@
 package com.javaciv.client;
 
+import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.type.LandType;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.javaciv.gameElement.map.WorldMap;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.files.FileHandle;
@@ -17,14 +20,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Arrays;
 
@@ -37,9 +43,10 @@ public class ClientView implements Screen {
     private Stage mapStage;
     private Stage menuStage;
     private OrthographicCamera camera;
+    private InputMultiplexer inputMultiplexer;
 
     private TiledMap tiledMap;
-    private TiledMapRenderer tiledMapRenderer;
+    private OrthogonalTiledMapRenderer tiledMapRenderer;
 
     /**
      * Game objects
@@ -65,6 +72,8 @@ public class ClientView implements Screen {
     public ClientView(ClientController controller, WorldMap map) {
         loadConfiguration("config.txt");
 
+        this.inputMultiplexer = new InputMultiplexer();
+
         this.controller = controller;
         this.map = map;
 
@@ -80,8 +89,6 @@ public class ClientView implements Screen {
 
         this.skin = new Skin(Gdx.files.internal("skin.json"));
 
-
-
         this.menuButtons = new Actor[] {
             new TextButton("Bouton 1", this.skin, "default"),
             new TextButton("Bouton 2", this.skin, "default"),
@@ -89,6 +96,47 @@ public class ClientView implements Screen {
             new TextButton("Bouton 4", this.skin, "default"),
             new TextButton("Bouton 5", this.skin, "default")
         };
+
+        // TODO : Créer un package séparé pour les listeners -> Faire un tableau de listeners
+        // TODO : Changer les actions des différents boutons
+        this.menuButtons[0].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent e, float x, float y){
+                System.out.println("Button 1 clicked !");
+            }
+        });
+
+        // TODO : Changer les actions des différents boutons
+        this.menuButtons[1].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent e, float x, float y){
+                System.out.println("Button 2 clicked !");
+            }
+        });
+
+        // TODO : Changer les actions des différents boutons
+        this.menuButtons[2].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent e, float x, float y){
+                System.out.println("Button 3 clicked !");
+            }
+        });
+
+        // TODO : Changer les actions des différents boutons
+        this.menuButtons[3].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent e, float x, float y){
+                System.out.println("Button 4 clicked !");
+            }
+        });
+
+        // TODO : Changer les actions des différents boutons
+        this.menuButtons[4].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent e, float x, float y){
+                System.out.println("Button 5 clicked !");
+            }
+        });
 
         this.coordinates = new Label("[x, y]", this.skin, "default");
         this.coordinates.setAlignment(Align.center);
@@ -98,6 +146,31 @@ public class ClientView implements Screen {
             new TextButton("Action 1", this.skin, "default"),
             new TextButton("Action 2", this.skin, "default")
         };
+
+        // TODO : Créer un package séparé pour les listeners -> Faire un tableau de listeners
+        // TODO : Changer les actions des différents boutons
+        this.tileMenuButtons[1].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent e, float x, float y){
+                System.out.print("Action 1 clicked, current case is : ");
+                System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
+                tiledMap = loadMap(map);
+                tiledMapRenderer.setMap(tiledMap);
+            }
+        });
+
+        // TODO : Changer les actions des différents boutons
+        this.tileMenuButtons[2].addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent e, float x, float y){
+                System.out.print("Action 2 clicked, current case is : ");
+                System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
+                tiledMap = loadMap(map);
+                tiledMapRenderer.setMap(tiledMap);
+            }
+        });
 
         int padding = 10;
 
@@ -154,7 +227,10 @@ public class ClientView implements Screen {
         this.tiledMap = loadMap(this.map);
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(this.tiledMap);
 
-        Gdx.input.setInputProcessor(this.controller);
+        this.inputMultiplexer.addProcessor(this.menuStage);
+        this.inputMultiplexer.addProcessor(this.controller);
+
+        Gdx.input.setInputProcessor(this.inputMultiplexer);
     }
 
     @Override public void render(float t) {
@@ -178,19 +254,13 @@ public class ClientView implements Screen {
         this.camera.position.x = Math.max(this.camera.position.x, this.camera.zoom * Gdx.graphics.getWidth() / 2);
         this.camera.position.x = Math.min(this.camera.position.x, this.camera.zoom * (map.getWidth() * this.tileSize - Gdx.graphics.getWidth() / 2));
         this.camera.position.y = Math.max(this.camera.position.y, this.camera.zoom * Gdx.graphics.getHeight() / 2);
-        this.camera.position.y = Math.min(this.camera.position.y, this.camera.zoom * (map.getHeight() * this.tileSize - Gdx.graphics.getHeight() / 2));        
+        this.camera.position.y = Math.min(this.camera.position.y, this.camera.zoom * (map.getHeight() * this.tileSize - Gdx.graphics.getHeight() / 2));
 
         this.coordinates.setText(
             "["
-            + (int) (
-                (this.controller.getClickCoordinates().x * this.camera.zoom +
-                this.camera.position.x - (this.camera.zoom * Gdx.graphics.getWidth() / 2)
-                ) / this.tileSize)
+            + (int) (getClickCoordinates().x)
             + ", "
-            + (int) (
-                (this.camera.position.y + (this.camera.zoom * Gdx.graphics.getHeight() / 2) -
-                this.controller.getClickCoordinates().y * this.camera.zoom
-                ) / this.tileSize)
+            + (int) (getClickCoordinates().y)
             + "]"
         );
 
@@ -236,12 +306,12 @@ public class ClientView implements Screen {
     }
 
     /**
-     * Parse a configuration from a key and a file, example :
+     * Parse la configuration du jeu. Exemple de configuration :
      * renderDistance=40
      * tileSize=5
      * moveSpeed=2000
-     * @param key the key to search for
-     * @return the value of the key
+     * @param key la clé de la configuration
+     * @return la valeur de la configuration
      */
     private int parseConfiguration(FileHandle file, String key) {
         String[] lines = file.readString().split("\n");
@@ -254,12 +324,21 @@ public class ClientView implements Screen {
         return 0;
     }
 
+    /**
+     * Charge la configuration du jeu.
+     * @param path le chemin du fichier de configuration
+     */
     private void loadConfiguration(String path) {
         this.renderDistance = parseConfiguration(Gdx.files.internal(path), "renderDistance");
         this.tileSize = parseConfiguration(Gdx.files.internal(path), "tileSize");
         this.moveSpeed = parseConfiguration(Gdx.files.internal(path), "moveSpeed");
     }
 
+    /**
+     * Charge une carte à partir d'une carte du jeu.
+     * @param map la carte du jeu
+     * @return la carte chargée
+     */
     private TiledMap loadMap(WorldMap map) {
         TiledMap tiledMap = new TiledMap();
         TiledMapTileLayer tiledMapLayer = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
@@ -271,7 +350,7 @@ public class ClientView implements Screen {
                 cell.setTile(
                     new StaticTiledMapTile(
                         new TextureRegion(
-                            this.tileTextures[map.at(i, j).getLand().toInt()], 0, 0, this.tileSize, this.tileSize
+                            this.tileTextures[map.at(j, i).getLand().toInt()], 0, 0, this.tileSize, this.tileSize
                         )
                     )
                 );
@@ -279,5 +358,30 @@ public class ClientView implements Screen {
             }
         }
         return tiledMap;
+    }
+
+    /**
+     * Renvoie les coordonnées de la tuile cliquée par l'utilisateur.
+     * @return les coordonnées de la tuile cliquée
+     */
+    private Vector2 getClickCoordinates() {
+        return new Vector2(
+            (int) (
+                (this.controller.getClickCoordinates().x * this.camera.zoom +
+                this.camera.position.x - (this.camera.zoom * Gdx.graphics.getWidth() / 2)
+                ) / this.tileSize),
+            (int) (
+                (this.camera.position.y + (this.camera.zoom * Gdx.graphics.getHeight() / 2) -
+                this.controller.getClickCoordinates().y * this.camera.zoom
+                ) / this.tileSize)
+        );
+    }
+
+    /**
+     * Met à jour la carte.
+     */
+    private void updateMap() {
+        this.tiledMap = loadMap(this.map);
+        this.tiledMapRenderer.setMap(this.tiledMap);
     }
 }
