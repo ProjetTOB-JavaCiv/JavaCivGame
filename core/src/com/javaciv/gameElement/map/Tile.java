@@ -21,45 +21,45 @@ public class Tile {
     */
     private LandType land;
 
-    /** Nombre de points de nourriture de la tuille */
+    /** Nombre de points de nourriture de la tuile */
     int food;
-    /** Nombre de points de culture de la tuille */
+    /** Nombre de points de culture de la tuile */
     int culture;
-    /** Nombre de points de foi de la tuille */
+    /** Nombre de points de foi de la tuile */
     int faith;
-    /** Nombre de points de science de la tuille */
+    /** Nombre de points de science de la tuile */
     int science;
     /** Nombre de points d'or de la tuille */
     int gold;
-    /** Nombre de points de production de la tuille */
+    /** Nombre de points de production de la tuile */
     int production;
 
-    /** Flotant indicateur de la valeur stratégique d'une tuille */
+    /** Flotant indicateur de la valeur stratégique d'une tuile */
     double strategicValue;
 
-    /** Booléen décrivant si la tuille est traversable par une unité terrestre
+    /** Booléen décrivant si la tuile est traversable par une unité terrestre
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableByLandUnit;
-    /** Booléen décrivant si la tuille est traversable par une unité maritime
+    /** Booléen décrivant si la tuile est traversable par une unité maritime
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableBySeaUnit;
 
     /** Variable stockant l'unité militaire étant sur la case.
-     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
     */
     private Military miliratyOnTile;
     /** Variable stockant l'unité civile étant sur la case.
-     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
     */
     private Civilian civilianOnTile;
 
-    /** Booléen qui décrit si une tuille est occupé par une unité militaire
+    /** Booléen qui décrit si une tuile est occupé par une unité militaire
      */
     private boolean isMilitaryUnitOnTile = false;
 
-    /** Booléen qui décrit si une tuille est occupé par une unité civile
+    /** Booléen qui décrit si une tuile est occupé par une unité civile
      */
     private boolean isCivilianUnitOnTile = false;
 
@@ -89,6 +89,18 @@ public class Tile {
 
         //Assignation de la valeur stratégique de la tuile TODO : Ajouter de la valeur si y'a une ressource stratégique
         this.strategicValue = baseLandValue;
+    }
+
+    /**
+     * Calcule la distance entre deux tuiles.
+     * @param other l'autre tuile
+     * @return la distance entre les deux tuiles
+     */
+    public float distance(Tile other) {
+        return (float) Math.sqrt(
+            Math.pow(this.getX() - other.getX(), 2) +
+            Math.pow(this.getY() - other.getY(), 2)
+        );
     }
 
     /**
@@ -198,6 +210,12 @@ public class Tile {
      * la map, après cela, la position d'une tuile ne doit pas changer  */
     public void setY(int y) {
         this.y = y;
+    }
+
+    /** Permet de changer le terrain d'une tuile, est utile UNIQUEMENT lors de la création de
+     * la map, après cela, le terrain d'une tuile ne doit pas changer  */
+    public void setLand(LandType land) {
+        this.land = land;
     }
 
     /**

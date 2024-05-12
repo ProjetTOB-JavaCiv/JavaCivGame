@@ -70,12 +70,12 @@ public class ClientView implements Screen {
 
         this.tileTextures = new Texture[] {
             //TODO : Mettre les textures dans un dossier + Faire correspondre les textures avec les types de terrain
-            new Texture(Gdx.files.internal("Grass.png")),
-            new Texture(Gdx.files.internal("Grass1.png")),
-            new Texture(Gdx.files.internal("Dirt.png")),
-            new Texture(Gdx.files.internal("Water.png")),
-            new Texture(Gdx.files.internal("Sand.png")),
-            new Texture(Gdx.files.internal("Mountain.png"))
+            new Texture(Gdx.files.internal("Grass.png")), // 0 -> Plaine
+            new Texture(Gdx.files.internal("Sand.png")), // 1 -> Desert
+            new Texture(Gdx.files.internal("Dirt.png")), // 2 -> Foret
+            new Texture(Gdx.files.internal("Mountain.png")), // 3 -> Montagne
+            new Texture(Gdx.files.internal("Grass1.png")), // 4 -> Colline
+            new Texture(Gdx.files.internal("Water.png")) // 5 -> Mer
         };
 
         this.skin = new Skin(Gdx.files.internal("skin.json"));
