@@ -35,6 +35,9 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.Arrays;
 
 public class ClientView implements Screen {
+    /**
+     * Controller associated with this view
+     */
     private ClientController controller;
 
     /**
@@ -45,6 +48,9 @@ public class ClientView implements Screen {
     private OrthographicCamera camera;
     private InputMultiplexer inputMultiplexer;
 
+    /**
+     * TiledMap objects
+     */
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer tiledMapRenderer;
 
@@ -54,29 +60,42 @@ public class ClientView implements Screen {
     private WorldMap map;
     private Texture[] tileTextures;
 
+    /**
+     * Configuration objects
+     */
     private int renderDistance;
     private int tileSize;
     private int moveSpeed;
 
+    /**
+     * Widgets
+     */
     private Skin skin;
     private Table menuBar;
     private Table tileMenu;
-
-    private Actor[] menuButtons;
-    private Actor[] tileMenuButtons;
-
     private Label coordinates;
-
     private TextureRegionDrawable backgroundTexture;
 
+    /**
+     * Menu's widget array
+     */
+    private Actor[] menuButtons;
+    private Actor[] tileMenuButtons;
+    private ClickListener[] menuActions;
+    private ClickListener[] tileMenuActions;
+
+    /**
+     * Constructor for ClientView
+     */
     public ClientView(ClientController controller, WorldMap map) {
+        // Load configuration from `config.txt` file
         loadConfiguration("config.txt");
 
-        this.inputMultiplexer = new InputMultiplexer();
-
+        // Set the controller and the map
         this.controller = controller;
         this.map = map;
 
+        // Load all the textures for the TileMap
         this.tileTextures = new Texture[] {
             //TODO : Mettre les textures dans un dossier + Faire correspondre les textures avec les types de terrain
             new Texture(Gdx.files.internal("Grass.png")), // 0 -> Plaine
@@ -87,8 +106,10 @@ public class ClientView implements Screen {
             new Texture(Gdx.files.internal("Water.png")) // 5 -> Mer
         };
 
+        // Load the skin for the UI
         this.skin = new Skin(Gdx.files.internal("skin.json"));
 
+        // Create the menu wich is located on the top of the window
         this.menuButtons = new Actor[] {
             new TextButton("Bouton 1", this.skin, "default"),
             new TextButton("Bouton 2", this.skin, "default"),
@@ -97,89 +118,105 @@ public class ClientView implements Screen {
             new TextButton("Bouton 5", this.skin, "default")
         };
 
-        // TODO : Créer un package séparé pour les listeners -> Faire un tableau de listeners
         // TODO : Changer les actions des différents boutons
-        this.menuButtons[0].addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent e, float x, float y){
-                System.out.println("Button 1 clicked !");
+        // Create an array of listeners for the menu buttons
+        this.menuActions = new ClickListener[] {
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.println("Button 1 clicked !");
+                }
+            },
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.println("Button 2 clicked !");
+                }
+            },
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.println("Button 3 clicked !");
+                }
+            },
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.println("Button 4 clicked !");
+                }
+            },
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.println("Button 5 clicked !");
+                }
             }
-        });
+        };
 
-        // TODO : Changer les actions des différents boutons
-        this.menuButtons[1].addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent e, float x, float y){
-                System.out.println("Button 2 clicked !");
-            }
-        });
+        // We add the listeners to the buttons
+        for (int i = 0; i < this.menuButtons.length; i++) {
+            this.menuButtons[i].addListener(this.menuActions[i]);
+        }
 
-        // TODO : Changer les actions des différents boutons
-        this.menuButtons[2].addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent e, float x, float y){
-                System.out.println("Button 3 clicked !");
-            }
-        });
-
-        // TODO : Changer les actions des différents boutons
-        this.menuButtons[3].addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent e, float x, float y){
-                System.out.println("Button 4 clicked !");
-            }
-        });
-
-        // TODO : Changer les actions des différents boutons
-        this.menuButtons[4].addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent e, float x, float y){
-                System.out.println("Button 5 clicked !");
-            }
-        });
-
+        // Create the coordinates label printed in the tileMenu
         this.coordinates = new Label("[x, y]", this.skin, "default");
         this.coordinates.setAlignment(Align.center);
 
+        // Create the tileMenu wich is located on the right bottom of the window
         this.tileMenuButtons = new Actor[] {
             this.coordinates,
             new TextButton("Action 1", this.skin, "default"),
             new TextButton("Action 2", this.skin, "default")
         };
 
-        // TODO : Créer un package séparé pour les listeners -> Faire un tableau de listeners
         // TODO : Changer les actions des différents boutons
-        this.tileMenuButtons[1].addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent e, float x, float y){
-                System.out.print("Action 1 clicked, current case is : ");
-                System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
-                map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
-                tiledMap = loadMap(map);
-                tiledMapRenderer.setMap(tiledMap);
+        // Create an array of listeners for the tile menu buttons
+        this.tileMenuActions = new ClickListener[] {
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.print("Coordinates clicked, current case is : ");
+                    System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                }
+            },
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.print("Action 1 clicked, current case is : ");
+                    System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                    map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
+                    tiledMap = loadMap(map);
+                    tiledMapRenderer.setMap(tiledMap);
+                }
+            },
+            new ClickListener(){
+                @Override
+                public void clicked(InputEvent e, float x, float y){
+                    System.out.print("Action 2 clicked, current case is : ");
+                    System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                    map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
+                    tiledMap = loadMap(map);
+                    tiledMapRenderer.setMap(tiledMap);
+                }
             }
-        });
+        };
 
-        // TODO : Changer les actions des différents boutons
-        this.tileMenuButtons[2].addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent e, float x, float y){
-                System.out.print("Action 2 clicked, current case is : ");
-                System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
-                map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
-                tiledMap = loadMap(map);
-                tiledMapRenderer.setMap(tiledMap);
-            }
-        });
+        // We add the listeners to the buttons
+        for (int i = 0; i < this.tileMenuButtons.length; i++) {
+            this.tileMenuButtons[i].addListener(this.tileMenuActions[i]);
+        }
 
-        int padding = 10;
-
+        // Create a background object for the menu
         Pixmap background = new Pixmap(1,1,Pixmap.Format.LuminanceAlpha);
         background.setColor(new Color(1, 1, 1, 0.5f));
         background.fill();
         this.backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
 
-        // Menu bar
+        // The padding for the menus
+        // TODO : move this to a global variable
+        int padding = 10;
+
+        // Create the menuBar item and set UI parameters
         this.menuBar = new Table();
         this.menuBar.setBackground(this.backgroundTexture);
         this.menuBar.setBounds(
@@ -189,14 +226,14 @@ public class ClientView implements Screen {
             this.menuButtons[0].getHeight() + 2 * padding
         );
         this.menuBar.defaults().padRight(0).padTop(padding);
+        this.menuBar.left().top();
+
+        // Add the menuButtons to the menuBar
         for(Actor button : this.menuButtons) {
             this.menuBar.add(button).padLeft(padding).padTop(padding).width(188);
         }
-        this.menuBar.left().top();
 
-        //this.menuBar.setDebug(true);
-
-        // Tile menu
+        // Create the tileMenu item and set UI parameters
         this.tileMenu = new Table();
         this.tileMenu.setBackground(this.backgroundTexture);
         this.tileMenu.setBounds(
@@ -208,32 +245,44 @@ public class ClientView implements Screen {
         this.tileMenu.defaults().padTop(0).padRight(2*padding).fillX().center();
         this.tileMenu.row();
         this.tileMenu.add(this.tileMenuButtons[0]).padTop(padding);
+        this.tileMenu.right().top();
+        this.tileMenu.setVisible(false);
+
+        // Add the tileMenuButtons to the tileMenu
         for(Actor button : Arrays.copyOfRange(this.tileMenuButtons, 1, this.tileMenuButtons.length)) {
             this.tileMenu.row();
             this.tileMenu.add(button).padTop(2*padding).width(160);
         }
-        this.tileMenu.right().top();
-        this.tileMenu.setVisible(false);
 
-        //this.tileMenu.setDebug(true);
-
+        // Setup the stagess for the tilemap and for the menus
         this.mapStage = new Stage(new ScreenViewport());
         this.menuStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
+        // Setup the camera for the tilemap (the camera will be able to move and zoom on the map)
         this.camera = (OrthographicCamera) this.mapStage.getViewport().getCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         this.camera.update();
 
+        // Load the map and the renderer
         this.tiledMap = loadMap(this.map);
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(this.tiledMap);
 
+        // Create an input multiplexer, which will handle all the inputs
+        // We give to this input multiplexer the ownership of all the input processors
+        this.inputMultiplexer = new InputMultiplexer();
         this.inputMultiplexer.addProcessor(this.menuStage);
         this.inputMultiplexer.addProcessor(this.controller);
 
+        // Set the input multiplexer as the input processor for the game
         Gdx.input.setInputProcessor(this.inputMultiplexer);
     }
 
     @Override public void render(float t) {
+        // Clear the screen
+        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // Update camera with all the zoom and movement stuff
         this.camera.zoom *= this.controller.getZoom();
         this.camera.zoom = Math.min(
             this.camera.zoom,
@@ -248,14 +297,15 @@ public class ClientView implements Screen {
         );
         this.camera.update();
 
+        // Update camera position
         this.camera.position.x += this.camera.zoom * this.moveSpeed * this.controller.getMovement().x;
         this.camera.position.y += this.camera.zoom * this.moveSpeed * this.controller.getMovement().y;
-
         this.camera.position.x = Math.max(this.camera.position.x, this.camera.zoom * Gdx.graphics.getWidth() / 2);
         this.camera.position.x = Math.min(this.camera.position.x, this.camera.zoom * (map.getWidth() * this.tileSize - Gdx.graphics.getWidth() / 2));
         this.camera.position.y = Math.max(this.camera.position.y, this.camera.zoom * Gdx.graphics.getHeight() / 2);
         this.camera.position.y = Math.min(this.camera.position.y, this.camera.zoom * (map.getHeight() * this.tileSize - Gdx.graphics.getHeight() / 2));
 
+        // Update tile menu coordinates text
         this.coordinates.setText(
             "["
             + (int) (getClickCoordinates().x)
@@ -264,18 +314,16 @@ public class ClientView implements Screen {
             + "]"
         );
 
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // Render Map
+        // Render the map in the mapStage
         this.tiledMapRenderer.setView(this.camera);
         this.tiledMapRenderer.render();
-
+        
+        // Draw the mapStage
         this.mapStage.act(Gdx.graphics.getDeltaTime());
         this.mapStage.getViewport().apply();
         this.mapStage.draw();
 
-        // Render Menu
+        // Render the menus in the menuStage
         this.menuStage.addActor(this.menuBar);
         if (this.controller.getDisplayTileMenu()) {
             this.tileMenu.setVisible(true);
@@ -284,6 +332,7 @@ public class ClientView implements Screen {
         }
         this.menuStage.addActor(this.tileMenu);
 
+        // Draw the menuStage
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
         this.menuStage.draw();
