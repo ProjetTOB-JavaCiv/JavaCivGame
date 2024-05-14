@@ -139,7 +139,7 @@ public class City {
             neighbourTiles.add(map.at(x - 1, y));
         }
         //Case de droite
-        if(x+1 <= map.width) {
+        if(x+1 <= map.getWidth()) {
             neighbourTiles.add(map.at(x + 1, y));
         }
         //Case du dessus
@@ -147,7 +147,7 @@ public class City {
             neighbourTiles.add(map.at(x, y - 1));
         }
         //Case du dessous
-        if( y+1 <= map.height) {
+        if( y+1 <= map.getHeight()) {
             neighbourTiles.add(map.at(x, y + 1));
         }
     }
