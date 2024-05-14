@@ -17,11 +17,9 @@ public class HashMapUnit {
      */
     static Player undefinedPlayer = new Player("undefined");
 
-    public static HashMap<UniteType, Military> buildHashMapMilitary() {
-        HashMap<UniteType, Military> map = new HashMap<UniteType, Military>();
-
+    static HashMap<UniteType, Military> miliratyMap = new HashMap<UniteType, Military>() {{
         //Ajout de l'ensemble des unités à la hashmap
-        map.put(UniteType.LANCIER, new Military(
+        put(UniteType.LANCIER, new Military(
             "Lancier",
             undefinedPlayer,
             2,
@@ -31,7 +29,7 @@ public class HashMapUnit {
             25
         ));
 
-        map.put(UniteType.ARCHER, new Military(
+        put(UniteType.ARCHER, new Military(
             "Archer",
             undefinedPlayer,
             2,
@@ -41,7 +39,7 @@ public class HashMapUnit {
             10
         ));
 
-        map.put(UniteType.CHEVALIER, new Military(
+        put(UniteType.CHEVALIER, new Military(
             "Chevalier",
             undefinedPlayer,
             4,
@@ -50,28 +48,49 @@ public class HashMapUnit {
             100,
             20
         ));
+    }};
 
-        return map;
-    }
-
-    public static HashMap<UniteType, Civilian> buildHashMapCivilan() {
-        HashMap<UniteType, Civilian> map = new HashMap<UniteType, Civilian>();
-
+    static HashMap<UniteType, Civilian> civilianMap = new HashMap<UniteType, Civilian>() {{
         //Ajout de l'ensemble des unités à la hashmap
-        map.put(UniteType.OUVRIER, new Civilian(
+        put(UniteType.OUVRIER, new Civilian(
             "Ouvrier",
             undefinedPlayer,
             2,
             100
         ));
 
-        map.put(UniteType.COLON, new Civilian(
+        put(UniteType.COLON, new Civilian(
             "Colon",
             undefinedPlayer,
             2,
             250
         ));
 
-        return map;
+    }};
+
+    public static Military getMilitary(UniteType unitType) {
+        Military unit = miliratyMap.get(unitType);
+
+        return new Military(
+            unit.getName(),
+            unit.getOwner(),
+            unit.getBaseActionPoint(),
+            unit.getCost(),
+            unit.getAttack(),
+            unit.getPV(),
+            unit.getDefense()
+        );
     }
+
+    public static Civilian getCivilian(UniteType unitType) {
+        Civilian unit = civilianMap.get(unitType);
+
+        return new Civilian(
+            unit.getName(),
+            unit.getOwner(),
+            unit.getBaseActionPoint(),
+            unit.getCost()
+        );
+    }
+
 }

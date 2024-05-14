@@ -108,7 +108,7 @@ public final class HashMapLand {
     public static Tile getLand(LandType land) {
         Tile tile = map.get(land);
         
-            return new Tile(
+        return new Tile(
             tile.getX(),
             tile.getY(),
             tile.getLand(),
@@ -123,9 +123,6 @@ public final class HashMapLand {
             tile.getBaseLandValue()
         );
         
-
         //Copie de la tuile pour éviter les problèmes de références
-        
-
     }
 }

@@ -3,6 +3,7 @@ package com.javaciv.gameElement.map;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
 import com.javaciv.type.LandType;
+import com.javaciv.gameElement.Player;
 
 /**
  * Cette classe représente une tuile.
@@ -20,6 +21,9 @@ public class Tile {
     /** Le type de terrain de la tuile.
     */
     private LandType land;
+
+    /** Propriétaire de la case, null si la case est occupé par personne */
+    Player owner = null;
 
     /** Nombre de points de nourriture de la tuile */
     int food;
@@ -198,6 +202,11 @@ public class Tile {
         return this.strategicValue;
     }
 
+    /** Renvoie le propriétaire de la case */
+    public Player getOwner() {
+        return this.owner;
+    }
+
     /** Permet de changer de position une tuille sur l'axe X, est utile UNIQUEMENT lors de la création de
      * la map, après cela, la position d'une tuile ne doit pas changer
      * TODO : Changer le degré de liberté de cette méthode ??
@@ -233,5 +242,12 @@ public class Tile {
     public void setCivilianUnitOnTile(Civilian unit) {
         this.isCivilianUnitOnTile = true;
         this.civilianOnTile = unit;
+    }
+
+    /** Set la propriété d'un joueur sur une tuille 
+     * @param owner la civilisation qui va posséder la tuille
+    */
+    public void setOwner(Player owner) {
+        this.owner = owner;
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.javaciv.gameElement.map.Tile;
+import com.javaciv.gameElement.map.WorldMap;
 
 /**
  * Classe représentant une ville dans le jeu.
@@ -12,15 +13,20 @@ import com.javaciv.gameElement.map.Tile;
  */
 public class City {
 
-    /** Position de la ville */
+    /** Tuille ou se situe la ville */
     Tile position;
     /** Nom de la ville */
     String name = "ville";
+    /** Faction ayant le contrôle sur la ville */
+    Player owner;
     /** Point de vie de la ville */
     int health = 100;
     /** Puissance d'attaque de la ville */
     int attack = 10;
-    
+
+    /** Carte du monde sur laquelle évolue la ville TODO : Avoir la worldmap en attribue c'est bien ???*/
+    final WorldMap map;
+
     /** Nombre de points de science produit par une ville chaque tour */
     int sciencePerTurnProd;
     /** Nombre de points de culture produit par une ville chaque tour */
@@ -55,15 +61,31 @@ public class City {
     
     /** Liste des tuilles appartenant à la ville */
     List<Tile> cityTiles = new ArrayList<Tile>();
+    /** Liste des tuilles voisines au territoire de la ville */
+    List<Tile> neighbourTiles = new ArrayList<Tile>();
 
     /**
      * Constructeur d'une ville
      * @param cityPosition position de la ville
      */
-    public City(Tile cityPosition) {
+    public City(Tile cityPosition, WorldMap map, Player owner) {
+        this.map = map;
         this.position = cityPosition;
+        this.owner = owner;
+        
+        int x = cityPosition.getX();
+        int y = cityPosition.getY();
+        //Ajout des cases appartenant à la ville : La tuille centrale
         this.cityTiles.add(cityPosition);
-        //Il manque l'ajout des tuiles adjacentes à la ville
+
+        //Ajout des cases voisines à la ville
+        for(int i = -1; i < 2; i =+ 2) {
+            for(int j = -1; j < 2; j =+ 2) {
+                Tile newTile = map.at(x + i, y + j); 
+                this.cityTiles.add(newTile);
+                addNeighbourTiles(newTile);
+            }
+        }
         this.population = 1;
     }
 
@@ -72,7 +94,62 @@ public class City {
     /* ============================== METHODE LIEE AUX TUILLES ============================== */
 
     private void addTile() {
-        
+        //Tuille candidate à l'expension du territoire
+        Tile possibleTile;
+        Tile chosenTile = null;
+        int indexChosenTile = 0;
+        double maxTileStrategicValue = 0;
+
+        //On ajoute les tuilles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuilles.
+        for (int i = 0; i < neighbourTiles.size(); i++){
+
+            possibleTile = neighbourTiles.get(i);
+
+            if(possibleTile.getBaseLandValue() > maxTileStrategicValue && possibleTile.getOwner() == null) {
+
+                maxTileStrategicValue = possibleTile.getBaseLandValue();
+                chosenTile = possibleTile;
+                indexChosenTile = i;
+                
+            }
+        }
+
+        if(chosenTile != null) {
+            chosenTile.setOwner(owner);
+            neighbourTiles.remove(indexChosenTile);
+            addNeighbourTiles(chosenTile);
+        }
+
+        //TODO : Si l'expension est impossible, on fait en sorte de renvoyer un message pour
+        // que cette fonction ne soit pas appeler chaque tour ???
+    }
+
+    /**Méthode permettant d'ajouter les voisins d'une tuille à la liste des tuilles voisine à
+     * la frontière de la ville pour une potentielle ecityPositionxtension future, à la condition de ne pas
+     * être déjà posédé par une autre ville.
+     * @param tile tuille dont on veut ajouter les voisins
+     */
+    private void addNeighbourTiles(Tile tile) {
+        int x = tile.getX();
+        int y = tile.getY();
+
+        //Ajout des cases voisines à la ville
+        //Case de gauche
+        if(x-1 >= 0) {
+            neighbourTiles.add(map.at(x - 1, y));
+        }
+        //Case de droite
+        if(x+1 <= map.width) {
+            neighbourTiles.add(map.at(x + 1, y));
+        }
+        //Case du dessus
+        if( y-1 >= 0) {
+            neighbourTiles.add(map.at(x, y - 1));
+        }
+        //Case du dessous
+        if( y+1 <= map.height) {
+            neighbourTiles.add(map.at(x, y + 1));
+        }
     }
 
 
@@ -174,5 +251,9 @@ public class City {
 
     public void renameCity(String newName) {
         this.name = newName;
+    }
+
+    public Player getOwner() {
+        return this.owner;
     }
 }

@@ -47,6 +47,16 @@ public final class HashMapInfrastructure {
      * @param infrastructure le batiment que l'on souhaite récupérer
      */
     public static Infrastructure getInfrastructure(InfrastructureType infrastructure) {
-        return map.get(infrastructure);
+        Infrastructure instrastructure = map.get(infrastructure);
+
+        return new Infrastructure(
+            instrastructure.getProductionCost(),
+            instrastructure.getFood(),
+            instrastructure.getProduction(),
+            instrastructure.getScience(),
+            instrastructure.getGold(),
+            instrastructure.getCulture(),
+            instrastructure.getFaith()
+        );
     }
 }
