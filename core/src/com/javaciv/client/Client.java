@@ -1,3 +1,11 @@
+/**
+ * @file Client.java
+ * @brief This file contains the Client class.
+ * @author Théo Bessel
+ * @date 18/04/2024
+ * @version 1.0
+ */
+
 package com.javaciv.client;
 
 import com.javaciv.GameInterface;

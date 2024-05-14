@@ -1,7 +1,16 @@
+/**
+ * @file ClientView.java
+ * @brief This file contains the ClientView class.
+ * @author Théo Bessel
+ * @date 20/04/2024
+ * @version 1.0
+ */
+
 package com.javaciv.client;
 
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.type.LandType;
+import com.javaciv.client.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -31,6 +40,7 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
 import java.util.Arrays;
 
@@ -71,18 +81,10 @@ public class ClientView implements Screen {
      * Widgets
      */
     private Skin skin;
-    private Table menuBar;
-    private Table tileMenu;
     private Label coordinates;
-    private TextureRegionDrawable backgroundTexture;
+    private Menu topMenu;
+    private Menu tileMenu;
 
-    /**
-     * Menu's widget array
-     */
-    private Actor[] menuButtons;
-    private Actor[] tileMenuButtons;
-    private ClickListener[] menuActions;
-    private ClickListener[] tileMenuActions;
 
     /**
      * Constructor for ClientView
@@ -109,150 +111,95 @@ public class ClientView implements Screen {
         // Load the skin for the UI
         this.skin = new Skin(Gdx.files.internal("skin.json"));
 
-        // Create the menu wich is located on the top of the window
-        this.menuButtons = new Actor[] {
-            new TextButton("Bouton 1", this.skin, "default"),
-            new TextButton("Bouton 2", this.skin, "default"),
-            new TextButton("Bouton 3", this.skin, "default"),
-            new TextButton("Bouton 4", this.skin, "default"),
-            new TextButton("Bouton 5", this.skin, "default")
-        };
-
-        // TODO : Changer les actions des différents boutons
-        // Create an array of listeners for the menu buttons
-        this.menuActions = new ClickListener[] {
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.println("Button 1 clicked !");
-                }
+        this.topMenu = new Menu(
+            new Actor[] {
+                new TextButton("Bouton 1", this.skin, "default"),
+                new TextButton("Bouton 2", this.skin, "default"),
+                new TextButton("Bouton 3", this.skin, "default"),
+                new TextButton("Bouton 4", this.skin, "default"),
+                new TextButton("Bouton 5", this.skin, "default")
             },
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.println("Button 2 clicked !");
-                }
-            },
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.println("Button 3 clicked !");
-                }
-            },
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.println("Button 4 clicked !");
-                }
-            },
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.println("Button 5 clicked !");
+            new ClickListener[] {
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Button 1 clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Button 2 clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Button 3 clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Button 4 clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Button 5 clicked !");
+                    }
                 }
             }
-        };
+        );
 
-        // We add the listeners to the buttons
-        for (int i = 0; i < this.menuButtons.length; i++) {
-            this.menuButtons[i].addListener(this.menuActions[i]);
-        }
+        this.topMenu.setPosition(0, Gdx.graphics.getHeight());
 
         // Create the coordinates label printed in the tileMenu
         this.coordinates = new Label("[x, y]", this.skin, "default");
         this.coordinates.setAlignment(Align.center);
 
-        // Create the tileMenu wich is located on the right bottom of the window
-        this.tileMenuButtons = new Actor[] {
-            this.coordinates,
-            new TextButton("Action 1", this.skin, "default"),
-            new TextButton("Action 2", this.skin, "default")
-        };
-
-        // TODO : Changer les actions des différents boutons
-        // Create an array of listeners for the tile menu buttons
-        this.tileMenuActions = new ClickListener[] {
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.print("Coordinates clicked, current case is : ");
-                    System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+        this.tileMenu = new Menu(
+            new Actor[] {
+                this.coordinates,
+                new TextButton("Action 1", this.skin, "default"),
+                new TextButton("Action 2", this.skin, "default")
+            },
+            new ClickListener[] {
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.print("Coordinates clicked, current case is : ");
+                        System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.print("Action 1 clicked, current case is : ");
+                        System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                        map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
+                        tiledMap = loadMap(map);
+                        tiledMapRenderer.setMap(tiledMap);
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.print("Action 2 clicked, current case is : ");
+                        System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                        map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
+                        tiledMap = loadMap(map);
+                        tiledMapRenderer.setMap(tiledMap);
+                    }
                 }
             },
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.print("Action 1 clicked, current case is : ");
-                    System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
-                    map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
-                    tiledMap = loadMap(map);
-                    tiledMapRenderer.setMap(tiledMap);
-                }
-            },
-            new ClickListener(){
-                @Override
-                public void clicked(InputEvent e, float x, float y){
-                    System.out.print("Action 2 clicked, current case is : ");
-                    System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
-                    map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
-                    tiledMap = loadMap(map);
-                    tiledMapRenderer.setMap(tiledMap);
-                }
-            }
-        };
-
-        // We add the listeners to the buttons
-        for (int i = 0; i < this.tileMenuButtons.length; i++) {
-            this.tileMenuButtons[i].addListener(this.tileMenuActions[i]);
-        }
-
-        // Create a background object for the menu
-        Pixmap background = new Pixmap(1,1,Pixmap.Format.LuminanceAlpha);
-        background.setColor(new Color(1, 1, 1, 0.5f));
-        background.fill();
-        this.backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
-
-        // The padding for the menus
-        // TODO : move this to a global variable
-        int padding = 10;
-
-        // Create the menuBar item and set UI parameters
-        this.menuBar = new Table();
-        this.menuBar.setBackground(this.backgroundTexture);
-        this.menuBar.setBounds(
-            0,
-            Gdx.graphics.getHeight() - this.menuButtons[0].getHeight() - 2 * padding,
-            Gdx.graphics.getWidth(),
-            this.menuButtons[0].getHeight() + 2 * padding
+            true // Make the menu a row menu
         );
-        this.menuBar.defaults().padRight(0).padTop(padding);
-        this.menuBar.left().top();
 
-        // Add the menuButtons to the menuBar
-        for(Actor button : this.menuButtons) {
-            this.menuBar.add(button).padLeft(padding).padTop(padding).width(188);
-        }
+        this.tileMenu.setPosition(Gdx.graphics.getWidth() - this.tileMenu.getWidth(), Gdx.graphics.getHeight());
 
-        // Create the tileMenu item and set UI parameters
-        this.tileMenu = new Table();
-        this.tileMenu.setBackground(this.backgroundTexture);
-        this.tileMenu.setBounds(
-            Gdx.graphics.getWidth() - 160 - padding,
-            0,
-            160 + 3*padding,
-            3 * (this.tileMenuButtons[0].getHeight() + 2*padding)
-        );
-        this.tileMenu.defaults().padTop(0).padRight(2*padding).fillX().center();
-        this.tileMenu.row();
-        this.tileMenu.add(this.tileMenuButtons[0]).padTop(padding);
-        this.tileMenu.right().top();
-        this.tileMenu.setVisible(false);
 
-        // Add the tileMenuButtons to the tileMenu
-        for(Actor button : Arrays.copyOfRange(this.tileMenuButtons, 1, this.tileMenuButtons.length)) {
-            this.tileMenu.row();
-            this.tileMenu.add(button).padTop(2*padding).width(160);
-        }
 
         // Setup the stagess for the tilemap and for the menus
         this.mapStage = new Stage(new ScreenViewport());
@@ -279,40 +226,36 @@ public class ClientView implements Screen {
 
     @Override public void render(float t) {
         // Clear the screen
-        Gdx.gl.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update camera with all the zoom and movement stuff
-        this.camera.zoom *= this.controller.getZoom();
-        this.camera.zoom = Math.min(
-            this.camera.zoom,
-            Math.min(
-                map.getWidth() * this.tileSize / Gdx.graphics.getWidth(),
-                map.getHeight() * this.tileSize / Gdx.graphics.getHeight()
-            )
-        );
-        this.camera.zoom = Math.max(
-            this.camera.zoom,
-            0.1f
-        );
+        float newZoom = this.camera.zoom * this.controller.getZoom();
+        if (Math.min(
+                this.map.getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
+                this.map.getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
+            ) > 0 && newZoom < 2.0f) {
+                this.camera.zoom = newZoom;
+        }
         this.camera.update();
+
 
         // Update camera position
         this.camera.position.x += this.camera.zoom * this.moveSpeed * this.controller.getMovement().x;
         this.camera.position.y += this.camera.zoom * this.moveSpeed * this.controller.getMovement().y;
-        this.camera.position.x = Math.max(this.camera.position.x, this.camera.zoom * Gdx.graphics.getWidth() / 2);
-        this.camera.position.x = Math.min(this.camera.position.x, this.camera.zoom * (map.getWidth() * this.tileSize - Gdx.graphics.getWidth() / 2));
-        this.camera.position.y = Math.max(this.camera.position.y, this.camera.zoom * Gdx.graphics.getHeight() / 2);
-        this.camera.position.y = Math.min(this.camera.position.y, this.camera.zoom * (map.getHeight() * this.tileSize - Gdx.graphics.getHeight() / 2));
 
         // Update tile menu coordinates text
-        this.coordinates.setText(
-            "["
-            + (int) (getClickCoordinates().x)
-            + ", "
-            + (int) (getClickCoordinates().y)
-            + "]"
-        );
+        if (isInMap(getClickCoordinates())) {
+            this.coordinates.setText(
+                "["
+                + (int) (getClickCoordinates().x)
+                + ", "
+                + (int) (getClickCoordinates().y)
+                + "]"
+            );
+        } else {
+            this.coordinates.setText("[x, y]");
+        }
 
         // Render the map in the mapStage
         this.tiledMapRenderer.setView(this.camera);
@@ -324,7 +267,7 @@ public class ClientView implements Screen {
         this.mapStage.draw();
 
         // Render the menus in the menuStage
-        this.menuStage.addActor(this.menuBar);
+        this.menuStage.addActor(this.topMenu);
         if (this.controller.getDisplayTileMenu()) {
             this.tileMenu.setVisible(true);
         } else {
@@ -414,15 +357,22 @@ public class ClientView implements Screen {
      * @return les coordonnées de la tuile cliquée
      */
     private Vector2 getClickCoordinates() {
+        Vector3 mouseCoords = this.camera.unproject(new Vector3(this.controller.getClickCoordinates(), 0));
         return new Vector2(
-            (int) (
-                (this.controller.getClickCoordinates().x * this.camera.zoom +
-                this.camera.position.x - (this.camera.zoom * Gdx.graphics.getWidth() / 2)
-                ) / this.tileSize),
-            (int) (
-                (this.camera.position.y + (this.camera.zoom * Gdx.graphics.getHeight() / 2) -
-                this.controller.getClickCoordinates().y * this.camera.zoom
-                ) / this.tileSize)
+            (int) ( mouseCoords.x / this.tileSize ),
+            (int) ( mouseCoords.y / this.tileSize )
+        );
+    }
+
+    /**
+     * Renvoie les coordonnées de la souris dans la map.
+     * @return les coordonnées de la souris
+     */
+    private Vector2 getMouseCoordinates() {
+        Vector3 mouseCoords = this.camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        return new Vector2(
+            (int) ( mouseCoords.x / this.tileSize ),
+            (int) ( mouseCoords.y / this.tileSize )
         );
     }
 
@@ -433,4 +383,12 @@ public class ClientView implements Screen {
         this.tiledMap = loadMap(this.map);
         this.tiledMapRenderer.setMap(this.tiledMap);
     }
+
+    private boolean isInMap(Vector2 coords) {
+        return
+            coords.x >= 0 && 
+            coords.x < this.map.getWidth() && 
+            coords.y >= 0 && 
+            coords.y < this.map.getHeight();
+    }   
 }

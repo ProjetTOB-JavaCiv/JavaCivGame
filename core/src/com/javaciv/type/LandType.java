@@ -16,4 +16,8 @@ public enum LandType {
         return land;
     }
 
+    public LandType fromInt(int i) {
+        return LandType.values()[i];
+    }
+
 }
