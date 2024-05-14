@@ -2,9 +2,10 @@ package com.javaciv.gameElement.map;
 
 import java.util.ArrayList;
 
-import com.javaciv.Utils;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.javaciv.Utils;
 import com.javaciv.builder.HashMapLand;
 import com.javaciv.type.LandType;
 
@@ -205,10 +206,11 @@ public class WorldMap {
         this.sprouts = generateSproutsList(distMontagne, LandType.COLLINE, 100, 0.2f);
         for(int i = 0; i < h; i++) {
             for(int j = 0; j < w; j++) {
-                Tile tile = this.worldMap[j + i * w];
-                if (tile.getLand() == LandType.COLLINE) {
-                    tile.setLand(getNearestSprout(tile, 7));
-                }
+                Tile tile = HashMapLand.getLand(LandType.COLLINE);
+                tile.setX(j);
+                tile.setY(i);
+                tile.setLand(getNearestSprout(tile));
+                worldMap[j + i * w] = tile;
             }
         }
         
