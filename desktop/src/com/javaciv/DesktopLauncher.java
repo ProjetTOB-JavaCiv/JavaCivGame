@@ -25,7 +25,7 @@ public class DesktopLauncher {
 
 		// TODO : Replace lines below by a clean wait for the server to be ready
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(3000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

@@ -1,3 +1,11 @@
+/**
+ * @file ServerThread.java
+ * @brief This file contains the ServerThread class.
+ * @author Théo Bessel
+ * @date 18/04/2024
+ * @version 1.0
+ */
+
 package com.javaciv;
 
 import com.javaciv.server.Server;
