@@ -94,6 +94,8 @@ public class ClientView implements Screen {
         loadConfiguration("config.txt");
 
         // Set the controller and the map
+        
+        this.controller = new ClientController(this);
         this.controller = controller;
         this.map = map;
 
@@ -107,6 +109,9 @@ public class ClientView implements Screen {
             new Texture(Gdx.files.internal("Grass1.png")), // 4 -> Colline
             new Texture(Gdx.files.internal("Water.png")) // 5 -> Mer
         };
+
+        //Load all other textures to put on Tiles
+        Texture gearTexture = new Texture(Gdx.files.internal("gear.png"));
 
         // Load the skin for the UI
         this.skin = new Skin(Gdx.files.internal("skin.json"));
@@ -229,13 +234,16 @@ public class ClientView implements Screen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // Update camera with all the zoom and movement stuff
+        // Update camera with all the zoom and movement stuff*
         float newZoom = this.camera.zoom * this.controller.getZoom();
-        if (Math.min(
-                this.map.getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
-                this.map.getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
-            ) > 0 && newZoom < 2.0f) {
-                this.camera.zoom = newZoom;
+        if (newZoom != 0) {
+            if (Math.min(
+                    this.map.getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
+                    this.map.getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
+                ) > 0 && newZoom < 2.0f) {
+                    this.camera.zoom = newZoom;
+                    this.controller.setZoom(1.00f); //Eviter que cela zoom à l'infini; avec une souris, scrolled ne renvoie jamais 0, mais que 1 ou -1 si elle est utilisée. 
+            }
         }
         this.camera.update();
 
@@ -310,7 +318,7 @@ public class ClientView implements Screen {
         for(String line : lines) {
             String[] parts = line.split("=");
             if(parts[0].equals(key)) {
-                return Integer.parseInt(parts[1]);
+                return Integer.parseInt(parts[1].trim());
             }
         }
         return 0;
@@ -356,7 +364,7 @@ public class ClientView implements Screen {
      * Renvoie les coordonnées de la tuile cliquée par l'utilisateur.
      * @return les coordonnées de la tuile cliquée
      */
-    private Vector2 getClickCoordinates() {
+    protected Vector2 getClickCoordinates() {
         Vector3 mouseCoords = this.camera.unproject(new Vector3(this.controller.getClickCoordinates(), 0));
         return new Vector2(
             (int) ( mouseCoords.x / this.tileSize ),
@@ -391,4 +399,17 @@ public class ClientView implements Screen {
             coords.y >= 0 && 
             coords.y < this.map.getHeight();
     }   
+
+
+    public void openTileMenuAt(Vector2 coordinates) {
+        if (isInMap(coordinates)) {
+            // Met à jour les coordonnées du menu de la tuile
+            this.tileMenu.setPosition(coordinates.x, coordinates.y);
+    
+            // Rend visible le menu de la tuile
+            this.controller.setDisplayTileMenu(true);
+        }
+    }
+
 }
+    

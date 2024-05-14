@@ -12,8 +12,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.InputAdapter;
 
 public class ClientController implements InputProcessor {
+
+    private ClientView clientView;
+
+    public ClientController(ClientView clientView) {
+        this.clientView = clientView;
+    }
 
     private Client client;
 
@@ -24,6 +32,7 @@ public class ClientController implements InputProcessor {
     private boolean displayTileMenu = true;
 
     private Vector2 coordinates = new Vector2(0, 0);
+
 
     private void move(Vector2 movement) {
         Vector2 newMovement = new Vector2(0, 0);
@@ -47,8 +56,16 @@ public class ClientController implements InputProcessor {
         this.client = client;
     }
 
+    public void setClientView(ClientView clientView) {
+        this.clientView = clientView;
+    }
+
     public float getZoom() {
         return this.zoom;
+    }
+
+    public void setZoom(float zoom) {
+        this.zoom = zoom;
     }
 
     public Vector2 getMovement() {
@@ -121,7 +138,24 @@ public class ClientController implements InputProcessor {
         return false;
     }
 
+    public void setDisplayTileMenu(boolean displayTileMenu) {
+        this.displayTileMenu = displayTileMenu;
+    }
+
     public boolean touchDown (int x, int y, int pointer, int button) {
+        if (button == Buttons.RIGHT){
+            System.out.println(this.clientView);
+            System.out.println("Coucou");
+            System.out.println(x + "," + y );
+            this.coordinates = new Vector2(x, y);
+            System.out.println(this.coordinates);
+
+            Vector2 clickCoords = clientView.getClickCoordinates();
+            
+            clientView.openTileMenuAt(clickCoords);
+            
+            
+        }
         System.out.println("Touch down at (" + x + ", " + y + ")");
         displayTileMenu = true;
         this.coordinates = new Vector2(x, y);
@@ -146,9 +180,9 @@ public class ClientController implements InputProcessor {
 
     public boolean scrolled (float amountX, float amountY) {
         if (amountY > 0.7 && amountY < 14) {
-            this.zoom = 1.02f;
+            this.zoom = 1.04f;
         } else if (amountY < -0.7 && amountY > -14) {
-            this.zoom = 0.98f;
+            this.zoom = 0.96f;
         } else {
             this.zoom = 1.0f;
         }
