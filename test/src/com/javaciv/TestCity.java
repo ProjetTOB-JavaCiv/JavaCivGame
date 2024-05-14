@@ -10,11 +10,15 @@ import com.javaciv.type.LandType;
 import com.javaciv.gameElement.Unite;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
+import com.javaciv.gameElement.Player;
+import com.javaciv.gameElement.map.WorldMap;
 
 class TestCity {
     // Declaration des variables utiles
     City city;
     Tile tile;
+    WorldMap worldMap = new WorldMap(100, 100);
+    Player player = new Player("joueur1");
 
     @BeforeEach
     void setUp(){
@@ -22,7 +26,7 @@ class TestCity {
         tile.setX(2);
         tile.setY(59);
 
-        city = new City(tile);
+        city = new City(tile, worldMap, player);
     }
 
     @Test

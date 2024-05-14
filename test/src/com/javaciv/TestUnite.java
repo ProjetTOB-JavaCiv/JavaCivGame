@@ -35,7 +35,7 @@ public class TestUnite {
     @Test
         //Test juste si l'execution de buildHashMapMilitary fonctionne, à finir.
     void testBuilder() {
-        map = HashMapUnit.buildHashMapMilitary();
+        Military unit = HashMapUnit.getMilitary(UniteType.ARCHER);
     }
 
     @Test
