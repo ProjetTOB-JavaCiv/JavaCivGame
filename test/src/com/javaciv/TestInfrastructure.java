@@ -9,7 +9,7 @@ class TestInfrastructure {
 
     @BeforeEach
     void setUp(){
-        infra = new Infrastructure(0, 1, 2, 3, 4, 5);
+        infra = new Infrastructure(0, 1, 2, 3, 4, 5, 6);
     }
 
     @Test

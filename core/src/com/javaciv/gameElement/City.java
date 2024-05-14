@@ -14,6 +14,12 @@ public class City {
 
     /** Position de la ville */
     Tile position;
+    /** Nom de la ville */
+    String name = "ville";
+    /** Point de vie de la ville */
+    int health = 100;
+    /** Puissance d'attaque de la ville */
+    int attack = 10;
     
     /** Nombre de points de science produit par une ville chaque tour */
     int sciencePerTurnProd;
@@ -24,7 +30,7 @@ public class City {
     /** Nombre de gold produit par une ville chaque tour */
     int goldPerTurnProd;
     /** Nombre de points de production porduit par une ville chaque tour */
-    int prodPerTurnProd;
+    int productionPerTurnProd;
 
     /** Nombre de points de nourriture produit par une ville chaque tour */
     int foodPerTurnProd;
@@ -44,9 +50,9 @@ public class City {
     /** Nombre de point de culture nécessaire pour obtenir une nouvelle tuile */
     int cultureNeededForNewTile = 50;
 
-    //TODO : Ajouter des batiments.
-    //Build infrastructure;
-
+    /** Liste de l'ensemble des infrastructures construisent dans une ville */
+    List<Infrastructure> infrastructures;
+    
     /** Liste des tuilles appartenant à la ville */
     List<Tile> cityTiles = new ArrayList<Tile>();
 
@@ -61,7 +67,16 @@ public class City {
         this.population = 1;
     }
 
-    //TODO : Ecrire les méthodes d'actualisation des ressources prod par tour en fonction des batiments et des tuilles
+    // TODO : Faire les méthodes de production d'unité.
+
+    /* ============================== METHODE LIEE AUX TUILLES ============================== */
+
+    private void addTile() {
+        
+    }
+
+
+    /* ============================== METHODE LIEE AUX HABITANTS ============================ */
 
     /** Méthode actualisant la nourriture produit par une ville en rab */
     private void setFoodProduced() {
@@ -96,13 +111,51 @@ public class City {
     /** Méthode pour obtenir le nombre d'habitants.
      * @return population
      */
-    public int getPopulation() {return this.population;}
+    public int getPopulation() {
+        return this.population;
+    }
 
+    /* ================================================================================ */
+    
+    /** Méthode permettant de construire une infrastructure dans une ville
+     * @param infrastructure infrastructure à construire
+     */
+    private void buildInfrastructure(Infrastructure infrastructure) {
+        this.infrastructures.add(infrastructure);
+        this.updatePointPerTurnProd(infrastructure.getFood(), infrastructure.getCulture(), 
+        infrastructure.getFaith(), infrastructure.getScience(), infrastructure.getGold(), infrastructure.getProduction());
+    }
+
+
+
+    /** Méthode actualisant les points de culture produit depuis la dernière expension du territoire
+     * @return producedCulure
+     */
     private void setProducedCulture() {
         this.producedCulture += this.culturePerTurnProd;
     }
 
+    /** Méthode actualisant la valeurs des points produits par tour par une ville
+     * @param foodPoint point de nourriture qu'on ajoute/retire
+     * @param culturePoint point de culture qu'on ajoute/retire
+     * @param faithPoint point de foi qu'on ajoute/retire
+     * @param sciencePoint point de science qu'on ajoute/retire
+     * @param goldPoint point d'or qu'on ajoute/retire
+     * @param productionPoint point de production qu'on ajoute/retire
+     */
+    private void updatePointPerTurnProd(int foodPoint, int culturePoint, 
+    int faithPoint, int sciencePoint, int goldPoint, int productionPoint) {
+        this.foodPerTurnProd += foodPoint;
+        this.culturePerTurnProd += culturePoint;
+        this.faithPerTurnProd += faithPoint;
+        this.sciencePerTurnProd += sciencePoint;
+        this.goldPerTurnProd += goldPoint;
+        this.productionPerTurnProd += productionPoint;
+    }
 
+    /** Méthode renvoyant le nombre de point de culture produit par tour dans une ville
+     * @return culturePerTurnProd
+     */
     public int getCulturePerTurnProd() {
         return this.culturePerTurnProd;
     }
@@ -119,4 +172,7 @@ public class City {
         return this.sciencePerTurnProd;
     }
 
+    public void renameCity(String newName) {
+        this.name = newName;
+    }
 }

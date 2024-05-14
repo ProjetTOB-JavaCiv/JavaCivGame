@@ -3,11 +3,13 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import com.javaciv.builder.HashMapUnitBuilder;
+import com.javaciv.builder.HashMapUnit;
+import com.javaciv.builder.HashMapLand;
+
 import com.javaciv.type.UniteType;
+import com.javaciv.type.LandType;
 import com.javaciv.gameElement.Unite;
 import com.javaciv.gameElement.map.Tile;
-import com.javaciv.gameElement.map.Terrain;
 import com.javaciv.gameElement.Military;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Player;
@@ -22,7 +24,10 @@ class TestTile {
 
     @BeforeEach
     void setUp(){
-        tile = new Tile(2, 59, Terrain.TERRESTRE);
+        tile = HashMapLand.getLand(LandType.PLAINE);
+        tile.setX(2);
+        tile.setY(59);
+
         player = new Player("joueur");
         military = new Military("militaire", player, 10, 20, 3, 100, 5);
         civilian = new Civilian("Civilian", player, 10, 20);
@@ -39,8 +44,8 @@ class TestTile {
     }
 
     @Test
-    void testGetTerrain(){
-        assertEquals(tile.getTerrain(), Terrain.TERRESTRE);
+    void testGetLand(){
+        assertEquals(tile.getLand(), LandType.PLAINE);
     }
 
     @Test

@@ -5,10 +5,10 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import com.javaciv.builder.HashMapUnitBuilder;
+import com.javaciv.builder.HashMapUnit;
 import com.javaciv.type.UniteType;
+import com.javaciv.type.LandType;
 import com.javaciv.gameElement.map.Tile;
-import com.javaciv.gameElement.map.Terrain;
 import com.javaciv.gameElement.Military;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Player;
@@ -22,7 +22,7 @@ public class TestUnite {
     Civilian civilian;
     Player player1, player2;
     HashMap<UniteType, Military> map;
-    Terrain nature;
+    LandType nature;
    
     @BeforeEach
     void setUp() {
@@ -35,7 +35,7 @@ public class TestUnite {
     @Test
         //Test juste si l'execution de buildHashMapMilitary fonctionne, à finir.
     void testBuilder() {
-        map = HashMapUnitBuilder.buildHashMapMilitary();
+        map = HashMapUnit.buildHashMapMilitary();
     }
 
     @Test
@@ -54,10 +54,10 @@ public class TestUnite {
     void getPosition() {
         assertEquals(military.getPosition().getX(), 0);
         assertEquals(military.getPosition().getY(), 0);
-        assertEquals(military.getPosition().getTerrain(), Terrain.TERRESTRE);
+        assertEquals(military.getPosition().getLand(), LandType.PLAINE);
         assertEquals(civilian.getPosition().getX(), 0);
         assertEquals(civilian.getPosition().getY(), 0);
-        assertEquals(civilian.getPosition().getTerrain(), Terrain.TERRESTRE);
+        assertEquals(civilian.getPosition().getLand(), LandType.PLAINE);
     }
 
     @Test
