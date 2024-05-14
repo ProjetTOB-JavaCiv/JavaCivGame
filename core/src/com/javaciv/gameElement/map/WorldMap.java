@@ -2,8 +2,8 @@ package com.javaciv.gameElement.map;
 
 import java.util.ArrayList;
 
-import com.javaciv.Utils;
 import java.util.HashMap;
+import com.javaciv.Utils;
 import com.javaciv.builder.HashMapLand;
 import com.javaciv.type.LandType;
 
@@ -122,7 +122,9 @@ public class WorldMap {
         this.sprouts = generateSproutsList();
         for(int i = 0; i < h; i++) {
             for(int j = 0; j < w; j++) {
-                Tile tile = new Tile(j, i, LandType.COLLINE, false, false, 0, 0, 0, 0, 0, 0, 0.0);
+                Tile tile = HashMapLand.getLand(LandType.COLLINE);
+                tile.setX(j);
+                tile.setY(i);
                 tile.setLand(getNearestSprout(tile));
                 worldMap[j + i * w] = tile;
             }
