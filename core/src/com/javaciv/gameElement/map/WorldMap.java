@@ -209,7 +209,7 @@ public class WorldMap {
                 Tile tile = HashMapLand.getLand(LandType.COLLINE);
                 tile.setX(j);
                 tile.setY(i);
-                tile.setLand(getNearestSprout(tile));
+                tile.setLand(getNearestSprout(tile, 3));
                 worldMap[j + i * w] = tile;
             }
         }
