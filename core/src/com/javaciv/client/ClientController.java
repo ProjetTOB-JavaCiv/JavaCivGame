@@ -8,6 +8,8 @@
 
 package com.javaciv.client;
 
+import java.util.HashMap;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input;
@@ -166,6 +168,25 @@ public class ClientController extends InputAdapter implements InputProcessor {
             this.zoom = 1.0f;
         }
         return false;
+    }
+
+    // Return game informations
+
+    public HashMap<String, String> getGameInfos() {
+        HashMap<String, String> gameInfos = new HashMap<String, String>();
+        gameInfos.put("gold", String.valueOf(this.client.getGoldPoint()));
+        gameInfos.put("culture", String.valueOf(this.client.getCulturePoint()));
+        gameInfos.put("science", String.valueOf(this.client.getSciencePoint()));
+        gameInfos.put("faith", String.valueOf(this.client.getFaithPoint()));
+        return gameInfos;
+    }
+
+    public void nextTurn() {
+        this.client.nextTurn();
+    }
+
+    public int getCurrentPlayer() {
+        return this.client.getClientId();
     }
 
 }

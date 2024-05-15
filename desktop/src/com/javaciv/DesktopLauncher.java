@@ -37,6 +37,12 @@ public class DesktopLauncher {
 		//System.out.println("Client1 world map is server world map : " + (client1.getWorldMap() == thread.getServer().getWorldMap()));
 		//System.out.println("Client2 world map is server world map : " + (client2.getWorldMap() == thread.getServer().getWorldMap()));
 
+		ClientThread clientThread1 = new ClientThread(client1);
+		ClientThread clientThread2 = new ClientThread(client2);
+
+		clientThread1.start();
+		clientThread2.start();
+
 		new Lwjgl3Application(new GameController(client3), config);
 	}
 }

@@ -43,6 +43,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ClientView implements Screen {
     /**
@@ -83,6 +84,7 @@ public class ClientView implements Screen {
     private Skin skin;
     private Menu topMenu;
     private Menu tileMenu;
+    private Menu playerMenu;
 
 
     /**
@@ -119,7 +121,7 @@ public class ClientView implements Screen {
             new Actor[] {
                 new TextButton("Bouton 1", this.skin, "default"),
                 new TextButton("Bouton 2", this.skin, "default"),
-                new TextButton("Bouton 3", this.skin, "default"),
+                new TextButton("Pass tour", this.skin, "default"),
                 new TextButton("Bouton 4", this.skin, "default"),
                 new TextButton("Bouton 5", this.skin, "default")
             },
@@ -128,18 +130,21 @@ public class ClientView implements Screen {
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 1 clicked !");
+                        //controller.printCurrentPlayer();
                     }
                 },
                 new ClickListener(){
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 2 clicked !");
+                        //controller.printGameInfos();
                     }
                 },
                 new ClickListener(){
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 3 clicked !");
+                        controller.nextTurn();
                     }
                 },
                 new ClickListener(){
@@ -201,6 +206,44 @@ public class ClientView implements Screen {
 
         this.tileMenu.setPosition(Gdx.graphics.getWidth() - this.tileMenu.getWidth(), Gdx.graphics.getHeight());
 
+        this.playerMenu = new Menu(
+            new Actor[] {
+                new Label("Faith :      " + this.controller.getGameInfos().get("faith"), this.skin, "default"),
+                new Label("Gold : " + this.controller.getGameInfos().get("gold"), this.skin, "default"),
+                new Label("Culture : " + this.controller.getGameInfos().get("culture"), this.skin, "default"),
+                new Label("Science : " + this.controller.getGameInfos().get("science"), this.skin, "default")
+            },
+            new ClickListener[] {
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Faith clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Gold clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Culture clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Science clicked !");
+                    }
+                }
+            },
+            true
+        );
+
+        this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
+
         // Setup the stagess for the tilemap and for the menus
         this.mapStage = new Stage(new ScreenViewport());
         this.menuStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
@@ -231,6 +274,10 @@ public class ClientView implements Screen {
 
         // Update the game variables :
         ((Label) this.tileMenu.getMenuItems()[0]).setText(getClickCoordinatesText());
+        ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
+        ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
+        ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
+        ((Label) this.playerMenu.getMenuItems()[3]).setText("Science : " + this.controller.getGameInfos().get("science"));
 
         // Update camera with all the zoom and movement stuff
         float newZoom = this.camera.zoom * this.controller.getZoom();
@@ -261,13 +308,14 @@ public class ClientView implements Screen {
 
         // Render the menus in the menuStage
         this.menuStage.addActor(this.topMenu);
+        this.menuStage.addActor(this.tileMenu);
+        this.menuStage.addActor(this.playerMenu);
         if (this.controller.getDisplayTileMenu()) {
             this.tileMenu.setVisible(true);
         } else {
             this.tileMenu.setVisible(false);
         }
-        this.menuStage.addActor(this.tileMenu);
-
+        
         // Draw the menuStage
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
