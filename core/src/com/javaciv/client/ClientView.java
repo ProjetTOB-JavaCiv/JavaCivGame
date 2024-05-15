@@ -273,7 +273,8 @@ public class ClientView implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update the game variables :
-        ((Label) this.tileMenu.getMenuItems()[0]).setText(getClickCoordinatesText());
+        //((Label) this.tileMenu.getMenuItems()[0]).setText(getClickCoordinatesText());
+        ((Label) this.tileMenu.getMenuItems()[0]).setText(getTileMenuCoordinatesText());
         ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
         ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
         ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
@@ -312,6 +313,13 @@ public class ClientView implements Screen {
         this.menuStage.addActor(this.playerMenu);
         if (this.controller.getDisplayTileMenu()) {
             this.tileMenu.setVisible(true);
+            // Convertir les coordonnées de la case spécifique en coordonnées d'écran
+            Vector3 screenCoords = this.camera.project(new Vector3(this.tileMenu.getTileCoords().x * tileSize, this.tileMenu.getTileCoords().y * tileSize, 0));
+
+            this.tileMenu.setPosition(screenCoords.x, screenCoords.y);
+
+
+            
         } else {
             this.tileMenu.setVisible(false);
         }
@@ -320,6 +328,8 @@ public class ClientView implements Screen {
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
         this.menuStage.draw();
+
+
     }
 
     @Override public void resize(int w, int h) {}
@@ -405,6 +415,10 @@ public class ClientView implements Screen {
         );
     }
 
+    private Vector3 getTileScreenCoordinates(Vector2 tileCoords) {
+        return new Vector3(tileCoords.x * this.tileSize, tileCoords.y * this.tileSize, 0);
+    }
+
     /**
      * Renvoie les coordonnées de la souris dans la map.
      * @return les coordonnées de la souris
@@ -446,14 +460,27 @@ public class ClientView implements Screen {
         }
     }
 
+    private String getTileMenuCoordinatesText() {
+        // Update tile menu coordinates text
+        if (this.tileMenu.getTileCoords() != null) {
+            return "["
+                + (int) (this.tileMenu.getTileCoords().x)
+                + ", "
+                + (int) (this.tileMenu.getTileCoords().y)
+                + "]";
+        } else {
+            return "[x, y]";
+        }
+    }
+
 
     public void openTileMenuAt(Vector2 coordinates) {
         //if (isInMap(coordinates)) {
             // Met à jour les coordonnées du menu de la tuile
-            this.tileMenu.setPosition(coordinates.x, Gdx.graphics.getHeight() - coordinates.y);
-    
+            this.tileMenu.setPosition(coordinates.x, Gdx.graphics.getHeight() - coordinates.y);       
+            this.tileMenu.setTileCoords(getClickCoordinates());
             // Rend visible le menu de la tuile
-            this.controller.setDisplayTileMenu(true);
+            //this.controller.setDisplayTileMenu(true);
         //}
     }
 

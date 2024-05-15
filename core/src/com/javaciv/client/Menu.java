@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -37,6 +38,8 @@ public class Menu extends Table {
     private static final int PADDING = 10;
 
     private boolean row;
+
+    private Vector2 tileCoords;
 
     // Define the menu items
     public Actor[] menuItems;
@@ -123,5 +126,12 @@ public class Menu extends Table {
             }
         }
         return maxItemHeight;
+    }
+    public void setTileCoords(Vector2 coords) {
+        this.tileCoords = coords;
+    }
+
+    public Vector2 getTileCoords() {
+        return this.tileCoords;
     }
 }
