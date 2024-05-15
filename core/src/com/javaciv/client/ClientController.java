@@ -15,7 +15,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputAdapter;
 
-public class ClientController implements InputProcessor {
+public class ClientController extends InputAdapter implements InputProcessor {
 
     private ClientView clientView;
 
@@ -29,7 +29,7 @@ public class ClientController implements InputProcessor {
 
     private float zoom = 1.0f;
 
-    private boolean displayTileMenu = true;
+    private boolean displayTileMenu = false;
 
     private Vector2 coordinates = new Vector2(0, 0);
 
@@ -80,6 +80,7 @@ public class ClientController implements InputProcessor {
         return this.coordinates;
     }
 
+    @Override
     public boolean keyDown(int keycode) {
         switch (keycode) {
             case Input.Keys.UP:
@@ -107,6 +108,7 @@ public class ClientController implements InputProcessor {
         return false;
     }
 
+    @Override
     public boolean keyUp (int keycode) {
         switch (keycode) {
             case Input.Keys.UP:
@@ -134,50 +136,27 @@ public class ClientController implements InputProcessor {
         return false;
     }
 
-    public boolean keyTyped (char character) {
-        return false;
-    }
-
     public void setDisplayTileMenu(boolean displayTileMenu) {
         this.displayTileMenu = displayTileMenu;
     }
 
+    @Override
     public boolean touchDown (int x, int y, int pointer, int button) {
         if (button == Buttons.RIGHT){
-            System.out.println(this.clientView);
-            System.out.println("Coucou");
-            System.out.println(x + "," + y );
+            System.out.println("Touch down at (" + x + ", " + y + ")");
+
             this.coordinates = new Vector2(x, y);
-            System.out.println(this.coordinates);
+            clientView.openTileMenuAt(this.coordinates);
 
-            Vector2 clickCoords = clientView.getClickCoordinates();
-            
-            clientView.openTileMenuAt(clickCoords);
-            
-            
+            displayTileMenu = true;
+            return false;
+        } else {
+            displayTileMenu = false;
+            return false;
         }
-        System.out.println("Touch down at (" + x + ", " + y + ")");
-        displayTileMenu = true;
-        this.coordinates = new Vector2(x, y);
-        return false;
     }
 
-    public boolean touchUp (int x, int y, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchCancelled (int x, int y, int pointer, int button) {
-        return false;
-    }
-
-    public boolean touchDragged (int x, int y, int pointer) {
-        return false;
-    }
-
-    public boolean mouseMoved (int x, int y) {
-        return false;
-    }
-
+    @Override
     public boolean scrolled (float amountX, float amountY) {
         if (amountY > 0.7 && amountY < 14) {
             this.zoom = 1.04f;
