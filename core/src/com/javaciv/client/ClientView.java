@@ -16,9 +16,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL20;
@@ -43,6 +43,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class ClientView implements Screen {
     /**
@@ -81,9 +82,9 @@ public class ClientView implements Screen {
      * Widgets
      */
     private Skin skin;
-    private Label coordinates;
     private Menu topMenu;
     private Menu tileMenu;
+    private Menu playerMenu;
 
 
     /**
@@ -94,6 +95,8 @@ public class ClientView implements Screen {
         loadConfiguration("config.txt");
 
         // Set the controller and the map
+        
+        this.controller = new ClientController(this);
         this.controller = controller;
         this.map = map;
 
@@ -108,6 +111,9 @@ public class ClientView implements Screen {
             new Texture(Gdx.files.internal("Water.png")) // 5 -> Mer
         };
 
+        //Load all other textures to put on Tiles
+        Texture gearTexture = new Texture(Gdx.files.internal("gear.png"));
+
         // Load the skin for the UI
         this.skin = new Skin(Gdx.files.internal("skin.json"));
 
@@ -115,7 +121,7 @@ public class ClientView implements Screen {
             new Actor[] {
                 new TextButton("Bouton 1", this.skin, "default"),
                 new TextButton("Bouton 2", this.skin, "default"),
-                new TextButton("Bouton 3", this.skin, "default"),
+                new TextButton("Pass tour", this.skin, "default"),
                 new TextButton("Bouton 4", this.skin, "default"),
                 new TextButton("Bouton 5", this.skin, "default")
             },
@@ -124,18 +130,21 @@ public class ClientView implements Screen {
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 1 clicked !");
+                        //controller.printCurrentPlayer();
                     }
                 },
                 new ClickListener(){
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 2 clicked !");
+                        //controller.printGameInfos();
                     }
                 },
                 new ClickListener(){
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 3 clicked !");
+                        controller.nextTurn();
                     }
                 },
                 new ClickListener(){
@@ -155,13 +164,9 @@ public class ClientView implements Screen {
 
         this.topMenu.setPosition(0, Gdx.graphics.getHeight());
 
-        // Create the coordinates label printed in the tileMenu
-        this.coordinates = new Label("[x, y]", this.skin, "default");
-        this.coordinates.setAlignment(Align.center);
-
         this.tileMenu = new Menu(
             new Actor[] {
-                this.coordinates,
+                new Label(getClickCoordinatesText(), this.skin, "default"),
                 new TextButton("Action 1", this.skin, "default"),
                 new TextButton("Action 2", this.skin, "default")
             },
@@ -197,9 +202,47 @@ public class ClientView implements Screen {
             true // Make the menu a row menu
         );
 
+        ((Label) this.tileMenu.getMenuItems()[0]).setAlignment(Align.center);
+
         this.tileMenu.setPosition(Gdx.graphics.getWidth() - this.tileMenu.getWidth(), Gdx.graphics.getHeight());
 
+        this.playerMenu = new Menu(
+            new Actor[] {
+                new Label("Faith :      " + this.controller.getGameInfos().get("faith"), this.skin, "default"),
+                new Label("Gold : " + this.controller.getGameInfos().get("gold"), this.skin, "default"),
+                new Label("Culture : " + this.controller.getGameInfos().get("culture"), this.skin, "default"),
+                new Label("Science : " + this.controller.getGameInfos().get("science"), this.skin, "default")
+            },
+            new ClickListener[] {
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Faith clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Gold clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Culture clicked !");
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("Science clicked !");
+                    }
+                }
+            },
+            true
+        );
 
+        this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
 
         // Setup the stagess for the tilemap and for the menus
         this.mapStage = new Stage(new ScreenViewport());
@@ -229,13 +272,23 @@ public class ClientView implements Screen {
         Gdx.gl.glClearColor(0f, 0f, 0f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        // Update the game variables :
+        ((Label) this.tileMenu.getMenuItems()[0]).setText(getClickCoordinatesText());
+        ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
+        ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
+        ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
+        ((Label) this.playerMenu.getMenuItems()[3]).setText("Science : " + this.controller.getGameInfos().get("science"));
+
         // Update camera with all the zoom and movement stuff
         float newZoom = this.camera.zoom * this.controller.getZoom();
-        if (Math.min(
-                this.map.getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
-                this.map.getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
-            ) > 0 && newZoom < 2.0f) {
-                this.camera.zoom = newZoom;
+        if (newZoom != 0) {
+            if (Math.min(
+                    this.map.getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
+                    this.map.getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
+                ) > 0 && newZoom < 2.0f) {
+                    this.camera.zoom = newZoom;
+                    this.controller.setZoom(1.0f);
+            }
         }
         this.camera.update();
 
@@ -243,19 +296,6 @@ public class ClientView implements Screen {
         // Update camera position
         this.camera.position.x += this.camera.zoom * this.moveSpeed * this.controller.getMovement().x;
         this.camera.position.y += this.camera.zoom * this.moveSpeed * this.controller.getMovement().y;
-
-        // Update tile menu coordinates text
-        if (isInMap(getClickCoordinates())) {
-            this.coordinates.setText(
-                "["
-                + (int) (getClickCoordinates().x)
-                + ", "
-                + (int) (getClickCoordinates().y)
-                + "]"
-            );
-        } else {
-            this.coordinates.setText("[x, y]");
-        }
 
         // Render the map in the mapStage
         this.tiledMapRenderer.setView(this.camera);
@@ -268,13 +308,14 @@ public class ClientView implements Screen {
 
         // Render the menus in the menuStage
         this.menuStage.addActor(this.topMenu);
+        this.menuStage.addActor(this.tileMenu);
+        this.menuStage.addActor(this.playerMenu);
         if (this.controller.getDisplayTileMenu()) {
             this.tileMenu.setVisible(true);
         } else {
             this.tileMenu.setVisible(false);
         }
-        this.menuStage.addActor(this.tileMenu);
-
+        
         // Draw the menuStage
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
@@ -310,7 +351,7 @@ public class ClientView implements Screen {
         for(String line : lines) {
             String[] parts = line.split("=");
             if(parts[0].equals(key)) {
-                return Integer.parseInt(parts[1]);
+                return Integer.parseInt(parts[1].trim());
             }
         }
         return 0;
@@ -390,5 +431,30 @@ public class ClientView implements Screen {
             coords.x < this.map.getWidth() && 
             coords.y >= 0 && 
             coords.y < this.map.getHeight();
-    }   
+    }
+
+    private String getClickCoordinatesText() {
+        // Update tile menu coordinates text
+        if (this.camera != null && isInMap(getClickCoordinates())) {
+            return "["
+                + (int) (getClickCoordinates().x)
+                + ", "
+                + (int) (getClickCoordinates().y)
+                + "]";
+        } else {
+            return "[x, y]";
+        }
+    }
+
+
+    public void openTileMenuAt(Vector2 coordinates) {
+        //if (isInMap(coordinates)) {
+            // Met à jour les coordonnées du menu de la tuile
+            this.tileMenu.setPosition(coordinates.x, Gdx.graphics.getHeight() - coordinates.y);
+    
+            // Rend visible le menu de la tuile
+            this.controller.setDisplayTileMenu(true);
+        //}
+    }
+
 }

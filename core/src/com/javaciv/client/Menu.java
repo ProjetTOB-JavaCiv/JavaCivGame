@@ -8,14 +8,14 @@
 
 package com.javaciv.client;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 /**
  * This class represents a menu.
@@ -42,25 +42,24 @@ public class Menu extends Table {
     public Actor[] menuItems;
 
     public Menu(Actor[] menuItems, ClickListener[] menuActions, Color backgroundColor, boolean row) {
-        //System.out.println(getMaxItemHeight());
         // Create a background object for the menu
         Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         background.setColor(backgroundColor);
         background.fill();
         TextureRegionDrawable backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
-        setBackground(backgroundTexture);
-        defaults().pad(PADDING);
+        this.setBackground(backgroundTexture);
+        this.defaults().pad(PADDING);
 
         this.menuItems = menuItems;
         this.row = row;
 
         if(row) {
-            setHeight((getMaxItemHeight() + PADDING * 2) * menuItems.length);
-            setWidth(getMaxItemWidth() + PADDING * 2);
-            row();
+            this.setHeight((getMaxItemHeight() + PADDING * 2) * menuItems.length);
+            this.setWidth(getMaxItemWidth() + PADDING * 2);
+            this.row();
         } else {
-            setHeight(getMaxItemHeight() + PADDING * 2);
-            setWidth((getMaxItemWidth() + PADDING * 2) * menuItems.length);
+            this.setHeight(getMaxItemHeight() + PADDING * 2);
+            this.setWidth((getMaxItemWidth() + PADDING * 2) * menuItems.length);
         }
 
         for (int i = 0; i < menuItems.length; i++) {
@@ -69,7 +68,10 @@ public class Menu extends Table {
 
         for(Actor item : menuItems) {
             if(row) { row(); }
-            add(item).pad(PADDING).width(getMaxItemWidth()).height(getMaxItemHeight());
+            this.add(item)
+                .pad(PADDING)
+                .width(getMaxItemWidth())
+                .height(getMaxItemHeight());
         }
     }
 
@@ -78,11 +80,11 @@ public class Menu extends Table {
     }
 
     public Menu(Actor[] menuItems, ClickListener[] menuActions, boolean row) {
-        this(menuItems, menuActions, new Color(1, 1, 1, 0.5f), row);
+        this(menuItems, menuActions, new Color(1, 1, 1, 0.8f), row);
     }
 
     public Menu(Actor[] menuItems, ClickListener[] menuActions) {
-        this(menuItems, menuActions, new Color(1, 1, 1, 0.5f), false);
+        this(menuItems, menuActions, new Color(1, 1, 1, 0.8f), false);
     }
 
     public Actor[] getMenuItems() {
@@ -100,7 +102,7 @@ public class Menu extends Table {
         background.setColor(backgroundColor);
         background.fill();
         TextureRegionDrawable backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
-        setBackground(backgroundTexture);
+        this.setBackground(backgroundTexture);
     }
 
     private float getMaxItemWidth() {
