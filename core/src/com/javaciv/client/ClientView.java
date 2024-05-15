@@ -273,7 +273,6 @@ public class ClientView implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update the game variables :
-        //((Label) this.tileMenu.getMenuItems()[0]).setText(getClickCoordinatesText());
         ((Label) this.tileMenu.getMenuItems()[0]).setText(getTileMenuCoordinatesText());
         ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
         ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
@@ -328,8 +327,6 @@ public class ClientView implements Screen {
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
         this.menuStage.draw();
-
-
     }
 
     @Override public void resize(int w, int h) {}
@@ -415,10 +412,6 @@ public class ClientView implements Screen {
         );
     }
 
-    private Vector3 getTileScreenCoordinates(Vector2 tileCoords) {
-        return new Vector3(tileCoords.x * this.tileSize, tileCoords.y * this.tileSize, 0);
-    }
-
     /**
      * Renvoie les coordonnées de la souris dans la map.
      * @return les coordonnées de la souris
@@ -475,12 +468,9 @@ public class ClientView implements Screen {
 
 
     public void openTileMenuAt(Vector2 coordinates) {
-        //if (isInMap(coordinates)) {
-            // Met à jour les coordonnées du menu de la tuile
-            this.tileMenu.setPosition(coordinates.x, Gdx.graphics.getHeight() - coordinates.y);       
+        // Met à jour les coordonnées du menu de la tuile
+        this.tileMenu.setPosition(coordinates.x, Gdx.graphics.getHeight() - coordinates.y);       
             this.tileMenu.setTileCoords(getClickCoordinates());
-            // Rend visible le menu de la tuile
-            //this.controller.setDisplayTileMenu(true);
         //}
     }
 
