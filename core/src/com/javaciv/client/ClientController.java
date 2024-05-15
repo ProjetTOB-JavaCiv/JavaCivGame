@@ -10,12 +10,16 @@ package com.javaciv.client;
 
 import java.util.HashMap;
 
+import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.gameElement.map.Tile;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.InputAdapter;
+
 
 public class ClientController extends InputAdapter implements InputProcessor {
 
@@ -187,6 +191,14 @@ public class ClientController extends InputAdapter implements InputProcessor {
 
     public int getCurrentClient() {
         return this.client.getClientId();
+    }
+
+    public WorldMap getWorldMap() {
+        return this.client.getWorldMap();
+    }
+
+    void addCity(Tile tile) {
+        this.client.createCity(tile);
     }
 
 }

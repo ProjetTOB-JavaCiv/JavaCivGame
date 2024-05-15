@@ -9,6 +9,7 @@
 package com.javaciv;
 
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
 import com.javaciv.gameElement.Unite;
 
@@ -55,6 +56,9 @@ public interface GameInterface {
     List<City> getCities();
 
     List<Unite> getUnites();
+
+
+    void createCity(Tile tile);
 
 
     // Permet de passer au tour suivant

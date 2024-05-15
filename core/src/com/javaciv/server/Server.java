@@ -9,8 +9,11 @@
 package com.javaciv.server;
 
 import com.javaciv.gameElement.map.WorldMap;
-import com.javaciv.gameElement.City;
+import com.javaciv.gameElement.map.Tile;
+import com.javaciv.gameElement.Infrastructure;
 import com.javaciv.gameElement.Unite;
+import com.javaciv.gameElement.City;
+import com.javaciv.client.Client;
 import com.javaciv.GameInterface;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,6 +122,18 @@ public class Server implements GameInterface {
 
     public List<Unite> getUnites() {
         return this.unites.get(this.clientId);
+    }
+
+    public void createCity(Tile tile) {
+        List<City> playerCities = this.getCities();
+        Client owner = (Client) this.clients.get(this.clientId - 1);
+        City city = new City(tile, owner);
+        // TODO : remove this default infrastructure and find a way to access to a city from a tile.
+        // TODO : add the actions to add infrastructures and tiles to a city with a menu button.
+        Infrastructure infrastructure = new Infrastructure(10, 3, 2, 1, 2, 4, 1);
+        city.buildInfrastructure(infrastructure);
+        playerCities.add(city);
+        this.cities.set(this.clientId, playerCities);
     }
 
 

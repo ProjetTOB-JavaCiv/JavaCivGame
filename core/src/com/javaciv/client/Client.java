@@ -10,6 +10,7 @@ package com.javaciv.client;
 
 import com.javaciv.GameInterface;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
 import com.javaciv.gameElement.Unite;
 
@@ -20,6 +21,14 @@ public class Client implements GameInterface {
     private GameInterface server;
 
     private int clientId = -1;
+
+    private int goldPoint;
+
+    private int culturePoint;
+
+    private int sciencePoint;
+
+    private int faithPoint;
 
     public Client(GameInterface server) {
         this.server = server;
@@ -35,19 +44,31 @@ public class Client implements GameInterface {
     }
 
     public int getGoldPoint() {
-        return this.server.getGoldPoint();
+        if (this.canPassTurn()) {
+            this.goldPoint = this.server.getGoldPoint();
+        }
+        return this.goldPoint;
     }
 
     public int getCulturePoint() {
-        return this.server.getCulturePoint();
+        if (this.canPassTurn()) {
+            this.culturePoint = this.server.getCulturePoint();
+        }
+        return this.culturePoint;
     }
 
     public int getSciencePoint() {
-        return this.server.getSciencePoint();
+        if (this.canPassTurn()) {
+            this.sciencePoint = this.server.getSciencePoint();
+        }
+        return this.sciencePoint;
     }
 
     public int getFaithPoint() {
-        return this.server.getFaithPoint();
+        if (this.canPassTurn()) {
+            this.faithPoint = this.server.getFaithPoint();
+        }
+        return this.faithPoint;
     }
 
     public int getGoldPointProduction() {
@@ -72,6 +93,10 @@ public class Client implements GameInterface {
 
     public List<Unite> getUnites() {
         return this.server.getUnites();
+    }
+
+    public void createCity(Tile tile) {
+        this.server.createCity(tile);
     }
 
     public void nextTurn() {

@@ -68,7 +68,6 @@ public class ClientView implements Screen {
     /**
      * Game objects
      */
-    private WorldMap map;
     private Texture[] tileTextures;
 
     /**
@@ -90,7 +89,7 @@ public class ClientView implements Screen {
     /**
      * Constructor for ClientView
      */
-    public ClientView(ClientController controller, WorldMap map) {
+    public ClientView(ClientController controller) {
         // Load configuration from `config.txt` file
         loadConfiguration("config.txt");
 
@@ -98,7 +97,6 @@ public class ClientView implements Screen {
         
         this.controller = new ClientController(this);
         this.controller = controller;
-        this.map = map;
 
         // Load all the textures for the TileMap
         this.tileTextures = new Texture[] {
@@ -119,9 +117,9 @@ public class ClientView implements Screen {
 
         this.topMenu = new Menu(
             new Actor[] {
-                new TextButton("Bouton 1", this.skin, "default"),
-                new TextButton("Bouton 2", this.skin, "default"),
                 new TextButton("Pass tour", this.skin, "default"),
+                new TextButton("Bouton 2", this.skin, "default"),
+                new TextButton("Bouton 3", this.skin, "default"),
                 new TextButton("Bouton 4", this.skin, "default"),
                 new TextButton("Bouton 5", this.skin, "default")
             },
@@ -130,21 +128,19 @@ public class ClientView implements Screen {
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 1 clicked !");
-                        //controller.printCurrentClient();
+                        controller.nextTurn();
                     }
                 },
                 new ClickListener(){
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 2 clicked !");
-                        //controller.printGameInfos();
                     }
                 },
                 new ClickListener(){
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 3 clicked !");
-                        controller.nextTurn();
                     }
                 },
                 new ClickListener(){
@@ -167,7 +163,7 @@ public class ClientView implements Screen {
         this.tileMenu = new Menu(
             new Actor[] {
                 new Label(getClickCoordinatesText(), this.skin, "default"),
-                new TextButton("Action 1", this.skin, "default"),
+                new TextButton("Create City", this.skin, "default"),
                 new TextButton("Action 2", this.skin, "default")
             },
             new ClickListener[] {
@@ -183,9 +179,9 @@ public class ClientView implements Screen {
                     public void clicked(InputEvent e, float x, float y){
                         System.out.print("Action 1 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
-                        map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
-                        tiledMap = loadMap(map);
-                        tiledMapRenderer.setMap(tiledMap);
+                        //controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
+                        //updateMap();
+                        controller.addCity(controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y));
                     }
                 },
                 new ClickListener(){
@@ -193,9 +189,8 @@ public class ClientView implements Screen {
                     public void clicked(InputEvent e, float x, float y){
                         System.out.print("Action 2 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
-                        map.at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
-                        tiledMap = loadMap(map);
-                        tiledMapRenderer.setMap(tiledMap);
+                        controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
+                        updateMap();
                     }
                 }
             },
@@ -254,7 +249,7 @@ public class ClientView implements Screen {
         this.camera.update();
 
         // Load the map and the renderer
-        this.tiledMap = loadMap(this.map);
+        this.tiledMap = loadMap(this.controller.getWorldMap());
         this.tiledMapRenderer = new OrthogonalTiledMapRenderer(this.tiledMap);
 
         // Create an input multiplexer, which will handle all the inputs
@@ -283,8 +278,8 @@ public class ClientView implements Screen {
         float newZoom = this.camera.zoom * this.controller.getZoom();
         if (newZoom != 0) {
             if (Math.min(
-                    this.map.getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
-                    this.map.getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
+                    this.controller.getWorldMap().getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
+                    this.controller.getWorldMap().getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
                 ) > 0 && newZoom < 2.0f) {
                     this.camera.zoom = newZoom;
                     this.controller.setZoom(1.0f);
@@ -421,16 +416,16 @@ public class ClientView implements Screen {
      * Met à jour la carte.
      */
     private void updateMap() {
-        this.tiledMap = loadMap(this.map);
+        this.tiledMap = loadMap(this.controller.getWorldMap());
         this.tiledMapRenderer.setMap(this.tiledMap);
     }
 
     private boolean isInMap(Vector2 coords) {
         return
             coords.x >= 0 && 
-            coords.x < this.map.getWidth() && 
+            coords.x < this.controller.getWorldMap().getWidth() && 
             coords.y >= 0 && 
-            coords.y < this.map.getHeight();
+            coords.y < this.controller.getWorldMap().getHeight();
     }
 
     private String getClickCoordinatesText() {

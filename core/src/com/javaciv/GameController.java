@@ -35,7 +35,7 @@ public class GameController extends Game {
 	 */
 	@Override
 	public void create() {
-		view = new ClientView(controller, client.getWorldMap());
+		view = new ClientView(controller);
 		controller.setClientView(view); // <-- Ajout de cette ligne pour définir la vue dans le contrôleur
 		this.setScreen(view);
 	}

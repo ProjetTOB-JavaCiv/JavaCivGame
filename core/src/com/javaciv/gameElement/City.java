@@ -25,9 +25,6 @@ public class City {
     /** Puissance d'attaque de la ville */
     int attack = 10;
 
-    /** Carte du monde sur laquelle évolue la ville TODO : Avoir la worldmap en attribue c'est bien ???*/
-    final WorldMap map;
-
     /** Nombre de points de science produit par une ville chaque tour */
     int sciencePerTurnProd;
     /** Nombre de points de culture produit par une ville chaque tour */
@@ -58,7 +55,7 @@ public class City {
     int cultureNeededForNewTile = 50;
 
     /** Liste de l'ensemble des infrastructures construisent dans une ville */
-    List<Infrastructure> infrastructures;
+    List<Infrastructure> infrastructures = new ArrayList<Infrastructure>();
     
     /** Liste des tuilles appartenant à la ville */
     List<Tile> cityTiles = new ArrayList<Tile>();
@@ -69,8 +66,7 @@ public class City {
      * Constructeur d'une ville
      * @param cityPosition position de la ville
      */
-    public City(Tile cityPosition, WorldMap map, Client owner) {
-        this.map = map;
+    public City(Tile cityPosition, Client owner) {
         this.position = cityPosition;
         this.owner = owner;
         
@@ -82,7 +78,7 @@ public class City {
         //Ajout des cases voisines à la ville
         for(int i = -1; i < 2; i =+ 2) {
             for(int j = -1; j < 2; j =+ 2) {
-                Tile newTile = map.at(x + i, y + j); 
+                Tile newTile = this.owner.getWorldMap().at(x + i, y + j);
                 this.cityTiles.add(newTile);
                 addNeighbourTiles(newTile);
             }
@@ -137,19 +133,19 @@ public class City {
         //Ajout des cases voisines à la ville
         //Case de gauche
         if(x-1 >= 0) {
-            neighbourTiles.add(map.at(x - 1, y));
+            neighbourTiles.add(this.owner.getWorldMap().at(x - 1, y));
         }
         //Case de droite
-        if(x+1 <= map.getWidth()) {
-            neighbourTiles.add(map.at(x + 1, y));
+        if(x+1 <= this.owner.getWorldMap().getWidth()) {
+            neighbourTiles.add(this.owner.getWorldMap().at(x + 1, y));
         }
         //Case du dessus
         if( y-1 >= 0) {
-            neighbourTiles.add(map.at(x, y - 1));
+            neighbourTiles.add(this.owner.getWorldMap().at(x, y - 1));
         }
         //Case du dessous
-        if( y+1 <= map.getHeight()) {
-            neighbourTiles.add(map.at(x, y + 1));
+        if( y+1 <= this.owner.getWorldMap().getHeight()) {
+            neighbourTiles.add(this.owner.getWorldMap().at(x, y + 1));
         }
     }
 
@@ -198,7 +194,7 @@ public class City {
     /** Méthode permettant de construire une infrastructure dans une ville
      * @param infrastructure infrastructure à construire
      */
-    private void buildInfrastructure(Infrastructure infrastructure) {
+    public void buildInfrastructure(Infrastructure infrastructure) {
         this.infrastructures.add(infrastructure);
         this.updatePointPerTurnProd(infrastructure.getFood(), infrastructure.getCulture(), 
         infrastructure.getFaith(), infrastructure.getScience(), infrastructure.getGold(), infrastructure.getProduction());
