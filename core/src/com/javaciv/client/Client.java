@@ -10,11 +10,16 @@ package com.javaciv.client;
 
 import com.javaciv.GameInterface;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.gameElement.City;
+import com.javaciv.gameElement.Unite;
+
+import java.util.List;
+import java.util.ArrayList;
 
 public class Client implements GameInterface {
     private GameInterface server;
 
-    int clientId = -1;
+    private int clientId = -1;
 
     public Client(GameInterface server) {
         this.server = server;
@@ -43,6 +48,30 @@ public class Client implements GameInterface {
 
     public int getFaithPoint() {
         return this.server.getFaithPoint();
+    }
+
+    public int getGoldPointProduction() {
+        return this.server.getGoldPointProduction();
+    }
+
+    public int getCulturePointProduction() {
+        return this.server.getCulturePointProduction();
+    }
+
+    public int getSciencePointProduction() {
+        return this.server.getSciencePointProduction();
+    }
+
+    public int getFaithPointProduction() {
+        return this.server.getFaithPointProduction();
+    }
+
+    public List<City> getCities() {
+        return this.server.getCities();
+    }
+
+    public List<Unite> getUnites() {
+        return this.server.getUnites();
     }
 
     public void nextTurn() {

@@ -130,7 +130,7 @@ public class ClientView implements Screen {
                     @Override
                     public void clicked(InputEvent e, float x, float y){
                         System.out.println("Button 1 clicked !");
-                        //controller.printCurrentPlayer();
+                        //controller.printCurrentClient();
                     }
                 },
                 new ClickListener(){

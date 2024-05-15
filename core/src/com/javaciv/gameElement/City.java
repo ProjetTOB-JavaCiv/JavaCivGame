@@ -3,6 +3,7 @@ package com.javaciv.gameElement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.javaciv.client.Client;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
 
@@ -18,7 +19,7 @@ public class City {
     /** Nom de la ville */
     String name = "ville";
     /** Faction ayant le contrôle sur la ville */
-    Player owner;
+    Client owner;
     /** Point de vie de la ville */
     int health = 100;
     /** Puissance d'attaque de la ville */
@@ -68,7 +69,7 @@ public class City {
      * Constructeur d'une ville
      * @param cityPosition position de la ville
      */
-    public City(Tile cityPosition, WorldMap map, Player owner) {
+    public City(Tile cityPosition, WorldMap map, Client owner) {
         this.map = map;
         this.position = cityPosition;
         this.owner = owner;
@@ -253,7 +254,7 @@ public class City {
         this.name = newName;
     }
 
-    public Player getOwner() {
+    public Client getOwner() {
         return this.owner;
     }
 }

@@ -185,7 +185,7 @@ public class ClientController extends InputAdapter implements InputProcessor {
         this.client.nextTurn();
     }
 
-    public int getCurrentPlayer() {
+    public int getCurrentClient() {
         return this.client.getClientId();
     }
 

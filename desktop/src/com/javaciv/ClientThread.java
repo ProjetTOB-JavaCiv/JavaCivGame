@@ -22,6 +22,7 @@ public class ClientThread extends Thread {
     public void run() {
         while (true) {
             try {
+                // Sleep to simulate the time of the other players (1sec is okay for testing purpose)
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();

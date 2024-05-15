@@ -11,23 +11,25 @@ import com.javaciv.type.LandType;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.Military;
 import com.javaciv.gameElement.Civilian;
-import com.javaciv.gameElement.Player;
+import com.javaciv.server.Server;
+import com.javaciv.client.Client;
 
 
 
 public class TestUnite {
-   
     // Declaration des variables utiles
     Military military;
     Civilian civilian;
-    Player player1, player2;
+    Server server;
+    Client player1, player2;
     HashMap<UniteType, Military> map;
     LandType nature;
-   
+
     @BeforeEach
     void setUp() {
-        player1 = new Player("Joueur1");
-        player2 = new Player("Joueur2");
+        server = new Server();
+        player1 = new Client(server);
+        player2 = new Client(server);
         military = new Military("militaire", player1, 11, 22, 3, 100, 5);
         civilian = new Civilian("civil", player2, 10, 20);
     }

@@ -12,7 +12,8 @@ import com.javaciv.gameElement.Unite;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.Military;
 import com.javaciv.gameElement.Civilian;
-import com.javaciv.gameElement.Player;
+import com.javaciv.server.Server;
+import com.javaciv.client.Client;
 
 class TestTile {
 
@@ -20,7 +21,8 @@ class TestTile {
     Tile tile;
     Military military;
     Civilian civilian;
-    Player player;
+    Server server;
+    Client player;
 
     @BeforeEach
     void setUp(){
@@ -28,7 +30,8 @@ class TestTile {
         tile.setX(2);
         tile.setY(59);
 
-        player = new Player("joueur");
+        server = new Server();
+        player = new Client(server);
         military = new Military("militaire", player, 10, 20, 3, 100, 5);
         civilian = new Civilian("Civilian", player, 10, 20);
     }

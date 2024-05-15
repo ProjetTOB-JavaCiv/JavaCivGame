@@ -3,7 +3,7 @@ package com.javaciv.gameElement.map;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
 import com.javaciv.type.LandType;
-import com.javaciv.gameElement.Player;
+import com.javaciv.client.Client;
 
 /**
  * Cette classe représente une tuile.
@@ -23,7 +23,7 @@ public class Tile {
     private LandType land;
 
     /** Propriétaire de la case, null si la case est occupé par personne */
-    Player owner = null;
+    Client owner = null;
 
     /** Nombre de points de nourriture de la tuile */
     int food;
@@ -203,7 +203,7 @@ public class Tile {
     }
 
     /** Renvoie le propriétaire de la case */
-    public Player getOwner() {
+    public Client getOwner() {
         return this.owner;
     }
 
@@ -247,7 +247,7 @@ public class Tile {
     /** Set la propriété d'un joueur sur une tuille 
      * @param owner la civilisation qui va posséder la tuille
     */
-    public void setOwner(Player owner) {
+    public void setOwner(Client owner) {
         this.owner = owner;
     }
 }
