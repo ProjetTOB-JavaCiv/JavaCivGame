@@ -9,6 +9,7 @@
 package com.javaciv.client;
 
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.gameElement.City;
 import com.javaciv.type.LandType;
 import com.javaciv.client.Menu;
 
@@ -69,6 +70,7 @@ public class ClientView implements Screen {
      * Game objects
      */
     private Texture[] tileTextures;
+    private Texture[] cityTextures;
 
     /**
      * Configuration objects
@@ -107,6 +109,10 @@ public class ClientView implements Screen {
             new Texture(Gdx.files.internal("Mountain.png")), // 3 -> Montagne
             new Texture(Gdx.files.internal("Grass1.png")), // 4 -> Colline
             new Texture(Gdx.files.internal("Water.png")) // 5 -> Mer
+        };
+
+        this.cityTextures = new Texture[] {
+            new Texture(Gdx.files.internal("City.png"))
         };
 
         //Load all other textures to put on Tiles
@@ -180,8 +186,8 @@ public class ClientView implements Screen {
                         System.out.print("Action 1 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
                         //controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
-                        //updateMap();
                         controller.addCity(controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y));
+                        updateMap();
                     }
                 },
                 new ClickListener(){
@@ -274,13 +280,17 @@ public class ClientView implements Screen {
         ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
         ((Label) this.playerMenu.getMenuItems()[3]).setText("Science : " + this.controller.getGameInfos().get("science"));
 
+
+        this.playerMenu.resizeMenu();
+        this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
+
         // Update camera with all the zoom and movement stuff
         float newZoom = this.camera.zoom * this.controller.getZoom();
         if (newZoom != 0) {
             if (Math.min(
                     this.controller.getWorldMap().getWidth() * this.tileSize - Gdx.graphics.getWidth() * newZoom,
                     this.controller.getWorldMap().getHeight() * this.tileSize - Gdx.graphics.getHeight() * newZoom
-                ) > 0 && newZoom < 2.0f) {
+                ) > 0 && newZoom > 0.15f) {
                     this.camera.zoom = newZoom;
                     this.controller.setZoom(1.0f);
             }
@@ -369,8 +379,8 @@ public class ClientView implements Screen {
      */
     private TiledMap loadMap(WorldMap map) {
         TiledMap tiledMap = new TiledMap();
-        TiledMapTileLayer tiledMapLayer = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
-        tiledMap.getLayers().add(tiledMapLayer);
+        TiledMapTileLayer tiledMapLayer0 = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
+        tiledMap.getLayers().add(tiledMapLayer0);
         
         for(int i = 0; i < map.getHeight(); i++) {
             for(int j = 0; j < map.getWidth(); j++) {
@@ -382,8 +392,22 @@ public class ClientView implements Screen {
                         )
                     )
                 );
-                tiledMapLayer.setCell(j, i, cell);
+                tiledMapLayer0.setCell(j, i, cell);
             }
+        }
+
+        TiledMapTileLayer tiledMapLayer1 = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
+        tiledMap.getLayers().add(tiledMapLayer1);
+        for (City city : this.controller.getCities()) {
+            final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+            cell.setTile(
+                new StaticTiledMapTile(
+                    new TextureRegion(
+                        this.cityTextures[0], 0, 0, this.tileSize, this.tileSize
+                    )
+                )
+            );
+            tiledMapLayer1.setCell(city.getX(), city.getY(), cell);
         }
         return tiledMap;
     }

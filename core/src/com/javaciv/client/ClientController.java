@@ -9,9 +9,11 @@
 package com.javaciv.client;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.map.Tile;
+import com.javaciv.gameElement.City;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
@@ -170,9 +172,9 @@ public class ClientController extends InputAdapter implements InputProcessor {
     public boolean scrolled (float amountX, float amountY) {
         displayTileMenu = false;
         if (amountY > 0.7 && amountY < 14) {
-            this.zoom = 1.04f;
+            this.zoom = 1.06f;
         } else if (amountY < -0.7 && amountY > -14) {
-            this.zoom = 0.96f;
+            this.zoom = 0.94f;
         } else {
             this.zoom = 1.0f;
         }
@@ -183,11 +185,21 @@ public class ClientController extends InputAdapter implements InputProcessor {
 
     public HashMap<String, String> getGameInfos() {
         HashMap<String, String> gameInfos = new HashMap<String, String>();
-        gameInfos.put("gold", String.valueOf(this.client.getGoldPoint()));
-        gameInfos.put("culture", String.valueOf(this.client.getCulturePoint()));
-        gameInfos.put("science", String.valueOf(this.client.getSciencePoint()));
-        gameInfos.put("faith", String.valueOf(this.client.getFaithPoint()));
+        gameInfos.put("gold", this.intToStringNotation(this.client.getGoldPoint()));
+        gameInfos.put("culture", this.intToStringNotation(this.client.getCulturePoint()));
+        gameInfos.put("science", this.intToStringNotation(this.client.getSciencePoint()));
+        gameInfos.put("faith", this.intToStringNotation(this.client.getFaithPoint()));
         return gameInfos;
+    }
+
+    private String intToStringNotation(int number) {
+        String[] suffixes = new String[] { "", "K", "M", "B", "T", "Q" };
+        int suffixIndex = 0;
+        while (number >= 1000) {
+            number /= 1000;
+            suffixIndex++;
+        }
+        return number + suffixes[suffixIndex];
     }
 
     public void nextTurn() {
@@ -204,6 +216,10 @@ public class ClientController extends InputAdapter implements InputProcessor {
 
     void addCity(Tile tile) {
         this.client.createCity(tile);
+    }
+
+    public List<City> getCities() {
+        return this.client.getCities();
     }
 
 }
