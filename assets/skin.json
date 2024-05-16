@@ -25,6 +25,11 @@
 		default: {
 			font: default,
 			fontColor: black
+		},
+		backgrounded: {
+			font: default,
+			fontColor: black,
+			background: window
 		}
 	},
 	com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {

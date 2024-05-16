@@ -30,6 +30,10 @@ public class Client implements GameInterface {
 
     private int faithPoint;
 
+    private List<City> cities;
+
+    private List<Unite> unites;
+
     public Client(GameInterface server) {
         this.server = server;
         this.clientId = createClient(this);
@@ -88,11 +92,17 @@ public class Client implements GameInterface {
     }
 
     public List<City> getCities() {
-        return this.server.getCities();
+        if (this.canPassTurn()) {
+            this.cities = this.server.getCities();
+        }
+        return this.cities;
     }
 
     public List<Unite> getUnites() {
-        return this.server.getUnites();
+        if (this.canPassTurn()) {
+            this.unites = this.server.getUnites();
+        }
+        return this.unites;
     }
 
     public void createCity(Tile tile) {

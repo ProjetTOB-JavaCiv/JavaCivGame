@@ -251,6 +251,10 @@ public class City {
         this.name = newName;
     }
 
+    public String getName() {
+        return this.name;
+    }
+    
     public Client getOwner() {
         return this.owner;
     }

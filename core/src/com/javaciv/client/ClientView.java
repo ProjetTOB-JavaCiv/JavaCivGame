@@ -43,6 +43,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -57,6 +59,7 @@ public class ClientView implements Screen {
      */
     private Stage mapStage;
     private Stage menuStage;
+    private Stage labelStage;
     private OrthographicCamera camera;
     private InputMultiplexer inputMultiplexer;
 
@@ -86,6 +89,7 @@ public class ClientView implements Screen {
     private Menu topMenu;
     private Menu tileMenu;
     private Menu playerMenu;
+    private List<Label> cityNames = new ArrayList<Label>();
 
 
     /**
@@ -187,7 +191,19 @@ public class ClientView implements Screen {
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
                         //controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
                         controller.addCity(controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y));
-                        updateMap();
+
+                        // TODO : move this to as specific function with a loop over the cities
+                        City city = controller.getCities().get(controller.getCities().size() - 1);
+                        Label cityName = new Label(city.getName(), skin, "backgrounded");
+                        Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+                        background.setColor(new Color(0, 1, 1, 0.2f));
+                        background.fill();
+                        TextureRegionDrawable backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
+                        cityName.getStyle().background = backgroundTexture;
+                        cityNames.add(
+                            cityName
+                        );
+                        labelStage.addActor(cityName);
                     }
                 },
                 new ClickListener(){
@@ -196,7 +212,6 @@ public class ClientView implements Screen {
                         System.out.print("Action 2 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
                         controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
-                        updateMap();
                     }
                 }
             },
@@ -248,6 +263,7 @@ public class ClientView implements Screen {
         // Setup the stagess for the tilemap and for the menus
         this.mapStage = new Stage(new ScreenViewport());
         this.menuStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
+        this.labelStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
         // Setup the camera for the tilemap (the camera will be able to move and zoom on the map)
         this.camera = (OrthographicCamera) this.mapStage.getViewport().getCamera();
@@ -305,6 +321,10 @@ public class ClientView implements Screen {
         // Render the map in the mapStage
         this.tiledMapRenderer.setView(this.camera);
         this.tiledMapRenderer.render();
+
+        // TODO : Add a function to update the map only when needed
+        // This can be done by sending a signal from the server to all the clients in Server.nextTurn() function
+        this.updateMap();
         
         // Draw the mapStage
         this.mapStage.act(Gdx.graphics.getDeltaTime());
@@ -320,11 +340,26 @@ public class ClientView implements Screen {
         } else {
             this.tileMenu.setVisible(false);
         }
+
+        // Draw the labelStage
+        this.labelStage.act(Gdx.graphics.getDeltaTime());
+        this.labelStage.getViewport().apply();
+        this.labelStage.draw();
         
         // Draw the menuStage
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
         this.menuStage.draw();
+    }
+
+    void renderCities() {
+        if (this.cityNames != null) {
+            for(int i = 0; i < this.cityNames.size(); i++) {
+                City city = this.controller.getCities().get(i);
+                Vector3 cityCoords = this.camera.project(new Vector3(city.getX() * this.tileSize, (city.getY() + 1) * this.tileSize, 0));
+                this.cityNames.get(i).setPosition(cityCoords.x, cityCoords.y);
+            }
+        }
     }
 
     @Override public void resize(int w, int h) {}
@@ -440,6 +475,7 @@ public class ClientView implements Screen {
      * Met à jour la carte.
      */
     private void updateMap() {
+        this.renderCities();
         this.tiledMap = loadMap(this.controller.getWorldMap());
         this.tiledMapRenderer.setMap(this.tiledMap);
     }
