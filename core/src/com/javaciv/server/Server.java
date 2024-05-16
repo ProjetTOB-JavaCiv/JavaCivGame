@@ -124,16 +124,29 @@ public class Server implements GameInterface {
         return this.unites.get(this.clientId);
     }
 
-    public void createCity(Tile tile) {
-        List<City> playerCities = this.getCities();
-        Client owner = (Client) this.clients.get(this.clientId - 1);
-        City city = new City(tile, owner);
-        // TODO : remove this default infrastructure and find a way to access to a city from a tile.
-        // TODO : add the actions to add infrastructures and tiles to a city with a menu button.
-        Infrastructure infrastructure = new Infrastructure(10, 3, 2, 1, 2, 4, 1);
-        city.buildInfrastructure(infrastructure);
-        playerCities.add(city);
-        this.cities.set(this.clientId, playerCities);
+    public boolean createCity(Tile tile) {
+        if (this.isTileAvailableForCity(tile)) {
+            List<City> playerCities = this.getCities();
+            Client owner = (Client) this.clients.get(this.clientId - 1);
+            City city = new City(tile, owner);
+            // TODO : remove this default infrastructure and find a way to access to a city from a tile.
+            // TODO : add the actions to add infrastructures and tiles to a city with a menu button.
+            Infrastructure infrastructure = new Infrastructure(10, 3, 2, 1, 2, 4, 1);
+            city.buildInfrastructure(infrastructure);
+            playerCities.add(city);
+            this.cities.set(this.clientId, playerCities);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isTileAvailableForCity(Tile tile) {
+        for (City city : this.getCities()) {
+            if (city.getPosition().distance(tile) == 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
 

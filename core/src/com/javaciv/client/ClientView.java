@@ -190,20 +190,20 @@ public class ClientView implements Screen {
                         System.out.print("Action 1 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
                         //controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
-                        controller.addCity(controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y));
-
-                        // TODO : move this to as specific function with a loop over the cities
-                        City city = controller.getCities().get(controller.getCities().size() - 1);
-                        Label cityName = new Label(city.getName(), skin, "backgrounded");
-                        Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-                        background.setColor(new Color(0, 1, 1, 0.2f));
-                        background.fill();
-                        TextureRegionDrawable backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
-                        cityName.getStyle().background = backgroundTexture;
-                        cityNames.add(
-                            cityName
-                        );
-                        labelStage.addActor(cityName);
+                        if (controller.addCity(controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y))) {
+                            // TODO : move this to as specific function with a loop over the cities
+                            City city = controller.getCities().get(controller.getCities().size() - 1);
+                            Label cityName = new Label(city.getName(), skin, "backgrounded");
+                            Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
+                            background.setColor(new Color(0, 1, 1, 0.2f));
+                            background.fill();
+                            TextureRegionDrawable backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
+                            cityName.getStyle().background = backgroundTexture;
+                            cityNames.add(
+                                cityName
+                            );
+                            labelStage.addActor(cityName);
+                        }
                     }
                 },
                 new ClickListener(){

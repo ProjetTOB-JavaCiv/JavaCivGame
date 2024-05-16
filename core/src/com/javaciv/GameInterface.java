@@ -57,8 +57,8 @@ public interface GameInterface {
 
     List<Unite> getUnites();
 
-
-    void createCity(Tile tile);
+    // The boolean is used to know if the city has been created
+    boolean createCity(Tile tile);
 
 
     // Permet de passer au tour suivant

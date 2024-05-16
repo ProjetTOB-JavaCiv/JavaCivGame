@@ -105,8 +105,8 @@ public class Client implements GameInterface {
         return this.unites;
     }
 
-    public void createCity(Tile tile) {
-        this.server.createCity(tile);
+    public boolean createCity(Tile tile) {
+        return this.server.createCity(tile);
     }
 
     public void nextTurn() {

@@ -259,6 +259,10 @@ public class City {
         return this.owner;
     }
 
+    public Tile getPosition() {
+        return this.position;
+    }
+
     public int getX() {
         return this.x;
     }

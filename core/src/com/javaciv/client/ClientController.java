@@ -214,8 +214,8 @@ public class ClientController extends InputAdapter implements InputProcessor {
         return this.client.getWorldMap();
     }
 
-    void addCity(Tile tile) {
-        this.client.createCity(tile);
+    public boolean addCity(Tile tile) {
+        return this.client.createCity(tile);
     }
 
     public List<City> getCities() {
