@@ -74,6 +74,7 @@ public class ClientView implements Screen {
      */
     private Texture[] tileTextures;
     private Texture[] cityTextures;
+    private Texture[] selectTextures;
 
     /**
      * Configuration objects
@@ -90,6 +91,7 @@ public class ClientView implements Screen {
     private Menu tileMenu;
     private Menu playerMenu;
     private List<Label> cityNames = new ArrayList<Label>();
+    private List<Vector2> selectedTiles = new ArrayList<Vector2>();
 
 
     /**
@@ -117,6 +119,10 @@ public class ClientView implements Screen {
 
         this.cityTextures = new Texture[] {
             new Texture(Gdx.files.internal("City.png"))
+        };
+
+        this.selectTextures = new Texture[] {
+            new Texture(Gdx.files.internal("redframe.png"))
         };
 
         //Load all other textures to put on Tiles
@@ -432,7 +438,6 @@ public class ClientView implements Screen {
         }
 
         TiledMapTileLayer tiledMapLayer1 = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
-        tiledMap.getLayers().add(tiledMapLayer1);
         for (City city : this.controller.getCities()) {
             final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
             cell.setTile(
@@ -444,6 +449,23 @@ public class ClientView implements Screen {
             );
             tiledMapLayer1.setCell(city.getX(), city.getY(), cell);
         }
+        tiledMap.getLayers().add(tiledMapLayer1);
+        
+
+        TiledMapTileLayer redFrameLayer = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
+        for (Vector2 selectedTile : selectedTiles) {
+            final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+            cell.setTile(
+                new StaticTiledMapTile(
+                    new TextureRegion(
+                        this.selectTextures[0], 0, 0, this.tileSize, this.tileSize
+                    )
+                )
+            );
+            redFrameLayer.setCell((int) selectedTile.x, (int) selectedTile.y, cell);
+        }
+        tiledMap.getLayers().add(redFrameLayer);
+
         return tiledMap;
     }
 
@@ -509,6 +531,7 @@ public class ClientView implements Screen {
     
             // Rend visible le menu de la tuile
             this.controller.setDisplayTileMenu(true);
+            selectedTiles.add(getClickCoordinates());
         //}
     }
 
