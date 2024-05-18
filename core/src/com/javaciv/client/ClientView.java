@@ -346,6 +346,8 @@ public class ClientView implements Screen {
         } else {
             this.tileMenu.setVisible(false);
         }
+        
+
 
         // Draw the labelStage
         this.labelStage.act(Gdx.graphics.getDeltaTime());
@@ -527,12 +529,17 @@ public class ClientView implements Screen {
     public void openTileMenuAt(Vector2 coordinates) {
         //if (isInMap(coordinates)) {
             // Met à jour les coordonnées du menu de la tuile
+            selectedTiles.clear();
             this.tileMenu.setPosition(coordinates.x, Gdx.graphics.getHeight() - coordinates.y);
     
             // Rend visible le menu de la tuile
             this.controller.setDisplayTileMenu(true);
             selectedTiles.add(getClickCoordinates());
         //}
+    }
+
+    public void closeAllSelectedTiles() {
+        selectedTiles.clear();
     }
 
 }

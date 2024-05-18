@@ -163,6 +163,7 @@ public class ClientController extends InputAdapter implements InputProcessor {
             displayTileMenu = true;
             return false;
         } else {
+            this.clientView.closeAllSelectedTiles();
             displayTileMenu = false;
             return false;
         }
