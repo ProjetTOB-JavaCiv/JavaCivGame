@@ -82,6 +82,7 @@ public class ClientView implements Screen {
     private int renderDistance;
     private int tileSize;
     private int moveSpeed;
+    private Vector3 tileMenuWorldCoordinates;
 
     /**
      * Widgets
@@ -271,6 +272,7 @@ public class ClientView implements Screen {
         this.menuStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
         this.labelStage = new Stage(new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight()));
 
+
         // Setup the camera for the tilemap (the camera will be able to move and zoom on the map)
         this.camera = (OrthographicCamera) this.mapStage.getViewport().getCamera();
         this.camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -296,12 +298,17 @@ public class ClientView implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // Update the game variables :
-        ((Label) this.tileMenu.getMenuItems()[0]).setText(getClickCoordinatesText());
+        if (this.controller.getDisplayTileMenu()) {
+            ((Label) this.tileMenu.getMenuItems()[0]).setText("["
+                + (int) tileMenuWorldCoordinates.x / this.tileSize
+                + ", "
+                + (int) tileMenuWorldCoordinates.y / this.tileSize
+                + "]");
+        }
         ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
         ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
         ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
         ((Label) this.playerMenu.getMenuItems()[3]).setText("Science : " + this.controller.getGameInfos().get("science"));
-
 
         this.playerMenu.resizeMenu();
         this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
@@ -318,7 +325,16 @@ public class ClientView implements Screen {
             }
         }
         this.camera.update();
-
+        if (this.controller.getDisplayTileMenu()) {
+            this.tileMenu.setVisible(true);
+            // Convertir les coordonnées de la case spécifique en coordonnées d'tileMenuWorldCoordinates
+            Vector3 screenCoords = this.camera.project(new Vector3(tileMenuWorldCoordinates.x, tileMenuWorldCoordinates.y, 0));
+            this.tileMenu.setPosition(screenCoords.x, screenCoords.y);
+        } else {
+            this.tileMenu.setVisible(false);
+        }
+        
+        
 
         // Update camera position
         this.camera.position.x += this.camera.zoom * this.moveSpeed * this.controller.getMovement().x;
@@ -341,11 +357,6 @@ public class ClientView implements Screen {
         this.menuStage.addActor(this.topMenu);
         this.menuStage.addActor(this.tileMenu);
         this.menuStage.addActor(this.playerMenu);
-        if (this.controller.getDisplayTileMenu()) {
-            this.tileMenu.setVisible(true);
-        } else {
-            this.tileMenu.setVisible(false);
-        }
         
 
 
@@ -358,6 +369,7 @@ public class ClientView implements Screen {
         this.menuStage.act(Gdx.graphics.getDeltaTime());
         this.menuStage.getViewport().apply();
         this.menuStage.draw();
+
     }
 
     void renderCities() {
@@ -531,7 +543,7 @@ public class ClientView implements Screen {
             // Met à jour les coordonnées du menu de la tuile
             selectedTiles.clear();
             this.tileMenu.setPosition(coordinates.x, Gdx.graphics.getHeight() - coordinates.y);
-    
+            tileMenuWorldCoordinates = this.camera.unproject(new Vector3(coordinates.x, coordinates.y, 0));
             // Rend visible le menu de la tuile
             this.controller.setDisplayTileMenu(true);
             selectedTiles.add(getClickCoordinates());
