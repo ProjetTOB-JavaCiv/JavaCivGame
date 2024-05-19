@@ -9,8 +9,12 @@
 package com.javaciv;
 
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.type.TechnologyID;
 import com.javaciv.gameElement.map.Tile;
+import com.javaciv.builder.HashMapInfrastructure;
+import com.javaciv.builder.HashMapUnit;
 import com.javaciv.gameElement.City;
+import com.javaciv.gameElement.Technology;
 import com.javaciv.gameElement.Unite;
 
 import java.util.List;
@@ -56,6 +60,10 @@ public interface GameInterface {
     List<City> getCities();
 
     List<Unite> getUnites();
+
+    void setCurrentResearch(TechnologyID t);
+
+    Technology getTechnologyInfo(TechnologyID t);
 
     // The boolean is used to know if the city has been created
     boolean createCity(Tile tile);

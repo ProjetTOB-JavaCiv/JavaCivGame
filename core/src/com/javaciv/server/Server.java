@@ -9,16 +9,22 @@
 package com.javaciv.server;
 
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.type.TechnologyID;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.Infrastructure;
+import com.javaciv.gameElement.Technology;
 import com.javaciv.gameElement.Unite;
+import com.javaciv.gameElement.Technology.TechnologyStates;
 import com.javaciv.gameElement.City;
 import com.javaciv.client.Client;
 import com.javaciv.GameInterface;
+import com.javaciv.builder.HashMapInfrastructure;
+import com.javaciv.builder.HashMapUnit;
+import com.javaciv.builder.TechnologyTree;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class Server implements GameInterface {
     private WorldMap worldMap;
@@ -38,6 +44,14 @@ public class Server implements GameInterface {
     private List<List<City>> cities;
 
     private List<List<Unite>> unites;
+
+    private List<HashMapUnit> discoveredMilitary;
+
+    private List<HashMapInfrastructure> discoveredInfrastructures;
+
+    private List<TechnologyTree> technologyTree;
+    
+    private List<Technology> currentResearch;
 
     public Server() {
         this.worldMap = new WorldMap(100, 200);
@@ -124,6 +138,26 @@ public class Server implements GameInterface {
         return this.unites.get(this.clientId);
     }
 
+    // pas sur de la portée de cette fonction au niveau securité
+    public HashMapUnit getDiscoveredUnit() {
+        return this.discoveredMilitary.get(clientId);
+    }
+
+    public HashMapInfrastructure getDiscoveredInfrastructures() {
+        return this.discoveredInfrastructures.get(clientId);
+    }
+
+    public Technology getTechnologyInfo(TechnologyID t) {
+        return this.technologyTree.get(this.clientId).getTechnology(t);
+    }
+
+    public void setCurrentResearch(TechnologyID t) {
+        Technology tech = this.technologyTree.get(this.clientId).map.get(t);
+        if (tech.getState() == TechnologyStates.DISCOVERABLE) {
+            this.currentResearch.set(this.clientId, tech);
+        }
+    }
+
     public boolean createCity(Tile tile) {
         if (this.isTileAvailableForCity(tile)) {
             List<City> playerCities = this.getCities();
@@ -151,12 +185,25 @@ public class Server implements GameInterface {
 
 
     public void nextTurn() {
-        this.goldPoint.set(this.clientId, this.goldPoint.get(this.clientId) + this.getGoldPointProduction());
-        this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) + this.getCulturePointProduction());
-        this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) + this.getSciencePointProduction());
-        this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) + this.getFaithPointProduction());
-        this.clientId = (this.clientId + 1) % getClientCount();
-        System.out.println("Next turn, clientId is : " + this.getClientId());
+        if(this.currentResearch.get(this.clientId) != null) {
+            this.goldPoint.set(this.clientId, this.goldPoint.get(this.clientId) + this.getGoldPointProduction());
+            this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) + this.getCulturePointProduction());
+            this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) + this.getSciencePointProduction());
+            this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) + this.getFaithPointProduction());
+            this.clientId = (this.clientId + 1) % getClientCount();
+            System.out.println("Next turn, clientId is : " + this.getClientId());
+        } else {
+            System.out.println("Unable to  skip turn, please select a technology to research !");
+        }
+        
+    }
+
+    private void discoverTechnology() {
+        if (this.sciencePoint.get(this.clientId) >= this.currentResearch.get(this.clientId).getCost()) {
+            this.sciencePoint.set(this.clientId, 0);
+            this.technologyTree.get(this.clientId).discover(this.currentResearch.get(clientId).getID());
+            this.currentResearch.set(this.clientId, null);
+        }
     }
 
     public int createClient(GameInterface client) {

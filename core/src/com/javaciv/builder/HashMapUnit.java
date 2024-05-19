@@ -9,6 +9,8 @@ import com.javaciv.type.UniteType;
 /**
  * Classe permettant de construire une hashmap contenant l'ensemble des unités militaires
  * de l'application. 
+ * Cette classe est specifique a chaque joueuer et est amenée a evlouer au cours d'une
+ * partie au fur et a mesure que le joueur decouvre des technologies
  */
 public class HashMapUnit {
 
@@ -17,7 +19,7 @@ public class HashMapUnit {
      */
     static Client undefinedClient = null;
 
-    static HashMap<UniteType, Military> militaryMap = new HashMap<UniteType, Military>() {{
+    public HashMap<UniteType, Military> militaryMap = new HashMap<UniteType, Military>() {{
         //Ajout de l'ensemble des unités à la hashmap
         put(UniteType.LANCIER, new Military(
             "Lancier",
@@ -50,7 +52,7 @@ public class HashMapUnit {
         ));
     }};
 
-    static HashMap<UniteType, Civilian> civilianMap = new HashMap<UniteType, Civilian>() {{
+    public HashMap<UniteType, Civilian> civilianMap = new HashMap<UniteType, Civilian>() {{
         //Ajout de l'ensemble des unités à la hashmap
         put(UniteType.OUVRIER, new Civilian(
             "Ouvrier",
@@ -68,7 +70,7 @@ public class HashMapUnit {
 
     }};
 
-    public static Military getMilitary(UniteType unitType) {
+    public Military getMilitary(UniteType unitType) {
         Military unit = militaryMap.get(unitType);
 
         return new Military(
@@ -82,7 +84,7 @@ public class HashMapUnit {
         );
     }
 
-    public static Civilian getCivilian(UniteType unitType) {
+    public Civilian getCivilian(UniteType unitType) {
         Civilian unit = civilianMap.get(unitType);
 
         return new Civilian(
