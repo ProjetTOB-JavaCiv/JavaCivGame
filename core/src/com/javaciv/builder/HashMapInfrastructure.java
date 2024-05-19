@@ -15,7 +15,7 @@ public class HashMapInfrastructure {
     
     public HashMap<InfrastructureType, Infrastructure> map = new HashMap<InfrastructureType, Infrastructure>();
 
-    private HashMapInfrastructure() {
+    public HashMapInfrastructure() {
         map.put(InfrastructureType.GRENIER, new Infrastructure(
         200, 
         2, 
