@@ -10,8 +10,10 @@ package com.javaciv.client;
 
 import com.javaciv.GameInterface;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.type.TechnologyID;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
+import com.javaciv.gameElement.Technology;
 import com.javaciv.gameElement.Unite;
 
 import java.util.List;
@@ -103,6 +105,14 @@ public class Client implements GameInterface {
             this.unites = this.server.getUnites();
         }
         return this.unites;
+    }
+
+    public void setCurrentResearch(TechnologyID t) {
+        this.server.setCurrentResearch(t);
+    }
+
+    public Technology getTechnologyInfo(TechnologyID t) {
+        return this.server.getTechnologyInfo(t);
     }
 
     public boolean createCity(Tile tile) {
