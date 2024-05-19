@@ -8,12 +8,14 @@
 
 package com.javaciv.client;
 
+import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.City;
 import com.javaciv.type.LandType;
 import com.javaciv.client.Menu;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -181,7 +183,8 @@ public class ClientView implements Screen {
             new Actor[] {
                 new Label(getClickCoordinatesText(), this.skin, "default"),
                 new TextButton("Create City", this.skin, "default"),
-                new TextButton("Action 2", this.skin, "default")
+                new TextButton("Action 2", this.skin, "default"),
+                new Label("Production: " + getTileAt(getClickCoordonatesnotnull()).getProduction(), this.skin, "default")
             },
             new ClickListener[] {
                 new ClickListener(){
@@ -197,7 +200,7 @@ public class ClientView implements Screen {
                         System.out.print("Action 1 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
                         //controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
-                        if (controller.addCity(controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y))) {
+                        if (controller.addCity(controller.getWorldMap().at((int) tileMenuWorldCoordinates.x /tileSize, (int) tileMenuWorldCoordinates.y / tileSize ))) {
                             // TODO : move this to as specific function with a loop over the cities
                             City city = controller.getCities().get(controller.getCities().size() - 1);
                             Label cityName = new Label(city.getName(), skin, "backgrounded");
@@ -220,7 +223,10 @@ public class ClientView implements Screen {
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
                         controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
                     }
-                }
+                },
+
+                new ClickListener(){}
+
             },
             true // Make the menu a row menu
         );
@@ -337,6 +343,12 @@ public class ClientView implements Screen {
         
 
         // Update camera position
+
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            camera.translate(-Gdx.input.getDeltaX() * this.camera.zoom, Gdx.input.getDeltaY() * this.camera.zoom );
+            camera.update();
+        }
+
         this.camera.position.x += this.camera.zoom * this.moveSpeed * this.controller.getMovement().x;
         this.camera.position.y += this.camera.zoom * this.moveSpeed * this.controller.getMovement().y;
 
@@ -425,6 +437,14 @@ public class ClientView implements Screen {
         this.renderDistance = parseConfiguration(Gdx.files.internal(path), "renderDistance");
         this.tileSize = parseConfiguration(Gdx.files.internal(path), "tileSize");
         this.moveSpeed = parseConfiguration(Gdx.files.internal(path), "moveSpeed");
+    }
+    /**
+     * Renvoie la tuile à une position donnée.
+     * @param coords
+     * @return
+     */
+    private Tile getTileAt(Vector2 coords) {
+        return this.controller.getWorldMap().at((int) coords.x, (int) coords.y);
     }
 
     /**
@@ -534,6 +554,14 @@ public class ClientView implements Screen {
                 + "]";
         } else {
             return "[x, y]";
+        }
+    }
+
+    private Vector2 getClickCoordonatesnotnull() {
+        if (this.camera != null) {
+            return getClickCoordinates();
+        } else {
+            return new Vector2(0, 0);
         }
     }
 
