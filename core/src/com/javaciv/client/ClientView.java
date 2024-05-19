@@ -128,9 +128,6 @@ public class ClientView implements Screen {
             new Texture(Gdx.files.internal("redframe.png"))
         };
 
-        //Load all other textures to put on Tiles
-        Texture gearTexture = new Texture(Gdx.files.internal("gear.png"));
-
         // Load the skin for the UI
         this.skin = new Skin(Gdx.files.internal("skin.json"));
 
