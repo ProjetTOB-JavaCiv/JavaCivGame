@@ -45,7 +45,7 @@ public class Server implements GameInterface {
 
     private List<List<Unite>> unites;
 
-    private List<HashMapUnit> discoveredMilitary;
+    private List<HashMapUnit> discoveredUnit;
 
     private List<HashMapInfrastructure> discoveredInfrastructures;
 
@@ -63,6 +63,9 @@ public class Server implements GameInterface {
         this.faithPoint = new ArrayList<Integer>();
         this.cities = new ArrayList<List<City>>();
         this.unites = new ArrayList<List<Unite>>();
+        this.discoveredUnit = new ArrayList<HashMapUnit>();
+        this.discoveredInfrastructures = new ArrayList<HashMapInfrastructure>();
+        this.technologyTree = new ArrayList<TechnologyTree>();
     }
 
     public WorldMap getWorldMap() {
@@ -140,7 +143,7 @@ public class Server implements GameInterface {
 
     // pas sur de la portée de cette fonction au niveau securité
     public HashMapUnit getDiscoveredUnit() {
-        return this.discoveredMilitary.get(clientId);
+        return this.discoveredUnit.get(clientId);
     }
 
     public HashMapInfrastructure getDiscoveredInfrastructures() {
@@ -189,6 +192,7 @@ public class Server implements GameInterface {
             this.goldPoint.set(this.clientId, this.goldPoint.get(this.clientId) + this.getGoldPointProduction());
             this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) + this.getCulturePointProduction());
             this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) + this.getSciencePointProduction());
+            updateCurrentResearch();
             this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) + this.getFaithPointProduction());
             this.clientId = (this.clientId + 1) % getClientCount();
             System.out.println("Next turn, clientId is : " + this.getClientId());
@@ -198,7 +202,7 @@ public class Server implements GameInterface {
         
     }
 
-    private void discoverTechnology() {
+    private void updateCurrentResearch() {
         if (this.sciencePoint.get(this.clientId) >= this.currentResearch.get(this.clientId).getCost()) {
             this.sciencePoint.set(this.clientId, 0);
             this.technologyTree.get(this.clientId).discover(this.currentResearch.get(clientId).getID());
@@ -207,13 +211,16 @@ public class Server implements GameInterface {
     }
 
     public int createClient(GameInterface client) {
-        this.clients.put(getClientCount() - 1, client);
+        this.clients.put(getClientCount(), client);
         this.goldPoint.add(0);
         this.culturePoint.add(0);
         this.sciencePoint.add(0);
         this.faithPoint.add(0);
         this.cities.add(new ArrayList<City>());
         this.unites.add(new ArrayList<Unite>());
+        this.discoveredInfrastructures.add(new HashMapInfrastructure());
+        this.discoveredUnit.add(new HashMapUnit());
+        this.technologyTree.add(new TechnologyTree(this));
         return getClientCount() - 1;
     }
 

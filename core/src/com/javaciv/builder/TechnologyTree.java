@@ -1,8 +1,6 @@
 package com.javaciv.builder;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import com.javaciv.type.InfrastructureType;
 import com.javaciv.type.TechnologyID;
