@@ -298,11 +298,12 @@ public class ClientView implements Screen {
         // Set the input multiplexer as the input processor for the game
         Gdx.input.setInputProcessor(this.inputMultiplexer);
 
+        // Add a gesture detector to the input multiplexer
         this.inputMultiplexer.addProcessor(new GestureDetector(new GestureDetector.GestureListener() {
             @Override
             public boolean tap(float x, float y, int count, int button) {
                 if (button == Input.Buttons.LEFT) {
-                    clicked(x, y);
+                    Leftclicked(x, y);
                 }
                 return false;
             }
@@ -310,14 +311,12 @@ public class ClientView implements Screen {
             @Override
             public boolean pan(float x, float y, float deltaX, float deltaY) {
                 if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                    //Votre logique de déplacement de caméra ici
                     camera.translate(-deltaX * camera.zoom, deltaY * camera.zoom);
                     camera.update();
                 }
                 return false;
             }
 
-            // Implémentez les autres méthodes de l'interface GestureListener comme nécessaire
             @Override
             public boolean touchDown(float x, float y, int pointer, int button) {
                 return false;
@@ -636,7 +635,7 @@ public class ClientView implements Screen {
     }
 
 
-    public void clicked(float x, float y){
+    public void Leftclicked(float x, float y){
         System.out.println("Click at [" + x + ", " + y + "]");
         int clickedX = (int) getMouseCoordinates().x; 
         int clickedY = (int) getMouseCoordinates().y;
