@@ -181,7 +181,8 @@ public class ClientView implements Screen {
                 new Label(getClickCoordinatesText(), this.skin, "default"),
                 new TextButton("Create City", this.skin, "default"),
                 new TextButton("Action 2", this.skin, "default"),
-                new Label("Production: " + getTileAt(getClickCoordonatesnotnull()).getProduction(), this.skin, "default")
+                new Label("Production: " + getTileAt(getClickCoordonatesnotnull()).getProduction(), this.skin, "default"),
+                new Label("Food: " + getTileAt(getClickCoordonatesnotnull()).getFood(), this.skin, "default")
             },
             new ClickListener[] {
                 new ClickListener(){
@@ -222,6 +223,7 @@ public class ClientView implements Screen {
                     }
                 },
 
+                new ClickListener(){},
                 new ClickListener(){}
 
             },
