@@ -1,9 +1,7 @@
 /**
  * @file Utils.java
  * @brief This file contains the Utils interface.
- * @author Théo Bessel
  * @date 23/04/2024
- * @version 1.0
  */
 
 

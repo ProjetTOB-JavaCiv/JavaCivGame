@@ -1,9 +1,7 @@
 /**
  * @file ClientController.java
  * @brief This file contains the ClientController class.
- * @author Théo Bessel
  * @date 20/04/2024
- * @version 1.0
  */
 
 package com.javaciv.client;

@@ -1,9 +1,7 @@
 /**
  * @file Menu.java
  * @brief This file contains the Menu class.
- * @author Théo Bessel
  * @date 13/05/2024
- * @version 1.0
  */
 
 package com.javaciv.client;
