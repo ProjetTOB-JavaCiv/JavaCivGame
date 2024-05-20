@@ -270,4 +270,8 @@ public class City {
     public int getY() {
         return this.y;
     }
+
+    public List<Tile> getNeighbourTiles() {
+        return this.neighbourTiles;
+    }
 }

@@ -42,6 +42,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
@@ -64,6 +65,7 @@ public class ClientView implements Screen {
     private Stage labelStage;
     private OrthographicCamera camera;
     private InputMultiplexer inputMultiplexer;
+    private GestureDetector gestureDectector;
 
     /**
      * TiledMap objects
@@ -295,6 +297,62 @@ public class ClientView implements Screen {
 
         // Set the input multiplexer as the input processor for the game
         Gdx.input.setInputProcessor(this.inputMultiplexer);
+
+        this.inputMultiplexer.addProcessor(new GestureDetector(new GestureDetector.GestureListener() {
+            @Override
+            public boolean tap(float x, float y, int count, int button) {
+                if (button == Input.Buttons.LEFT) {
+                    clicked(x, y);
+                }
+                return false;
+            }
+
+            @Override
+            public boolean pan(float x, float y, float deltaX, float deltaY) {
+                if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                    //Votre logique de déplacement de caméra ici
+                    camera.translate(-deltaX * camera.zoom, deltaY * camera.zoom);
+                    camera.update();
+                }
+                return false;
+            }
+
+            // Implémentez les autres méthodes de l'interface GestureListener comme nécessaire
+            @Override
+            public boolean touchDown(float x, float y, int pointer, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean longPress(float x, float y) {
+                return false;
+            }
+
+            @Override
+            public boolean fling(float velocityX, float velocityY, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean panStop(float x, float y, int pointer, int button) {
+                return false;
+            }
+
+            @Override
+            public boolean zoom(float initialDistance, float distance) {
+                return false;
+            }
+
+            @Override
+            public boolean pinch(Vector2 initialPointer1, Vector2 initialPointer2, Vector2 pointer1, Vector2 pointer2) {
+                return false;
+            }
+
+            @Override
+            public void pinchStop() {
+            }
+        }));
+
     }
 
     @Override public void render(float t) {
@@ -341,12 +399,8 @@ public class ClientView implements Screen {
         
         
 
-        // Update camera position
 
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            camera.translate(-Gdx.input.getDeltaX() * this.camera.zoom, Gdx.input.getDeltaY() * this.camera.zoom );
-            camera.update();
-        }
+
 
         this.camera.position.x += this.camera.zoom * this.moveSpeed * this.controller.getMovement().x;
         this.camera.position.y += this.camera.zoom * this.moveSpeed * this.controller.getMovement().y;
@@ -579,6 +633,27 @@ public class ClientView implements Screen {
 
     public void closeAllSelectedTiles() {
         selectedTiles.clear();
+    }
+
+
+    public void clicked(float x, float y){
+        System.out.println("Click at [" + x + ", " + y + "]");
+        int clickedX = (int) getMouseCoordinates().x; 
+        int clickedY = (int) getMouseCoordinates().y;
+        if (isCityClicked(clickedX, clickedY)) {
+            System.out.println("City clicked at coordinates: [" + clickedX + ", " + clickedY + "]");
+        } else {
+            System.out.println("No city clicked. Coordinates: [" + clickedX + ", " + clickedY + "]");
+        }
+    }
+
+    public boolean isCityClicked(int x, int y) {
+        for (City city : controller.getCities()) {
+            if (city.getX() == x && city.getY() == y) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
