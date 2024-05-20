@@ -13,7 +13,6 @@ import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;

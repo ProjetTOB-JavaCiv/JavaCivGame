@@ -9,7 +9,6 @@ package com.javaciv.client;
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.City;
 import com.javaciv.type.LandType;
-import com.javaciv.client.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

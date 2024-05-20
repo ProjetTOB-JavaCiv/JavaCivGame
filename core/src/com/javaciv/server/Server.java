@@ -16,7 +16,6 @@ import com.javaciv.GameInterface;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 public class Server implements GameInterface {
     private WorldMap worldMap;
@@ -139,14 +138,18 @@ public class Server implements GameInterface {
     }
 
     private boolean isTileAvailableForCity(Tile tile) {
-        //TODO : Rajouter le traitement dans le cas où la tuille ne peut pas loger de ville tout court
+        /*Si des unités terrestre ne peuvent même pas loger sur la tuille, une ville encore moins. Peut être renommer la
+        varible pour la rendre plus parlante ??*/        
+        if(tile.getIsTraversableByLandUnit() == false) {
+            return false;
+        }
 
         for (City city : this.getCities()) {
             if (city.getPosition().distance(tile) == 0) {
                 return false;
             }
         }
-        return true;
+        return true; 
     }
 
 

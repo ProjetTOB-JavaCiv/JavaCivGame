@@ -13,7 +13,6 @@ import com.javaciv.gameElement.City;
 import com.javaciv.gameElement.Unite;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class Client implements GameInterface {
     private GameInterface server;
