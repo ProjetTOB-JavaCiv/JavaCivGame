@@ -66,6 +66,7 @@ public class Server implements GameInterface {
         this.discoveredUnit = new ArrayList<HashMapUnit>();
         this.discoveredInfrastructures = new ArrayList<HashMapInfrastructure>();
         this.technologyTree = new ArrayList<TechnologyTree>();
+        this.currentResearch = new ArrayList<Technology>();
     }
 
     public WorldMap getWorldMap() {
@@ -188,17 +189,13 @@ public class Server implements GameInterface {
 
 
     public void nextTurn() {
-        if(this.currentResearch.get(this.clientId) != null) {
-            this.goldPoint.set(this.clientId, this.goldPoint.get(this.clientId) + this.getGoldPointProduction());
-            this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) + this.getCulturePointProduction());
-            this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) + this.getSciencePointProduction());
-            updateCurrentResearch();
-            this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) + this.getFaithPointProduction());
-            this.clientId = (this.clientId + 1) % getClientCount();
-            System.out.println("Next turn, clientId is : " + this.getClientId());
-        } else {
-            System.out.println("Unable to  skip turn, please select a technology to research !");
-        }
+        this.goldPoint.set(this.clientId, this.goldPoint.get(this.clientId) + this.getGoldPointProduction());
+        this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) + this.getCulturePointProduction());
+        this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) + this.getSciencePointProduction());
+        updateCurrentResearch();
+        this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) + this.getFaithPointProduction());
+        this.clientId = (this.clientId + 1) % getClientCount();
+        System.out.println("Next turn, clientId is : " + this.getClientId());
         
     }
 
@@ -221,6 +218,7 @@ public class Server implements GameInterface {
         this.discoveredInfrastructures.add(new HashMapInfrastructure());
         this.discoveredUnit.add(new HashMapUnit());
         this.technologyTree.add(new TechnologyTree(this));
+        this.currentResearch.add(null);
         return getClientCount() - 1;
     }
 
@@ -230,5 +228,9 @@ public class Server implements GameInterface {
         } else {
             return this.clients.size();
         }
+    }
+
+    public boolean canPassTurn(Client c) {
+        return (c.getClientId() == this.getClientId() && this.currentResearch.get(this.clientId) != null);
     }
 }

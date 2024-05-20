@@ -15,6 +15,7 @@ import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
 import com.javaciv.gameElement.Technology;
 import com.javaciv.gameElement.Unite;
+import com.javaciv.server.Server;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -126,7 +127,7 @@ public class Client implements GameInterface {
     }
 
     public boolean canPassTurn() {
-        return this.getClientId() == this.server.getClientId();
+        return ((Server)server).canPassTurn(this);
     }
 
     public int createClient(GameInterface client) {

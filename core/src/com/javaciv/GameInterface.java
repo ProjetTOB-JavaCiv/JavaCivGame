@@ -13,6 +13,7 @@ import com.javaciv.type.TechnologyID;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.builder.HashMapInfrastructure;
 import com.javaciv.builder.HashMapUnit;
+import com.javaciv.client.Client;
 import com.javaciv.gameElement.City;
 import com.javaciv.gameElement.Technology;
 import com.javaciv.gameElement.Unite;
