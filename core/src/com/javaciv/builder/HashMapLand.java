@@ -3,6 +3,7 @@ package com.javaciv.builder;
 import java.util.HashMap;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.type.LandType;
+import com.javaciv.type.ProductionType;
 
 /** Classe permettant de construire une hashmap contenant l'ensemble des tuiles
  *  du jeu et de récupérer une tuile en fonction de son type pour avoir accès aux
@@ -17,42 +18,27 @@ public final class HashMapLand {
             LandType.PLAINE, 
             true, 
             false, 
-            2, 
-            0, 
-            0, 
-            0, 
-            0, 
-            0, 
+            new ProductionType(1,0,0,0,0,1),
             2
         ));
 
-        put(LandType.COLLINE, new Tile(
+        put(LandType.PRAIRIE, new Tile(
             0, 
             0, 
-            LandType.COLLINE, 
+            LandType.PRAIRIE, 
             true, 
             false, 
-            1, 
-            0, 
-            0, 
-            0, 
-            0, 
-            3, 
+            new ProductionType(2,0,0,0,0,0),
             3
         ));
 
-        put(LandType.FORET, new Tile(
+        put(LandType.TOUNDRA, new Tile(
             0, 
             0, 
-            LandType.FORET, 
+            LandType.TOUNDRA, 
             true, 
             false, 
-            1, 
-            0, 
-            0, 
-            1, 
-            0, 
-            2, 
+            new ProductionType(1,0,0,0,0,0),
             2
         ));
 
@@ -62,12 +48,7 @@ public final class HashMapLand {
             LandType.DESERT, 
             true, 
             false, 
-            0, 
-            0, 
-            0, 
-            0, 
-            1, 
-            0, 
+            new ProductionType(0,0,0,0,0,0),
             1
         ));
 
@@ -77,32 +58,22 @@ public final class HashMapLand {
             LandType.MONTAGNE, 
             false, 
             false, 
-            0, 
-            0, 
-            2, 
-            2, 
-            0, 
-            0, 
+            new ProductionType(0,0,0,0,0,0), 
             1
         ));
 
-        put(LandType.MER, new Tile(
+        put(LandType.EAU, new Tile(
             0, 
             0, 
-            LandType.MER, 
+            LandType.EAU, 
             true, 
             false, 
-            1, 
-            0, 
-            0, 
-            0, 
-            1, 
-            0, 
+            new ProductionType(1,0,0,0,1,0),
             2
         ));
     }};
     
-    /** Retourne un objet de type Land qui est représente la tuille d'un biome
+    /** Retourne un objet de type Land qui est représente la tuile d'un biome
      * avec ces statistiques
      */
     public static Tile getLand(LandType land) {
@@ -114,11 +85,6 @@ public final class HashMapLand {
             tile.getLand(),
             tile.getIsTraversableByLandUnit(),
             tile.getIsTraversableBySeaUnit(),
-            tile.getFood(),
-            tile.getCulture(),
-            tile.getFaith(),
-            tile.getScience(),
-            tile.getGold(),
             tile.getProduction(),
             tile.getBaseLandValue()
         );
