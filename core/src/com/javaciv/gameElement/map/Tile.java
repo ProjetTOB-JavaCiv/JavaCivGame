@@ -24,8 +24,11 @@ public class Tile {
     /** La position y de la tuile.
      */
     private int y;
-    /** Le type de terrain de la tuile.
-    */
+
+    /** vrai si la tuile est une colline, faux sinon */
+    private boolean hill;
+
+    /** Le type de terrain de la tuile */
     private LandType land;
 
     /** la caracteristique de terrain de la tuile */
@@ -92,6 +95,14 @@ public class Tile {
 
         this.production = production;
 
+        // assignation d'une colline si le terrain le permet
+        this.hill = (Math.random() > 0.8 && this.land != LandType.EAU && this.land != LandType.MONTAGNE);
+        if (this.hill) {
+            ProductionType productionHill = new ProductionType(0, 0, 0, 0, 0, 1);
+            this.production = ProductionType.add(this.production, productionHill);
+            this.movementModifier = 2;
+            this.fightModifier = 3;
+        }
         setFeature(); //assignation d'une caracteristique de terrain adaptée
         setResssource(); // assignation d'une ressource
 
@@ -120,6 +131,10 @@ public class Tile {
     */
     public ProductionType getProduction() {
         return ProductionType.add(this.production, this.feature.getProduction(), this.ressource.getProduction());
+    }
+
+    public Boolean getHill() {
+        return this.hill;
     }
 
     /** Permet de recuperer le terrain de la tuile
@@ -185,6 +200,14 @@ public class Tile {
 
     public boolean getIsTraversableBySeaUnit() {
         return this.isTraversableBySeaUnit;
+    }
+
+    public int getMovementModifier() {
+        return this.movementModifier + this.feature.getMovementModifier();
+    }
+
+    public int getFightModifier() {
+        return this.fightModifier + this.feature.getFightModifier();
     }
 
     public double getBaseLandValue() {
