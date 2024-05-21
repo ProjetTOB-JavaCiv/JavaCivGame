@@ -28,7 +28,7 @@ public class ClientGesture extends GestureDetector.GestureAdapter {
     @Override
     public boolean pan(float x, float y, float deltaX, float deltaY) {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            camera.translate(-deltaX * controller.getZoom(), deltaY * controller.getZoom());
+            camera.translate(-deltaX * camera.zoom, deltaY * camera.zoom);
             camera.update();
         }
         return false;

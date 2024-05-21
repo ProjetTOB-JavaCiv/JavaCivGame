@@ -41,6 +41,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
@@ -127,7 +128,9 @@ public class ClientView implements Screen {
         };
 
         this.selectTextures = new Texture[] {
-            new Texture(Gdx.files.internal("redframe.png"))
+            new Texture(Gdx.files.internal("redframe.png")),
+            new Texture(Gdx.files.internal("whiteframe.png")),
+            new Texture(Gdx.files.internal("dottedgreyframe.png"))
         };
 
         // Load the skin for the UI
@@ -383,6 +386,8 @@ public class ClientView implements Screen {
         this.menuStage.getViewport().apply();
         this.menuStage.draw();
 
+        
+
     }
 
     void renderCities() {
@@ -501,6 +506,26 @@ public class ClientView implements Screen {
         }
         tiledMap.getLayers().add(redFrameLayer);
 
+
+       
+
+        TiledMapTileLayer cityTerritory = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
+        for (City city : controller.getCities()) {
+            for (Tile tile : city.getCityTiles()) {
+                final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
+                Color color = new Color(1, 1, 0, (float) 0.5); // Change color of the city territory (TODO: color is an attribute of the client)
+                //TODO : Load only one time the tintedTextureRegion
+                TextureRegion tintedTextureRegion = getTintedTextureRegion(this.selectTextures[1], color);
+                cell.setTile(
+                    new StaticTiledMapTile(
+                        new TextureRegion(tintedTextureRegion)
+                    )
+                );
+                cityTerritory.setCell(tile.getX(), tile.getY(), cell);
+            }
+        }
+        tiledMap.getLayers().add(cityTerritory);
+
         return tiledMap;
     }
 
@@ -604,4 +629,27 @@ public class ClientView implements Screen {
         return false;
     }
 
+    private TextureRegion getTintedTextureRegion(Texture texture, Color color) {
+        if (!texture.getTextureData().isPrepared()) {
+            texture.getTextureData().prepare();
+        }
+        Pixmap originalPixmap = texture.getTextureData().consumePixmap();
+        Pixmap pixmap = new Pixmap(texture.getWidth(), texture.getHeight(), Pixmap.Format.RGBA8888);
+    
+        for (int x = 0; x < texture.getWidth(); x++) {
+            for (int y = 0; y < texture.getHeight(); y++) {
+                Color pixelColor = new Color();
+                Color.rgba8888ToColor(pixelColor, originalPixmap.getPixel(x, y));
+                pixelColor.mul(color);
+                pixmap.drawPixel(x, y, Color.rgba8888(pixelColor));
+            }
+        }
+    
+        Texture newTexture = new Texture(pixmap);
+        originalPixmap.dispose();
+        pixmap.dispose();
+        return new TextureRegion(newTexture);
+    }
+
+    
 }

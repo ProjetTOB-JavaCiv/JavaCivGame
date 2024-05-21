@@ -61,10 +61,14 @@ public class City {
     /** Liste de l'ensemble des infrastructures construisent dans une ville */
     List<Infrastructure> infrastructures = new ArrayList<Infrastructure>();
     
-    /** Liste des tuilles appartenant à la ville */
+    /** Liste des tuiles appartenant à la ville */
     List<Tile> cityTiles = new ArrayList<Tile>();
-    /** Liste des tuilles voisines au territoire de la ville */
+    /** Liste des tuiles voisines au territoire de la ville */
     List<Tile> neighbourTiles = new ArrayList<Tile>();
+
+    //TODO : Ajouter le fait de prendre en compte les bordures pour faire les textures du territoire de la ville
+    ///** Liste des tuiles qui sont des bordures de la ville */
+    //List<String> borderSides = new ArrayList<String>(); // "top", "bottom", "left", "right"
 
     /**
      * Constructeur d'une ville
@@ -76,12 +80,14 @@ public class City {
         
         this.x = this.position.getX();
         this.y = this.position.getY();
-        //Ajout des cases appartenant à la ville : La tuille centrale
+        //Ajout des cases appartenant à la ville : La tuile centrale
         this.cityTiles.add(cityPosition);
 
-        //Ajout des cases voisines à la ville
-        for(int i = -1; i < 2; i =+ 2) {
-            for(int j = -1; j < 2; j =+ 2) {
+        // Ajout des cases voisines à la ville
+        for(int i = -1; i <= 1; i++) {
+            for(int j = -1; j <= 1; j++) {
+                if(i == 0 && j == 0) continue; // Skip the center tile
+                System.out.println("i : " + i + " j : " + j);
                 Tile newTile = this.owner.getWorldMap().at(x + i, y + j);
                 this.cityTiles.add(newTile);
                 addNeighbourTiles(newTile);
@@ -274,8 +280,10 @@ public class City {
     public List<Tile> getCityTiles() {
         return this.cityTiles;
     }
-    
+
     public List<Tile> getNeighbourTiles() {
-        return this.neighbourTiles;
+        return neighbourTiles;
     }
+
+
 }
