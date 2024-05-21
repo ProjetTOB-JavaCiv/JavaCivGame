@@ -104,19 +104,16 @@ public class ProductionType {
     }
 
     /**
-     * Permet d'ajouter 3 productions et de stocker le resultat dans un 3e objet.
-     * @param p1 production 1
-     * @param p2 production 2
-     * @param p3 production 3
-     * @return un objet contenant la somme des productions p1, p2, et p3
+     * Permet d'ajouter autant de production que voulu.
+     * @param productions la liste de production a ajouter
+     * @return un objet contenant la somme des productions
      */
-    public static ProductionType add(ProductionType p1, ProductionType p2, ProductionType p3) {
-        return new ProductionType(p1.food + p2.food + p3.food,
-                                  p1.faith + p2.faith + p3.faith, 
-                                  p1.culture + p2.culture +  p3.culture, 
-                                  p1.science + p2.science + p3.science, 
-                                  p1.gold + p2.gold + p3.gold, 
-                                  p1.production + p2.production + p3.production);
+    public static ProductionType add(ProductionType... productions) {
+        ProductionType result = new ProductionType(0, 0, 0, 0, 0, 0);
+        for (ProductionType p : productions) {
+            result = ProductionType.add(result, p);
+        }
+        return result;
     }
 
     /**
