@@ -6,6 +6,7 @@ import com.javaciv.builder.HashMapLand;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.type.LandType;
+import com.javaciv.client.Client;
 
 /**
  * Classe représentant une unité militaire, cette classe est une implémentation
@@ -18,7 +19,7 @@ public class Military implements Unite {
     /** Le nom de l'unité */
     String name;
     /** Le joueur possedant l'unité */
-    Player owner;
+    Client owner;
     /** La tuile sur laquelle se trouve l'unite */
     Tile position;
     /** Le nombre de points de vie actuel de l'unité */
@@ -37,7 +38,7 @@ public class Military implements Unite {
     final int PRODUCTION_COST;
     
     //TODO: Finir le constructeur -> Problème de paramètre trop nombreux.
-    public Military(String name, Player owner, int BASE_ACTION_POINT, int PRODUCTION_COST, int attack, int pv, int defense) {
+    public Military(String name, Client owner, int BASE_ACTION_POINT, int PRODUCTION_COST, int attack, int pv, int defense) {
         this.name = name;
         this.position = HashMapLand.getLand(LandType.PLAINE);
         this.owner = owner;
@@ -78,7 +79,7 @@ public class Military implements Unite {
     }
 
     /** Retourne le joueur qui possède l'unité*/
-    public Player getOwner() {
+    public Client getOwner() {
         return this.owner;
     }
 

@@ -1,9 +1,7 @@
 /**
  * @file ClientThread.java
  * @brief This file contains the ClientThread class.
- * @author Théo Bessel
  * @date 15/05/2024
- * @version 1.0
  */
 
 package com.javaciv;
@@ -22,7 +20,8 @@ public class ClientThread extends Thread {
     public void run() {
         while (true) {
             try {
-                Thread.sleep(1000);
+                // Sleep to simulate the time of the other players (1sec is okay for testing purpose)
+                Thread.sleep(10);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

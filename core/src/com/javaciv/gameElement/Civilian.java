@@ -6,6 +6,7 @@ import com.javaciv.builder.HashMapLand;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.type.LandType;
+import com.javaciv.client.Client;
 
 /**
  * 
@@ -15,7 +16,7 @@ public class Civilian implements Unite {
     /** Le nom de l'unité */
     String name;
     /** Le joueur possedant l'unité */
-    Player owner;
+    Client owner;
     /** La tuile sur laquelle se trouve l'unite */
     Tile position;
     /** Le nombre de point de mouvement restant a l'unité */
@@ -27,7 +28,7 @@ public class Civilian implements Unite {
     /** le cout en materiel pour produire l'unité */
     final int PRODUCTION_COST;
 
-    public Civilian(String name, Player owner, int BASE_ACTION_POINT, int PRODUCTION_COST) {
+    public Civilian(String name, Client owner, int BASE_ACTION_POINT, int PRODUCTION_COST) {
         this.name = name;
         this.position = HashMapLand.getLand(LandType.PLAINE);
         this.owner = owner;
@@ -67,7 +68,7 @@ public class Civilian implements Unite {
     }
 
     /** Retourne le joueur qui possède l'unité*/
-    public Player getOwner() {
+    public Client getOwner() {
         return this.owner;
     }
 

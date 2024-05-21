@@ -1,9 +1,7 @@
 /**
  * @file Menu.java
  * @brief This file contains the Menu class.
- * @author Théo Bessel
  * @date 13/05/2024
- * @version 1.0
  */
 
 package com.javaciv.client;
@@ -70,9 +68,11 @@ public class Menu extends Table {
             if(row) { row(); }
             this.add(item)
                 .pad(PADDING)
-                .width(getMaxItemWidth())
-                .height(getMaxItemHeight());
+                .expand()
+                .fill();
         }
+
+        //this.setDebug(true);
     }
 
     public Menu(Actor[] menuItems, ClickListener[] menuActions, Color backgroundColor) {
@@ -103,6 +103,16 @@ public class Menu extends Table {
         background.fill();
         TextureRegionDrawable backgroundTexture = new TextureRegionDrawable(new TextureRegion(new Texture(background)));
         this.setBackground(backgroundTexture);
+    }
+
+    public void resizeMenu() {
+        if(row) {
+            this.setHeight((getMaxItemHeight() + PADDING * 2) * menuItems.length);
+            this.setWidth(getMaxItemWidth() + PADDING * 2);
+        } else {
+            this.setHeight(getMaxItemHeight() + PADDING * 2);
+            this.setWidth((getMaxItemWidth() + PADDING * 2) * menuItems.length);
+        }
     }
 
     private float getMaxItemWidth() {

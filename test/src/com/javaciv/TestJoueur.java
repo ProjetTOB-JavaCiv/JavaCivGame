@@ -2,30 +2,34 @@ package com.javaciv;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-import com.javaciv.gameElement.Player;
+import com.javaciv.server.Server;
+import com.javaciv.client.Client;
 
 class JoueurTest {
     // Declaration des variables utiles
-    Player player;
+    Server server;
+    Client player;
 
     @BeforeEach
     void setUp(){
-        player = new Player("joueur");
+        server = new Server();
+        player = new Client(server);
+        player.nextTurn();
     }
 
     @Test
-    void getNom() {
-        assertEquals(player.getName(), "joueur");
+    void getId() {
+        assertEquals(player.getClientId(), server.getClientId());
     }
 
     @Test
     void getCulturepoint() {
-        assertEquals(player.getCulturePoint(), 0);
+        assertEquals(player.getCulturePoint(), 2);
     }
 
     @Test
     void getFaithPoint() {
-        assertEquals(player.getFaithPoint(), 0);
+        assertEquals(player.getFaithPoint(), 12);
     }
 
     @Test
@@ -35,7 +39,7 @@ class JoueurTest {
 
     @Test
     void getSciencePoint() {
-        assertEquals(player.getSciencePoint(), 0);
+        assertEquals(player.getSciencePoint(), 4);
     }
 
 }

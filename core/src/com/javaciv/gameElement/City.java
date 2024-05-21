@@ -3,6 +3,7 @@ package com.javaciv.gameElement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.javaciv.client.Client;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
 
@@ -15,17 +16,18 @@ public class City {
 
     /** Tuille ou se situe la ville */
     Tile position;
+    /** Coordonnée x de la ville */
+    int x;
+    /** Coordonnée y de la ville */
+    int y;
     /** Nom de la ville */
     String name = "ville";
     /** Faction ayant le contrôle sur la ville */
-    Player owner;
+    Client owner;
     /** Point de vie de la ville */
     int health = 100;
     /** Puissance d'attaque de la ville */
     int attack = 10;
-
-    /** Carte du monde sur laquelle évolue la ville TODO : Avoir la worldmap en attribue c'est bien ???*/
-    final WorldMap map;
 
     /** Nombre de points de science produit par une ville chaque tour */
     int sciencePerTurnProd;
@@ -47,7 +49,7 @@ public class City {
     /** Nourriture produite par une ville depuis la dernière croissance de la population */
     int producedFood = 0;
     /** Nombre de points de nourriture supplémentaire en plus pour chaque augementation du nombre d'habitant */
-    int foodNeededForNewCitizenPlus = 25 + 5 * population;
+    int foodNeededForNewCitizenPlus = 25 + 5 * this.population;
     /** Nombre de nourriture en dette autorisé avant de tuer un citoyen en cas de dette */
     final int foodDebt = -5;
 
@@ -57,7 +59,7 @@ public class City {
     int cultureNeededForNewTile = 50;
 
     /** Liste de l'ensemble des infrastructures construisent dans une ville */
-    List<Infrastructure> infrastructures;
+    List<Infrastructure> infrastructures = new ArrayList<Infrastructure>();
     
     /** Liste des tuilles appartenant à la ville */
     List<Tile> cityTiles = new ArrayList<Tile>();
@@ -68,20 +70,19 @@ public class City {
      * Constructeur d'une ville
      * @param cityPosition position de la ville
      */
-    public City(Tile cityPosition, WorldMap map, Player owner) {
-        this.map = map;
+    public City(Tile cityPosition, Client owner) {
         this.position = cityPosition;
         this.owner = owner;
         
-        int x = cityPosition.getX();
-        int y = cityPosition.getY();
+        this.x = this.position.getX();
+        this.y = this.position.getY();
         //Ajout des cases appartenant à la ville : La tuille centrale
         this.cityTiles.add(cityPosition);
 
         //Ajout des cases voisines à la ville
         for(int i = -1; i < 2; i =+ 2) {
             for(int j = -1; j < 2; j =+ 2) {
-                Tile newTile = map.at(x + i, y + j); 
+                Tile newTile = this.owner.getWorldMap().at(x + i, y + j);
                 this.cityTiles.add(newTile);
                 addNeighbourTiles(newTile);
             }
@@ -130,25 +131,22 @@ public class City {
      * @param tile tuille dont on veut ajouter les voisins
      */
     private void addNeighbourTiles(Tile tile) {
-        int x = tile.getX();
-        int y = tile.getY();
-
         //Ajout des cases voisines à la ville
         //Case de gauche
-        if(x-1 >= 0) {
-            neighbourTiles.add(map.at(x - 1, y));
+        if(this.x - 1 >= 0) {
+            neighbourTiles.add(this.owner.getWorldMap().at(this.x - 1, this.y));
         }
         //Case de droite
-        if(x+1 <= map.getWidth()) {
-            neighbourTiles.add(map.at(x + 1, y));
+        if(this.x + 1 <= this.owner.getWorldMap().getWidth()) {
+            neighbourTiles.add(this.owner.getWorldMap().at(this.x + 1, this.y));
         }
         //Case du dessus
-        if( y-1 >= 0) {
-            neighbourTiles.add(map.at(x, y - 1));
+        if(this.y - 1 >= 0) {
+            neighbourTiles.add(this.owner.getWorldMap().at(this.x, this.y - 1));
         }
         //Case du dessous
-        if( y+1 <= map.getHeight()) {
-            neighbourTiles.add(map.at(x, y + 1));
+        if(this.y + 1 <= this.owner.getWorldMap().getHeight()) {
+            neighbourTiles.add(this.owner.getWorldMap().at(this.x, this.y + 1));
         }
     }
 
@@ -157,7 +155,7 @@ public class City {
 
     /** Méthode actualisant la nourriture produit par une ville en rab */
     private void setFoodProduced() {
-        this.producedFood += this.foodPerTurnProd - population;
+        this.producedFood += this.foodPerTurnProd - this.population;
     }
 
     /** Méthode calculant le nombre de tour nécessaire pour produire un nouvel
@@ -175,11 +173,11 @@ public class City {
         //cas où le rab de nourriture est suffisant pour produire un nouvel habitant
         if (this.producedFood >= this.foodNeededForNewCitizen) {
             this.population++;
-            this.foodNeededForNewCitizen += foodNeededForNewCitizenPlus;
+            this.foodNeededForNewCitizen += this.foodNeededForNewCitizenPlus;
         }
 
         //Cas de la famine : On tue un habitant.
-        if (this.producedFood <= foodDebt) {
+        if (this.producedFood <= this.foodDebt) {
             this.population--;
             this.producedFood = 0;
         }
@@ -197,7 +195,7 @@ public class City {
     /** Méthode permettant de construire une infrastructure dans une ville
      * @param infrastructure infrastructure à construire
      */
-    private void buildInfrastructure(Infrastructure infrastructure) {
+    public void buildInfrastructure(Infrastructure infrastructure) {
         this.infrastructures.add(infrastructure);
         this.updatePointPerTurnProd(infrastructure.getFood(), infrastructure.getCulture(), 
         infrastructure.getFaith(), infrastructure.getScience(), infrastructure.getGold(), infrastructure.getProduction());
@@ -253,7 +251,23 @@ public class City {
         this.name = newName;
     }
 
-    public Player getOwner() {
+    public String getName() {
+        return this.name;
+    }
+    
+    public Client getOwner() {
         return this.owner;
+    }
+
+    public Tile getPosition() {
+        return this.position;
+    }
+
+    public int getX() {
+        return this.x;
+    }
+
+    public int getY() {
+        return this.y;
     }
 }

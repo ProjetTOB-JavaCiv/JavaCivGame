@@ -206,7 +206,7 @@ public class WorldMap {
         this.sprouts = generateSproutsList(distMontagne, LandType.COLLINE, 100, 0.2f);
         for(int i = 0; i < h; i++) {
             for(int j = 0; j < w; j++) {
-                Tile tile = HashMapLand.getLand(LandType.COLLINE);
+                Tile tile = HashMapLand.getLand(LandType.COLLINE); 
                 tile.setX(j);
                 tile.setY(i);
                 tile.setLand(getNearestSprout(tile, 7));
