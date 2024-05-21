@@ -24,8 +24,11 @@ public class Tile {
     /** La position y de la tuile.
      */
     private int y;
-    /** Le type de terrain de la tuile.
-    */
+
+    /** vrai si la tuile est une colline, faux sinon */
+    private boolean hill;
+
+    /** Le type de terrain de la tuile */
     private LandType land;
 
     /** la caracteristique de terrain de la tuile */
@@ -92,11 +95,31 @@ public class Tile {
 
         this.production = production;
 
+        // assignation d'une colline si le terrain le permet
+        this.hill = (Math.random() > 0.8 && this.land != LandType.EAU && this.land != LandType.MONTAGNE);
+        if (this.hill) {
+            ProductionType productionHill = new ProductionType(0, 0, 0, 0, 0, 1);
+            this.production = ProductionType.add(this.production, productionHill);
+            this.movementModifier = 2;
+            this.fightModifier = 3;
+        }
         setFeature(); //assignation d'une caracteristique de terrain adaptée
         setResssource(); // assignation d'une ressource
 
         //Assignation de la valeur stratégique de la tuile TODO : Ajouter de la valeur si y'a une ressource stratégique
         this.strategicValue = baseLandValue;
+    }
+
+    /**
+     * Calcule la distance entre deux tuiles.
+     * @param other l'autre tuile
+     * @return la distance entre les deux tuiles
+     */
+    public float distance(Tile other) {
+        return (float) Math.sqrt(
+            Math.pow(this.getX() - other.getX(), 2) +
+            Math.pow(this.getY() - other.getY(), 2)
+        );
     }
 
     /**
@@ -120,6 +143,10 @@ public class Tile {
     */
     public ProductionType getProduction() {
         return ProductionType.add(this.production, this.feature.getProduction(), this.ressource.getProduction());
+    }
+
+    public Boolean getHill() {
+        return this.hill;
     }
 
     /** Permet de recuperer le terrain de la tuile
@@ -187,6 +214,14 @@ public class Tile {
         return this.isTraversableBySeaUnit;
     }
 
+    public int getMovementModifier() {
+        return this.movementModifier + this.feature.getMovementModifier();
+    }
+
+    public int getFightModifier() {
+        return this.fightModifier + this.feature.getFightModifier();
+    }
+
     public double getBaseLandValue() {
         return this.strategicValue;
     }
@@ -208,6 +243,11 @@ public class Tile {
      * la map, après cela, la position d'une tuile ne doit pas changer  */
     public void setY(int y) {
         this.y = y;
+    }
+
+    /** permet de changer la nature du terrain de la tuile */
+    public void setLand(LandType t) {
+        this.land = t;
     }
 
     /** Permet de choisir une caracteristique a la creation de la tuile */
