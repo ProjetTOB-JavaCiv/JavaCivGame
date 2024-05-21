@@ -9,7 +9,6 @@ import com.javaciv.type.LandType;
 import com.javaciv.type.FeatureType;
 import com.javaciv.type.ProductionType;
 import com.javaciv.type.RessourceType;
-import com.javaciv.gameElement.Player;
 import com.javaciv.client.Client;
 
 /**
