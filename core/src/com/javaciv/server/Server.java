@@ -165,7 +165,7 @@ public class Server implements GameInterface {
     public boolean createCity(Tile tile) {
         if (this.isTileAvailableForCity(tile)) {
             List<City> playerCities = this.getCities();
-            Client owner = (Client) this.clients.get(this.clientId - 1);
+            Client owner = (Client)this.clients.get(this.clientId - 1);
             City city = new City(tile, owner);
             // TODO : remove this default infrastructure and find a way to access to a city from a tile.
             // TODO : add the actions to add infrastructures and tiles to a city with a menu button.
@@ -173,6 +173,8 @@ public class Server implements GameInterface {
             city.buildInfrastructure(infrastructure);
             playerCities.add(city);
             this.cities.set(this.clientId, playerCities);
+            System.out.println(this.clientId);
+            System.out.println(this.cities);
             return true;
         }
         return false;
@@ -208,7 +210,7 @@ public class Server implements GameInterface {
     }
 
     public int createClient(GameInterface client) {
-        this.clients.put(getClientCount(), client);
+        this.clients.put(getClientCount() - 1, client);
         this.goldPoint.add(0);
         this.culturePoint.add(0);
         this.sciencePoint.add(0);
@@ -218,7 +220,7 @@ public class Server implements GameInterface {
         this.discoveredInfrastructures.add(new HashMapInfrastructure());
         this.discoveredUnit.add(new HashMapUnit());
         this.technologyTree.add(new TechnologyTree(this));
-        this.currentResearch.add(null);
+        this.currentResearch.add(this.technologyTree.get(getClientCount() - 1).map.get(TechnologyID.CATAPULTE));
         return getClientCount() - 1;
     }
 
@@ -231,6 +233,6 @@ public class Server implements GameInterface {
     }
 
     public boolean canPassTurn(Client c) {
-        return (c.getClientId() == this.getClientId() && this.currentResearch.get(this.clientId) != null);
+        return (this.currentResearch.get(this.clientId) != null);
     }
 }

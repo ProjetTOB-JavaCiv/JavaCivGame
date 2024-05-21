@@ -33,9 +33,9 @@ public class Client implements GameInterface {
 
     private int faithPoint;
 
-    private List<City> cities;
+    private List<City> cities = new ArrayList<City>();
 
-    private List<Unite> unites;
+    private List<Unite> unites = new ArrayList<Unite>();
 
     public Client(GameInterface server) {
         this.server = server;
@@ -51,28 +51,28 @@ public class Client implements GameInterface {
     }
 
     public int getGoldPoint() {
-        if (this.canPassTurn()) {
+        if (this.isItsTurn()) {
             this.goldPoint = this.server.getGoldPoint();
         }
         return this.goldPoint;
     }
 
     public int getCulturePoint() {
-        if (this.canPassTurn()) {
+        if (this.isItsTurn()) {
             this.culturePoint = this.server.getCulturePoint();
         }
         return this.culturePoint;
     }
 
     public int getSciencePoint() {
-        if (this.canPassTurn()) {
+        if (this.isItsTurn()) {
             this.sciencePoint = this.server.getSciencePoint();
         }
         return this.sciencePoint;
     }
 
     public int getFaithPoint() {
-        if (this.canPassTurn()) {
+        if (this.isItsTurn()) {
             this.faithPoint = this.server.getFaithPoint();
         }
         return this.faithPoint;
@@ -95,14 +95,14 @@ public class Client implements GameInterface {
     }
 
     public List<City> getCities() {
-        if (this.canPassTurn()) {
+        if (this.isItsTurn()) {
             this.cities = this.server.getCities();
         }
         return this.cities;
     }
 
     public List<Unite> getUnites() {
-        if (this.canPassTurn()) {
+        if (this.isItsTurn()) {
             this.unites = this.server.getUnites();
         }
         return this.unites;
@@ -127,7 +127,11 @@ public class Client implements GameInterface {
     }
 
     public boolean canPassTurn() {
-        return ((Server)server).canPassTurn(this);
+        return this.isItsTurn() && ((Server)server).canPassTurn(this);
+    }
+
+    public boolean isItsTurn() {
+        return this.getClientId() == server.getClientId();
     }
 
     public int createClient(GameInterface client) {
