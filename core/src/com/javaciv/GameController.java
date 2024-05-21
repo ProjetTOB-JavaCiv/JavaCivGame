@@ -1,9 +1,7 @@
 /**
  * @file GameController.java
  * @brief This file contains the GameController class.
- * @author Théo Bessel
  * @date 21/04/2024
- * @version 1.0
  */
 
 package com.javaciv;
@@ -35,7 +33,7 @@ public class GameController extends Game {
 	 */
 	@Override
 	public void create() {
-		view = new ClientView(controller, client.getWorldMap());
+		view = new ClientView(controller);
 		controller.setClientView(view); // <-- Ajout de cette ligne pour définir la vue dans le contrôleur
 		this.setScreen(view);
 	}

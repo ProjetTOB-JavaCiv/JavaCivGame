@@ -1,9 +1,9 @@
 package com.javaciv.builder;
 import java.util.HashMap;
 
+import com.javaciv.client.Client;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
-import com.javaciv.gameElement.Player;
 import com.javaciv.type.UniteType;
 
 /**
@@ -15,13 +15,13 @@ public class HashMapUnit {
     /** Objet étant un joueur non défini, ainsi on construit la hashmap selon un player
      * non défini.
      */
-    static Player undefinedPlayer = new Player("undefined");
+    static Client undefinedClient = null;
 
-    static HashMap<UniteType, Military> miliratyMap = new HashMap<UniteType, Military>() {{
+    static HashMap<UniteType, Military> militaryMap = new HashMap<UniteType, Military>() {{
         //Ajout de l'ensemble des unités à la hashmap
         put(UniteType.LANCIER, new Military(
             "Lancier",
-            undefinedPlayer,
+            undefinedClient,
             2,
             100,
             10,
@@ -31,7 +31,7 @@ public class HashMapUnit {
 
         put(UniteType.ARCHER, new Military(
             "Archer",
-            undefinedPlayer,
+            undefinedClient,
             2,
             140,
             15,
@@ -41,7 +41,7 @@ public class HashMapUnit {
 
         put(UniteType.CHEVALIER, new Military(
             "Chevalier",
-            undefinedPlayer,
+            undefinedClient,
             4,
             140,
             10,
@@ -54,14 +54,14 @@ public class HashMapUnit {
         //Ajout de l'ensemble des unités à la hashmap
         put(UniteType.OUVRIER, new Civilian(
             "Ouvrier",
-            undefinedPlayer,
+            undefinedClient,
             2,
             100
         ));
 
         put(UniteType.COLON, new Civilian(
             "Colon",
-            undefinedPlayer,
+            undefinedClient,
             2,
             250
         ));
@@ -69,7 +69,7 @@ public class HashMapUnit {
     }};
 
     public static Military getMilitary(UniteType unitType) {
-        Military unit = miliratyMap.get(unitType);
+        Military unit = militaryMap.get(unitType);
 
         return new Military(
             unit.getName(),

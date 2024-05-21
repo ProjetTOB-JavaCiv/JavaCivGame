@@ -1,20 +1,35 @@
 /**
  * @file Client.java
  * @brief This file contains the Client class.
- * @author Théo Bessel
  * @date 18/04/2024
- * @version 1.0
  */
 
 package com.javaciv.client;
 
 import com.javaciv.GameInterface;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.gameElement.map.Tile;
+import com.javaciv.gameElement.City;
+import com.javaciv.gameElement.Unite;
+
+import java.util.List;
 
 public class Client implements GameInterface {
     private GameInterface server;
 
-    int clientId = -1;
+    private int clientId = -1;
+
+    private int goldPoint;
+
+    private int culturePoint;
+
+    private int sciencePoint;
+
+    private int faithPoint;
+
+    private List<City> cities;
+
+    private List<Unite> unites;
 
     public Client(GameInterface server) {
         this.server = server;
@@ -30,19 +45,65 @@ public class Client implements GameInterface {
     }
 
     public int getGoldPoint() {
-        return this.server.getGoldPoint();
+        if (this.canPassTurn()) {
+            this.goldPoint = this.server.getGoldPoint();
+        }
+        return this.goldPoint;
     }
 
     public int getCulturePoint() {
-        return this.server.getCulturePoint();
+        if (this.canPassTurn()) {
+            this.culturePoint = this.server.getCulturePoint();
+        }
+        return this.culturePoint;
     }
 
     public int getSciencePoint() {
-        return this.server.getSciencePoint();
+        if (this.canPassTurn()) {
+            this.sciencePoint = this.server.getSciencePoint();
+        }
+        return this.sciencePoint;
     }
 
     public int getFaithPoint() {
-        return this.server.getFaithPoint();
+        if (this.canPassTurn()) {
+            this.faithPoint = this.server.getFaithPoint();
+        }
+        return this.faithPoint;
+    }
+
+    public int getGoldPointProduction() {
+        return this.server.getGoldPointProduction();
+    }
+
+    public int getCulturePointProduction() {
+        return this.server.getCulturePointProduction();
+    }
+
+    public int getSciencePointProduction() {
+        return this.server.getSciencePointProduction();
+    }
+
+    public int getFaithPointProduction() {
+        return this.server.getFaithPointProduction();
+    }
+
+    public List<City> getCities() {
+        if (this.canPassTurn()) {
+            this.cities = this.server.getCities();
+        }
+        return this.cities;
+    }
+
+    public List<Unite> getUnites() {
+        if (this.canPassTurn()) {
+            this.unites = this.server.getUnites();
+        }
+        return this.unites;
+    }
+
+    public boolean createCity(Tile tile) {
+        return this.server.createCity(tile);
     }
 
     public void nextTurn() {

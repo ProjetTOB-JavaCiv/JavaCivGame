@@ -10,6 +10,7 @@ import com.javaciv.type.FeatureType;
 import com.javaciv.type.ProductionType;
 import com.javaciv.type.RessourceType;
 import com.javaciv.gameElement.Player;
+import com.javaciv.client.Client;
 
 /**
  * Cette classe représente une tuile.
@@ -38,7 +39,7 @@ public class Tile {
     private Ressource ressource = HashMapRessource.getRessource(RessourceType.BASE);
 
     /** Propriétaire de la case, null si la case est occupé par personne */
-    Player owner = null;
+    Client owner = null;
 
     /** Production de la tuile */
     ProductionType production;
@@ -227,7 +228,7 @@ public class Tile {
     }
 
     /** Renvoie le propriétaire de la case */
-    public Player getOwner() {
+    public Client getOwner() {
         return this.owner;
     }
 
@@ -344,7 +345,7 @@ public class Tile {
     /** Set la propriété d'un joueur sur une tuille 
      * @param owner la civilisation qui va posséder la tuille
     */
-    public void setOwner(Player owner) {
+    public void setOwner(Client owner) {
         this.owner = owner;
     }
 }
