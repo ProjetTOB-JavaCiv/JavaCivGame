@@ -271,6 +271,10 @@ public class City {
         return this.y;
     }
 
+    public List<Tile> getCityTiles() {
+        return this.cityTiles;
+    }
+    
     public List<Tile> getNeighbourTiles() {
         return this.neighbourTiles;
     }
