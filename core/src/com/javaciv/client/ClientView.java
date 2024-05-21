@@ -216,6 +216,9 @@ public class ClientView implements Screen {
                     public void clicked(InputEvent e, float x, float y){
                         System.out.print("Action 2 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                        tiledMap = loadMap(map);
+                        tiledMapRenderer.setMap(tiledMap);
+
                         controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
                     }
                 },

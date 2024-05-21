@@ -3,11 +3,13 @@ package com.javaciv.gameElement.map;
 import java.util.ArrayList;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 import com.javaciv.Utils;
 import com.javaciv.builder.HashMapLand;
 import com.javaciv.type.LandType;
+import com.javaciv.type.ProductionType;
 
 /**
  * Cette classe représente la carte du monde du jeu.
@@ -171,11 +173,13 @@ public class WorldMap {
 
         for(int i = 0; i < h; i++) {
             for(int j = 0; j < w; j++) {
-                this.worldMap[j + i * w] = new Tile(j, i, LandType.MER, false, false, 0, 0, 0, 0, 0, 0, 0.0);
+                this.worldMap[j + i * w] = HashMapLand.getLand(LandType.EAU);
+                this.worldMap[j + i * w].setX(i);
+                this.worldMap[j + i * w].setY(j);
             }
         }
 
-        this.sprouts = generateSproutsList(distPlaine, LandType.MER, 60, 0.1f);
+        this.sprouts = generateSproutsList(distPlaine, LandType.EAU, 60, 0.1f);
         for(int i = 0; i < h; i++) {
             for(int j = 0; j < w; j++) {
                 Tile tile = this.worldMap[j + i * w];
@@ -193,20 +197,20 @@ public class WorldMap {
             }
         }
 
-        this.sprouts = generateSproutsList(distMontagne, LandType.FORET, 100, 0.1f);
+        this.sprouts = generateSproutsList(distMontagne, LandType.PRAIRIE, 100, 0.1f);
         for(int i = 0; i < h; i++) {
             for(int j = 0; j < w; j++) {
                 Tile tile = this.worldMap[j + i * w];
-                if (tile.getLand() == LandType.FORET) {
+                if (tile.getLand() == LandType.PRAIRIE) {
                     tile.setLand(getNearestSprout(tile, 5));
                 }
             }
         }
 
-        this.sprouts = generateSproutsList(distMontagne, LandType.COLLINE, 100, 0.2f);
+        this.sprouts = generateSproutsList(distMontagne, LandType.TOUNDRA, 100, 0.2f);
         for(int i = 0; i < h; i++) {
             for(int j = 0; j < w; j++) {
-                Tile tile = HashMapLand.getLand(LandType.COLLINE); 
+                Tile tile = HashMapLand.getLand(LandType.TOUNDRA);
                 tile.setX(j);
                 tile.setY(i);
                 tile.setLand(getNearestSprout(tile, 7));
@@ -240,6 +244,23 @@ public class WorldMap {
      */
     public int getWidth() {
         return this.width;
+    }
+
+    /**
+     * Renvoie un ensemble de tuile adjacente aux coordonnées données
+     * @param x l'abscisse donnée
+     * @param y l'ordonnée donnée
+     * @return l'ensemble des tuiles adjacentes
+     */
+    public HashSet<Tile> nextTo(int x, int y) {
+        HashSet<Tile> nextToSet = new HashSet<Tile>();
+        for (int i = x-1; i <= x+1; i++) {
+            for (int j = y-1; j <= y+1; j++) {
+                nextToSet.add(this.at(i, j));
+            }
+        }
+        nextToSet.remove(this.at(x,y));
+        return nextToSet;
     }
 
     /**
