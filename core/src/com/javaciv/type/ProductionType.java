@@ -43,7 +43,7 @@ public class ProductionType {
      * Obtenir la valeur de matériel.
      * @return un entier, la valeur de matériel.
      */
-    public int production() {
+    public int getProduction() {
         return this.production;
     }
 
@@ -51,7 +51,7 @@ public class ProductionType {
      * La valeur de science.
      * @return un entier, la valeur de science.
      */
-    public int science() {
+    public int getScience() {
         return this.science;
     }
 
@@ -59,7 +59,7 @@ public class ProductionType {
      * La valeur de faith.
      * @return un entier, la valeur de faith.
      */
-    public int faith() {
+    public int getFaith() {
         return this.faith;
     }
 
@@ -67,7 +67,7 @@ public class ProductionType {
      * Obtenir la valeur de food.
      * @return un entier, la valeur de food.
      */
-    public int food() {
+    public int getFood() {
         return this.food;
     }
 
@@ -75,7 +75,7 @@ public class ProductionType {
      * La valeur de culture.
      * @return un entier, la valeur de culture.
      */
-    public int culture() {
+    public int getCulture() {
         return this.culture;
     }
 
@@ -83,7 +83,7 @@ public class ProductionType {
      * La valeur d'gold'.
      * @return un entier, la valeur d'gold'.
      */
-    public int gold() {
+    public int getGold() {
         return this.gold;
     }
 
@@ -125,7 +125,7 @@ public class ProductionType {
      * @return un booléen, vrai si les attributs de this et p ont la même valeur, faux sinon.
      */
     public boolean estEgale(ProductionType p) {
-        return this.production == p.production() && this.food == p.food() && this.faith == p.faith()
-                && this.science == p.science() && this.culture == p.culture() && this.gold == p.gold();
+        return this.production == p.getProduction() && this.food == p.getFood() && this.faith == p.getFaith()
+                && this.science == p.getScience() && this.culture == p.getCulture() && this.gold == p.getGold();
     }
 } 
