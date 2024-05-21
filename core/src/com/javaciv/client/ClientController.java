@@ -90,19 +90,15 @@ public class ClientController extends InputAdapter implements InputProcessor {
         switch (keycode) {
             case Input.Keys.UP:
                 this.move(new Vector2(0, 1));
-                displayTileMenu = false;
                 break;
             case Input.Keys.DOWN:
                 this.move(new Vector2(0, -1));
-                displayTileMenu = false;
                 break;
             case Input.Keys.LEFT:
                 this.move(new Vector2(-1, 0));
-                displayTileMenu = false;
                 break;
             case Input.Keys.RIGHT:
                 this.move(new Vector2(1, 0));
-                displayTileMenu = false;
                 break;
             /*case Input.Keys.Q:
                 this.zoom = 0.01f;
@@ -160,6 +156,7 @@ public class ClientController extends InputAdapter implements InputProcessor {
             displayTileMenu = true;
             return false;
         } else {
+            this.clientView.closeAllSelectedTiles();
             displayTileMenu = false;
             return false;
         }
@@ -167,7 +164,7 @@ public class ClientController extends InputAdapter implements InputProcessor {
 
     @Override
     public boolean scrolled (float amountX, float amountY) {
-        displayTileMenu = false;
+        //displayTileMenu = false;
         if (amountY > 0.7 && amountY < 14) {
             this.zoom = 1.06f;
         } else if (amountY < -0.7 && amountY > -14) {
