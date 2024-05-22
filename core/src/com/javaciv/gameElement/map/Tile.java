@@ -1,9 +1,15 @@
 package com.javaciv.gameElement.map;
 
+
+import com.javaciv.builder.HashMapFeature;
+import com.javaciv.builder.HashMapRessource;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
 import com.javaciv.gameElement.City;
 import com.javaciv.type.LandType;
+import com.javaciv.type.FeatureType;
+import com.javaciv.type.ProductionType;
+import com.javaciv.type.RessourceType;
 import com.javaciv.client.Client;
 
 /**
@@ -19,54 +25,59 @@ public class Tile {
     /** La position y de la tuile.
      */
     private int y;
-    /** Le type de terrain de la tuile.
-    */
+
+    /** vrai si la tuile est une colline, faux sinon */
+    private boolean hill;
+
+    /** Le type de terrain de la tuile */
     private LandType land;
+
+    /** la caracteristique de terrain de la tuile */
+    private Feature feature;
+
+    /** la ressource de la tuile */
+    private Ressource ressource = HashMapRessource.getRessource(RessourceType.BASE);
 
     /** Propriétaire de la case, null si la case est occupé par personne */
     Client owner = null;
 
-    /** Nombre de points de nourriture de la tuile */
-    int food;
-    /** Nombre de points de culture de la tuile */
-    int culture;
-    /** Nombre de points de foi de la tuile */
-    int faith;
-    /** Nombre de points de science de la tuile */
-    int science;
-    /** Nombre de points d'or de la tuille */
-    int gold;
-    /** Nombre de points de production de la tuile */
-    int production;
+    /** Production de la tuile */
+    ProductionType production;
 
-    /** Flotant indicateur de la valeur stratégique d'une tuile */
+    /** Flotant indicateur de la valeur stratégique d'une tuille */
     double strategicValue;
     /** Ville présente sur la case, initialement vide par pas de ville naturellement */
     City city = null;
 
-    /** Booléen décrivant si la tuile est traversable par une unité terrestre
+    /** Booléen décrivant si la tuille est traversable par une unité terrestre
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableByLandUnit;
-    /** Booléen décrivant si la tuile est traversable par une unité maritime
+    /** Booléen décrivant si la tuille est traversable par une unité maritime
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableBySeaUnit;
 
+    
+    /** Modificateur de deplacement de la tuile */
+    int movementModifier;
+    /** Modificateur de combat de la tuile */
+    int fightModifier;
+
     /** Variable stockant l'unité militaire étant sur la case.
-     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
     */
     private Military miliratyOnTile;
     /** Variable stockant l'unité civile étant sur la case.
-     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
     */
     private Civilian civilianOnTile;
 
-    /** Booléen qui décrit si une tuile est occupé par une unité militaire
+    /** Booléen qui décrit si une tuille est occupé par une unité militaire
      */
     private boolean isMilitaryUnitOnTile = false;
 
-    /** Booléen qui décrit si une tuile est occupé par une unité civile
+    /** Booléen qui décrit si une tuille est occupé par une unité civile
      */
     private boolean isCivilianUnitOnTile = false;
 
@@ -78,21 +89,25 @@ public class Tile {
      * @param terrain type de terrain de la tuile
      */
     public Tile(int x, int y, LandType land,
-    boolean isTraversableByLandUnit, boolean isTraversableBySeaUnit, 
-    int food, int culture, int faith, int science, int gold, int production, double baseLandValue) {
+    boolean isTraversableByLandUnit, boolean isTraversableBySeaUnit, ProductionType production, double baseLandValue) {
         this.x = x;
         this.y = y;
         this.land = land;
         this.isTraversableByLandUnit = isTraversableByLandUnit;
         this.isTraversableBySeaUnit = isTraversableBySeaUnit;
 
-        //Assignation des valeurs de la tuile en terme de points de ressources
-        this.food = food;
-        this.culture = culture;
-        this.faith = faith;
-        this.science = science;
-        this.gold = gold;
         this.production = production;
+
+        // assignation d'une colline si le terrain le permet
+        this.hill = (Math.random() > 0.8 && this.land != LandType.EAU && this.land != LandType.MONTAGNE);
+        if (this.hill) {
+            ProductionType productionHill = new ProductionType(0, 0, 0, 0, 0, 1);
+            this.production = ProductionType.add(this.production, productionHill);
+            this.movementModifier = 2;
+            this.fightModifier = 3;
+        }
+        setFeature(); //assignation d'une caracteristique de terrain adaptée
+        setResssource(); // assignation d'une ressource
 
         //Assignation de la valeur stratégique de la tuile TODO : Ajouter de la valeur si y'a une ressource stratégique
         this.strategicValue = baseLandValue;
@@ -126,28 +141,15 @@ public class Tile {
         return this.y;
     }
 
-    public int getFood() {
-        return this.food;
+    /** permet d'avoir la production totale de la tuile 
+     * @return la production totale de la tuile
+    */
+    public ProductionType getProduction() {
+        return ProductionType.add(this.production, this.feature.getProduction(), this.ressource.getProduction());
     }
 
-    public int getCulture() {
-        return this.culture;
-    }
-
-    public int getScience() {
-        return this.science;
-    }
-
-    public int getFaith() {
-        return this.faith;
-    }
-
-    public int getGold() {
-        return this.gold;
-    }
-
-    public int getProduction() {
-        return this.production;
+    public Boolean getHill() {
+        return this.hill;
     }
 
     /** Permet de recuperer le terrain de la tuile
@@ -155,6 +157,20 @@ public class Tile {
      */
     public LandType getLand() {
         return this.land;
+    }
+
+    /** permet de recuperer la caracteristique de terrain de la tuile 
+     * @return la caracteistique de terrain
+    */
+    public Feature getFeature() {
+        return this.feature;
+    }
+
+    /** permet de recuperer la ressource persente sur la tuile
+     * @return la ressource de la tuile
+     */
+    public Ressource  getRessource() {
+        return this.ressource;
     }
 
     public void print() {
@@ -201,6 +217,14 @@ public class Tile {
         return this.isTraversableBySeaUnit;
     }
 
+    public int getMovementModifier() {
+        return this.movementModifier + this.feature.getMovementModifier();
+    }
+
+    public int getFightModifier() {
+        return this.fightModifier + this.feature.getFightModifier();
+    }
+
     public double getBaseLandValue() {
         return this.strategicValue;
     }
@@ -228,10 +252,83 @@ public class Tile {
         this.y = y;
     }
 
-    /** Permet de changer le terrain d'une tuile, est utile UNIQUEMENT lors de la création de
-     * la map, après cela, le terrain d'une tuile ne doit pas changer  */
-    public void setLand(LandType land) {
-        this.land = land;
+    /** permet de changer la nature du terrain de la tuile */
+    public void setLand(LandType t) {
+        this.land = t;
+    }
+
+    /** Permet de choisir une caracteristique a la creation de la tuile */
+    private void setFeature() {
+        double rand = Math.random();
+        switch(this.land){
+            case DESERT :
+                this.feature = rand > 0.95 ? 
+                               HashMapFeature.getFeature(FeatureType.OASIS): 
+                               HashMapFeature.getFeature(FeatureType.BASE);
+            case PLAINE :
+                if(rand < 0.7) { 
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
+                } else if(rand < 0.8) { 
+                    this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
+                } else { 
+                    this.feature = HashMapFeature.getFeature(FeatureType.RAINFOREST);
+                }
+            case PRAIRIE :
+                if(rand < 0.7) { 
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
+                } else if(rand < 0.9) { 
+                    this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
+                } else { 
+                    this.feature = HashMapFeature.getFeature(FeatureType.MARSH);
+                }
+            case TOUNDRA :
+                this.feature = rand > 0.8 ? 
+                               HashMapFeature.getFeature(FeatureType.WOODS):
+                               HashMapFeature.getFeature(FeatureType.BASE);
+            default :
+                this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+        }
+    }
+
+    /** Permet de choisir une ressource pour la tuile. Utilisable uniquement lors de la creation de la tuile
+     * TODO : A modifier pour ajouter des ressources
+    */
+    private void setResssource() {
+        double rand = Math.random();
+        switch(this.feature.getFeatureType()) {
+            case BASE :
+                
+                if(this.isTraversableByLandUnit) {
+                    if (rand < 0.3) { // modifier la valeur pour une generation plus ou moins dense
+                        this.ressource = HashMapRessource.getRessource(RessourceType.BETAIL);
+                    }
+                }else if (this.isTraversableBySeaUnit) {
+                    if (rand < 0.3) {
+                        this.ressource = HashMapRessource.getRessource(RessourceType.CRABE);
+                    }
+                }
+
+            case MARSH :
+                if (rand < 0.3) {
+                    this.ressource = HashMapRessource.getRessource(RessourceType.BLE);
+                }
+            case RAINFOREST :
+                if (rand < 0.3) {
+                    this.ressource = HashMapRessource.getRessource(RessourceType.CACAO);
+                }
+            case WOODS :
+                if (rand < 0.3) {
+                    this.ressource = HashMapRessource.getRessource(RessourceType.CERVIDE);
+                }
+            default :             
+        }
+    }
+
+    /** Set la caracteristique de terrain de la tuile et la ressource a BASE, utile lors de la construction d'une ville 
+     * ou d'un quartier sur la tuile faisant disparaitre les caracteristique de la tuile*/
+    public void resetFeatureAndRessource() {
+        this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+        this.ressource = HashMapRessource.getRessource(RessourceType.BASE);
     }
 
     /**

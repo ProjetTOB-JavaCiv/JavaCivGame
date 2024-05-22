@@ -1,9 +1,7 @@
 /**
  * @file GameController.java
  * @brief This file contains the GameController class.
- * @author Théo Bessel
  * @date 21/04/2024
- * @version 1.0
  */
 
 package com.javaciv;
