@@ -1,9 +1,7 @@
 /**
  * @file Menu.java
  * @brief This file contains the Menu class.
- * @author Théo Bessel
  * @date 13/05/2024
- * @version 1.0
  */
 
 package com.javaciv.client;
@@ -13,7 +11,6 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;

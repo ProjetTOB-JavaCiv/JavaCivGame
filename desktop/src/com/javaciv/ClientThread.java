@@ -1,9 +1,7 @@
 /**
  * @file ClientThread.java
  * @brief This file contains the ClientThread class.
- * @author Théo Bessel
  * @date 15/05/2024
- * @version 1.0
  */
 
 package com.javaciv;

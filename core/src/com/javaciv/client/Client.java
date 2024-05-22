@@ -1,9 +1,7 @@
 /**
  * @file Client.java
  * @brief This file contains the Client class.
- * @author Théo Bessel
  * @date 18/04/2024
- * @version 1.0
  */
 
 package com.javaciv.client;
@@ -15,7 +13,6 @@ import com.javaciv.gameElement.City;
 import com.javaciv.gameElement.Unite;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class Client implements GameInterface {
     private GameInterface server;

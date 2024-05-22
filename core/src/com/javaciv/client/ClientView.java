@@ -1,9 +1,7 @@
 /**
  * @file ClientView.java
  * @brief This file contains the ClientView class.
- * @author Théo Bessel
  * @date 20/04/2024
- * @version 1.0
  */
 
 package com.javaciv.client;
@@ -12,7 +10,6 @@ import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.City;
 import com.javaciv.type.LandType;
-import com.javaciv.client.Menu;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -31,14 +28,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -48,8 +43,6 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 public class ClientView implements Screen {
     /**
@@ -185,8 +178,8 @@ public class ClientView implements Screen {
                 new Label(getClickCoordinatesText(), this.skin, "default"),
                 new TextButton("Create City", this.skin, "default"),
                 new TextButton("Action 2", this.skin, "default"),
-                new Label("Production: " + getTileAt(getClickCoordonatesnotnull()).getProduction(), this.skin, "default"),
-                new Label("Food: " + getTileAt(getClickCoordonatesnotnull()).getFood(), this.skin, "default")
+                new Label("Production: " + getTileAt(getClickCoordonatesnotnull()).getProduction().getProduction(), this.skin, "default"),
+                new Label("Food: " + getTileAt(getClickCoordonatesnotnull()).getProduction().getFood(), this.skin, "default")
             },
             new ClickListener[] {
                 new ClickListener(){
@@ -223,7 +216,10 @@ public class ClientView implements Screen {
                     public void clicked(InputEvent e, float x, float y){
                         System.out.print("Action 2 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
-                        controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MER);
+                        tiledMap = loadMap(controller.getWorldMap());
+                        tiledMapRenderer.setMap(tiledMap);
+
+                        controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.EAU);
                     }
                 },
 
