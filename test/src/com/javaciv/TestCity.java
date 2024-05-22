@@ -28,7 +28,7 @@ class TestCity {
         tile.setX(2);
         tile.setY(59);
 
-        city = new City(tile, worldMap, player);
+        city = new City(tile, player);
     }
 
     @Test
