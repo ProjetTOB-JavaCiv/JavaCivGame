@@ -47,6 +47,19 @@ class TestTile {
     }
 
     @Test
+    void testSetX(){
+        tile.setX(5);
+        assertEquals(tile.getX(), 5);
+    }
+
+    @Test
+    void testSetY(){
+        tile.setY(1);
+        assertEquals(tile.getY(), 1);
+    }
+
+
+    @Test
     void testGetLand(){
         assertEquals(tile.getLand(), LandType.PLAINE);
     }
@@ -83,6 +96,17 @@ class TestTile {
     void testGetCivilianOnTile(){
         tile.setCivilianUnitOnTile(civilian);
         assertEquals(tile.getCivilianOnTile(), civilian);
+    }
+
+    @Test
+    void getOwner() {
+        assertEquals(tile.getOwner(), null);
+    }
+
+    @Test
+    void setOwner() {
+        tile.setOwner(player);
+        assertEquals(tile.getOwner(), player);
     }
     
 }
