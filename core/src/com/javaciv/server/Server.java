@@ -173,7 +173,7 @@ public class Server implements GameInterface {
         return getClientCount() - 1;
     }
 
-    private int getClientCount() {
+    public int getClientCount() {
         if (this.clients == null) {
             return 0;
         } else {
