@@ -86,6 +86,7 @@ public class ClientView implements Screen {
     private Menu topMenu;
     private Menu tileMenu;
     private Menu playerMenu;
+    private Menu cityMenu;
     private List<Label> cityNames = new ArrayList<Label>();
     private List<Vector2> selectedTiles = new ArrayList<Vector2>();
 
@@ -273,6 +274,26 @@ public class ClientView implements Screen {
         );
 
         this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
+        
+        this.cityMenu = new Menu( 
+            new Actor[] {
+                /*new Label("City Menu" 
+                + getCityAt(getClickCoordonatesnotnull()).getProducedCulture() + " / " 
+                + getCityAt(getClickCoordonatesnotnull()).getCultureNeededForNewTile()
+                , this.skin, "default")*/
+                new Label("City Menu", this.skin, "default")
+            },
+            new ClickListener[] {
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("City Menu clicked !");
+                    }
+                }
+            }
+        );
+
+        this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());
 
         // Setup the stagess for the tilemap and for the menus
         this.mapStage = new Stage(new ScreenViewport());
@@ -316,6 +337,13 @@ public class ClientView implements Screen {
                 + (int) tileMenuWorldCoordinates.y / this.tileSize
                 + "]");
         }
+
+        // Update the city menu
+        if (this.controller.getDisplayCityMenu()) {
+            ((Label) this.cityMenu.getMenuItems()[0]).setText("City Menu");
+        }
+
+        // Actualisation des informations sur le joueur
         ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
         ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
         ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
@@ -323,6 +351,9 @@ public class ClientView implements Screen {
 
         this.playerMenu.resizeMenu();
         this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
+
+        this.cityMenu.resizeMenu();
+        this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());
 
         // Update camera with all the zoom and movement stuff
         float newZoom = this.camera.zoom * this.controller.getZoom();
@@ -345,6 +376,12 @@ public class ClientView implements Screen {
             this.tileMenu.setVisible(false);
         }
         
+        if (this.controller.getDisplayCityMenu()) {
+            this.cityMenu.setVisible(true);
+            this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());
+        } else {
+            this.cityMenu.setVisible(false);
+        }
         
 
 
@@ -370,8 +407,7 @@ public class ClientView implements Screen {
         this.menuStage.addActor(this.topMenu);
         this.menuStage.addActor(this.tileMenu);
         this.menuStage.addActor(this.playerMenu);
-        
-
+        this.menuStage.addActor(this.cityMenu);
 
         // Draw the labelStage
         this.labelStage.act(Gdx.graphics.getDeltaTime());
@@ -443,11 +479,20 @@ public class ClientView implements Screen {
     }
     /**
      * Renvoie la tuile à une position donnée.
-     * @param coords
-     * @return
+     * @param coords les coordonnées de la tuile
+     * @return la tuile selectionnée
      */
     private Tile getTileAt(Vector2 coords) {
         return this.controller.getWorldMap().at((int) coords.x, (int) coords.y);
+    }
+
+    /**
+     * Renvoie la ville à une position donnée.
+     * @param coords les coordonnées de la tuile
+     * @return la ville sur la tuile selectionnée
+     */
+    private City getCityAt(Vector2 coords) {
+        return this.controller.getWorldMap().at((int) coords.x, (int) coords.y).getCity();
     }
 
     /**
@@ -488,7 +533,7 @@ public class ClientView implements Screen {
         }
         tiledMap.getLayers().add(tiledMapLayer1);
         
-
+        
         TiledMapTileLayer redFrameLayer = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
         for (Vector2 selectedTile : selectedTiles) {
             final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
@@ -503,8 +548,6 @@ public class ClientView implements Screen {
         }
         tiledMap.getLayers().add(redFrameLayer);
 
-
-       
 
         TiledMapTileLayer cityTerritory = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
         for (City city : controller.getCities()) {
@@ -548,6 +591,11 @@ public class ClientView implements Screen {
             (int) ( mouseCoords.x / this.tileSize ),
             (int) ( mouseCoords.y / this.tileSize )
         );
+    }
+
+    /** Uniquement utilisé dans client controller pour gerer l'ouverture du menu des villes */
+    public int getTileSize() {
+        return this.tileSize;
     }
 
     /**
@@ -601,6 +649,11 @@ public class ClientView implements Screen {
         //}
     }
 
+    public void openCityMenuAt(){   
+        this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());     
+        this.controller.setDisplayCityMenu(true);
+    }
+
     public void closeAllSelectedTiles() {
         selectedTiles.clear();
     }
@@ -612,6 +665,8 @@ public class ClientView implements Screen {
         int clickedY = (int) getMouseCoordinates().y;
         if (isCityClicked(clickedX, clickedY)) {
             System.out.println("City clicked at coordinates: [" + clickedX + ", " + clickedY + "]");
+            //Affichage du menu de la ville
+            openCityMenuAt();
         } else {
             System.out.println("No city clicked. Coordinates: [" + clickedX + ", " + clickedY + "]");
         }
@@ -625,7 +680,7 @@ public class ClientView implements Screen {
     public boolean isCityClicked(int x, int y) {
        return this.controller.getWorldMap().at(x, y).getCity() != null;
     }
-
+    
     private TextureRegion getTintedTextureRegion(Texture texture, Color color) {
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
@@ -647,6 +702,5 @@ public class ClientView implements Screen {
         pixmap.dispose();
         return new TextureRegion(newTexture);
     }
-
     
 }

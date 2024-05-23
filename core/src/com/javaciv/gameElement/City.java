@@ -101,6 +101,14 @@ public class City {
 
     /* ============================== METHODE LIEE AUX TUILLES ============================== */
 
+    public void checkForNewTile(){
+        if(this.producedCulture >= this.cultureNeededForNewTile) {
+            this.addTile();
+            this.cultureNeededForNewTile += 20;
+            this.producedCulture = 0;
+        }
+    }
+ 
     private void addTile() {
         //Tuille candidate à l'expension du territoire
         Tile possibleTile;
@@ -141,8 +149,6 @@ public class City {
             addNeighbourTiles(chosenTile);
         }
 
-        //TODO : Si l'expension est impossible, on fait en sorte de renvoyer un message pour
-        // que cette fonction ne soit pas appeler chaque tour ???
     }
 
     /**Méthode permettant d'ajouter les voisins d'une tuille à la liste des tuilles voisine à
@@ -307,5 +313,11 @@ public class City {
         return this.neighbourTiles;
     }
 
+    public int getProducedCulture() {
+        return this.producedCulture;
+    }
 
+    public int getCultureNeededForNewTile() {
+        return this.cultureNeededForNewTile;
+    }
 }
