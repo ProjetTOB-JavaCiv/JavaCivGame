@@ -123,4 +123,12 @@ public class Client implements GameInterface {
             return this.clientId;
         }
     }
+
+    public boolean buyItem(int gold, int culture, int science, int faith) {
+        if (this.canPassTurn()) {
+            return this.server.buyItem(gold, culture, science, faith);
+        } else {
+            return false;
+        }
+    }
 }

@@ -13,61 +13,49 @@ public final class HashMapLand {
     
     static HashMap<LandType, Tile> map = new HashMap<LandType, Tile>() {{
         put(LandType.PLAINE, new Tile(
-            0, 
-            0, 
-            LandType.PLAINE, 
-            true, 
-            false, 
+            0, 0,
+            LandType.PLAINE,
+            true, false,
             new ProductionType(1,0,0,0,0,1),
             2
         ));
 
         put(LandType.PRAIRIE, new Tile(
-            0, 
-            0, 
-            LandType.PRAIRIE, 
-            true, 
-            false, 
+            0, 0,
+            LandType.PRAIRIE,
+            true, false,
             new ProductionType(2,0,0,0,0,0),
             3
         ));
 
         put(LandType.TOUNDRA, new Tile(
-            0, 
-            0, 
-            LandType.TOUNDRA, 
-            true, 
-            false, 
+            0, 0,
+            LandType.TOUNDRA,
+            true, false,
             new ProductionType(1,0,0,0,0,0),
             2
         ));
 
         put(LandType.DESERT, new Tile(
-            0, 
-            0, 
-            LandType.DESERT, 
-            true, 
-            false, 
+            0, 0,
+            LandType.DESERT,
+            true, false,
             new ProductionType(0,0,0,0,0,0),
             1
         ));
 
         put(LandType.MONTAGNE, new Tile(
-            0, 
-            0, 
-            LandType.MONTAGNE, 
-            false, 
-            false, 
-            new ProductionType(0,0,0,0,0,0), 
+            0, 0,
+            LandType.MONTAGNE,
+            false, false,
+            new ProductionType(0,0,0,0,0,0),
             1
         ));
 
         put(LandType.EAU, new Tile(
-            0, 
-            0, 
-            LandType.EAU, 
-            true, 
-            false, 
+            0, 0,
+            LandType.EAU,
+            true, false,
             new ProductionType(1,0,0,0,1,0),
             2
         ));

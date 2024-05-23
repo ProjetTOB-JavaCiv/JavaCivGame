@@ -100,13 +100,13 @@ public class City {
     /* ============================== METHODE LIEE AUX TUILLES ============================== */
 
     private void addTile() {
-        //Tuille candidate à l'expension du territoire
+        //Tuile candidate à l'expension du territoire
         Tile possibleTile;
         Tile chosenTile = null;
         int indexChosenTile = 0;
         double maxTileStrategicValue = 0;
 
-        //On ajoute les tuilles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuilles.
+        //On ajoute les tuiles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuiles.
         for (int i = 0; i < neighbourTiles.size(); i++){
 
             possibleTile = neighbourTiles.get(i);
@@ -127,7 +127,7 @@ public class City {
         }
 
         //TODO : Si l'expension est impossible, on fait en sorte de renvoyer un message pour
-        // que cette fonction ne soit pas appeler chaque tour ???
+        // que cette fonction ne soit pas appeléd chaque tour ???
     }
 
     /**Méthode permettant d'ajouter les voisins d'une tuille à la liste des tuilles voisine à
@@ -153,6 +153,14 @@ public class City {
         if(this.y + 1 <= this.owner.getWorldMap().getHeight()) {
             neighbourTiles.add(this.owner.getWorldMap().at(this.x, this.y + 1));
         }
+    }
+
+    /**
+     * Méthode permettant d'ajouter une tuile à la ville
+     */
+    public void addCityTile(Tile tile) {
+        this.cityTiles.add(tile);
+        System.out.println("Tile added to City : [" + tile.getX() + ", " + tile.getY() + " | " + tile.getLand() + "]\n");
     }
 
 
@@ -281,7 +289,7 @@ public class City {
     }
 
     public List<Tile> getNeighbourTiles() {
-        return neighbourTiles;
+        return this.neighbourTiles;
     }
 
 

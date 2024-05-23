@@ -31,6 +31,9 @@ public class ClientController extends InputAdapter {
 
     private Vector2 coordinates = new Vector2(0, 0);
 
+    private boolean buyTile = false;
+
+    private City selectedCity;
 
     private void move(Vector2 movement) {
         Vector2 newMovement = new Vector2(0, 0);
@@ -140,17 +143,26 @@ public class ClientController extends InputAdapter {
 
     @Override
     public boolean touchDown (int x, int y, int pointer, int button) {
+        this.coordinates = new Vector2(x, y);
         if (button == Buttons.RIGHT){
             System.out.println("Touch down at (" + x + ", " + y + ")");
 
-            this.coordinates = new Vector2(x, y);
             clientView.openTileMenuAt(this.coordinates);
 
             displayTileMenu = true;
             return false;
         } else {
-            this.clientView.closeAllSelectedTiles();
-            displayTileMenu = false;
+            if (this.buyTile) {
+                if (this.client.buyItem(10, 0, 0, 0)) {
+                    this.buyTile = false;
+                    this.selectedCity.addCityTile(this.clientView.getTileAt(this.clientView.getClickCoordinates()));
+                    this.clientView.updateMap();
+                }
+            } else {
+                this.clientView.closeAllSelectedTiles();
+                displayTileMenu = false;
+            }
+
             return false;
         }
     }
@@ -177,6 +189,22 @@ public class ClientController extends InputAdapter {
         gameInfos.put("science", this.intToStringNotation(this.client.getSciencePoint()));
         gameInfos.put("faith", this.intToStringNotation(this.client.getFaithPoint()));
         return gameInfos;
+    }
+
+    public int getGoldPoint() {
+        return this.client.getGoldPoint();
+    }
+
+    public int getCulturePoint() {
+        return this.client.getCulturePoint();
+    }
+
+    public int getSciencePoint() {
+        return this.client.getSciencePoint();
+    }
+
+    public int getFaithPoint() {
+        return this.client.getFaithPoint();
     }
 
     private String intToStringNotation(int number) {
@@ -207,6 +235,11 @@ public class ClientController extends InputAdapter {
 
     public List<City> getCities() {
         return this.client.getCities();
+    }
+
+    public void buyTile(City city) {
+        this.buyTile = true;
+        this.selectedCity = city;
     }
 
 }

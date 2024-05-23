@@ -65,4 +65,8 @@ public interface GameInterface {
 
     // Crée un joueur
     int createClient(GameInterface client);
+
+    // Achète un item en dépensant de l'or, de la culture, de la science et/ou de la foi
+    // Retourne vrai si l'achat a pu être effectué, faux sinon
+    boolean buyItem(int gold, int culture, int science, int faith);
 }

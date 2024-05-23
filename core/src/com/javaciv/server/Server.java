@@ -139,7 +139,7 @@ public class Server implements GameInterface {
 
     private boolean isTileAvailableForCity(Tile tile) {
         /*Si des unités terrestre ne peuvent même pas loger sur la tuille, une ville encore moins. Peut être renommer la
-        varible pour la rendre plus parlante ??*/        
+        varible pour la rendre plus parlante ??*/
         if(tile.getIsTraversableByLandUnit() == false) {
             return false;
         }
@@ -178,6 +178,33 @@ public class Server implements GameInterface {
             return 0;
         } else {
             return this.clients.size();
+        }
+    }
+
+    public boolean buyItem(int gold, int culture, int science, int faith) {
+        if (this.goldPoint.get(this.clientId) >= gold &&
+            this.culturePoint.get(this.clientId) >= culture &&
+            this.sciencePoint.get(this.clientId) >= science &&
+            this.faithPoint.get(this.clientId) >= faith) {
+                this.goldPoint.set(this.clientId, this.goldPoint.get(this.clientId) - gold);
+                this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) - culture);
+                this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) - science);
+                this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) - faith);
+                return true;
+        } else {
+            if (this.goldPoint.get(this.clientId) < gold) {
+                System.out.println("Not enough gold to buy this item.");
+            }
+            if (this.culturePoint.get(this.clientId) < culture) {
+                System.out.println("Not enough culture to buy this item.");
+            }
+            if (this.sciencePoint.get(this.clientId) < science) {
+                System.out.println("Not enough science to buy this item.");
+            }
+            if (this.faithPoint.get(this.clientId) < faith) {
+                System.out.println("Not enough faith to buy this item.");
+            }
+            return false;
         }
     }
 }

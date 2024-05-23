@@ -166,7 +166,7 @@ public class Tile {
     /** permet de recuperer la ressource persente sur la tuile
      * @return la ressource de la tuile
      */
-    public Ressource  getRessource() {
+    public Ressource getRessource() {
         return this.ressource;
     }
 
@@ -255,29 +255,29 @@ public class Tile {
         double rand = Math.random();
         switch(this.land){
             case DESERT :
-                this.feature = rand > 0.95 ? 
-                               HashMapFeature.getFeature(FeatureType.OASIS): 
-                               HashMapFeature.getFeature(FeatureType.BASE);
+                this.feature = rand > 0.95 ?
+                            HashMapFeature.getFeature(FeatureType.OASIS):
+                            HashMapFeature.getFeature(FeatureType.BASE);
             case PLAINE :
-                if(rand < 0.7) { 
-                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
-                } else if(rand < 0.8) { 
+                if(rand < 0.7) {
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+                } else if(rand < 0.8) {
                     this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
-                } else { 
+                } else {
                     this.feature = HashMapFeature.getFeature(FeatureType.RAINFOREST);
                 }
             case PRAIRIE :
-                if(rand < 0.7) { 
-                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
-                } else if(rand < 0.9) { 
+                if(rand < 0.7) {
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+                } else if(rand < 0.9) {
                     this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
-                } else { 
+                } else {
                     this.feature = HashMapFeature.getFeature(FeatureType.MARSH);
                 }
             case TOUNDRA :
-                this.feature = rand > 0.8 ? 
-                               HashMapFeature.getFeature(FeatureType.WOODS):
-                               HashMapFeature.getFeature(FeatureType.BASE);
+                this.feature = rand > 0.8 ?
+                            HashMapFeature.getFeature(FeatureType.WOODS):
+                            HashMapFeature.getFeature(FeatureType.BASE);
             default :
                 this.feature = HashMapFeature.getFeature(FeatureType.BASE);
         }
@@ -313,7 +313,7 @@ public class Tile {
                 if (rand < 0.3) {
                     this.ressource = HashMapRessource.getRessource(RessourceType.CERVIDE);
                 }
-            default :             
+            default :
         }
     }
 
