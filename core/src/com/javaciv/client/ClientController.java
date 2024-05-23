@@ -6,6 +6,7 @@ import java.util.List;
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
+import com.javaciv.GameInterface;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input;
@@ -166,6 +167,10 @@ public class ClientController extends InputAdapter {
             return false;
         }
     }
+
+    public GameInterface getServer() {
+		return this.client.getServer();
+	}
 
     @Override
     public boolean scrolled (float amountX, float amountY) {

@@ -454,7 +454,7 @@ public class ClientView extends ScreenAdapter {
         }
 
         TiledMapTileLayer tiledMapLayer1 = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
-        for (City city : this.controller.getCities()) {
+        for (City city : this.controller.getServer().getAllCities()) {
             final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
             cell.setTile(
                 new StaticTiledMapTile(

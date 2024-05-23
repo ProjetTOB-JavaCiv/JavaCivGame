@@ -8,6 +8,7 @@ package com.javaciv;
 
 import com.javaciv.client.Client;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.Utils;
 
 public class ClientThread extends Thread {
     private Client client;
@@ -33,6 +34,11 @@ public class ClientThread extends Thread {
                 System.out.println("Science: " + this.client.getSciencePoint());
                 System.out.println("Faith: " + this.client.getFaithPoint());
                 System.out.println("==================================");
+                // Place random city on the map and pass the turn
+                this.client.createCity(this.client.getWorldMap().at(
+                    Utils.randomInt(0, this.client.getWorldMap().getWidth()),
+                    Utils.randomInt(0, this.client.getWorldMap().getHeight())
+                ));
                 this.client.nextTurn();
             }
         }

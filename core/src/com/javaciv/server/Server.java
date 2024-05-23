@@ -117,8 +117,24 @@ public class Server implements GameInterface {
         return this.cities.get(this.clientId);
     }
 
+    public List<City> getAllCities() {
+        List<City> allCities = new ArrayList<City>();
+        for (List<City> cities : this.cities) {
+            allCities.addAll(cities);
+        }
+        return allCities;
+    }
+
     public List<Unite> getUnites() {
         return this.unites.get(this.clientId);
+    }
+
+    public List<Unite> getAllUnites() {
+        List<Unite> allUnites = new ArrayList<Unite>();
+        for (List<Unite> unites : this.unites) {
+            allUnites.addAll(unites);
+        }
+        return allUnites;
     }
 
     public boolean createCity(Tile tile) {

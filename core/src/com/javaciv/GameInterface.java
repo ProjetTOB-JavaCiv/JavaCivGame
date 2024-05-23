@@ -53,7 +53,11 @@ public interface GameInterface {
 
     List<City> getCities();
 
+    List<City> getAllCities();
+
     List<Unite> getUnites();
+
+    List<Unite> getAllUnites();
 
     // The boolean is used to know if the city has been created
     boolean createCity(Tile tile);
