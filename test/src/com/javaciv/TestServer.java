@@ -82,9 +82,9 @@ class ServerTest {
         Tile tile= server.getWorldMap().at(0,0);
         while (!created & no<1) {
             Random rx = new Random();
-            x = rx.nextInt((server.getWorldMap().getWidth()-1) + 1);
+            x = rx.nextInt((server.getWorldMap().getWidth()-1) + 1) + 1;
             Random ry = new Random();
-            y = ry.nextInt((server.getWorldMap().getHeight()-1) + 1);
+            y = ry.nextInt((server.getWorldMap().getHeight()-1) + 1) + 1;
             tile = server.getWorldMap().at(x,y);
             created = server.createCity(tile);
             if (tile.getIsTraversableByLandUnit()) {
