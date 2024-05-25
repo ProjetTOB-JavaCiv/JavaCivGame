@@ -1,9 +1,3 @@
-/**
- * @file ClientController.java
- * @brief This file contains the ClientController class.
- * @date 20/04/2024
- */
-
 package com.javaciv.client;
 
 import java.util.HashMap;
@@ -12,6 +6,7 @@ import java.util.List;
 import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
+import com.javaciv.GameInterface;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.Input;
@@ -35,8 +30,13 @@ public class ClientController extends InputAdapter {
 
     private boolean displayTileMenu = false;
 
+    private boolean displayCityMenu = false;
+
     private Vector2 coordinates = new Vector2(0, 0);
 
+    private boolean buyTile = false;
+
+    private City selectedCity;
 
     private void move(Vector2 movement) {
         Vector2 newMovement = new Vector2(0, 0);
@@ -78,6 +78,10 @@ public class ClientController extends InputAdapter {
 
     public boolean getDisplayTileMenu() {
         return this.displayTileMenu;
+    }
+
+    public boolean getDisplayCityMenu() {
+        return this.displayCityMenu;
     }
 
     public Vector2 getClickCoordinates() {
@@ -144,22 +148,41 @@ public class ClientController extends InputAdapter {
         this.displayTileMenu = displayTileMenu;
     }
 
+    public void setDisplayCityMenu(boolean displayCityMenu) {
+        this.displayCityMenu = displayCityMenu;
+    }
+
     @Override
     public boolean touchDown (int x, int y, int pointer, int button) {
+        this.coordinates = new Vector2(x, y);
         if (button == Buttons.RIGHT){
             System.out.println("Touch down at (" + x + ", " + y + ")");
 
             this.coordinates = new Vector2(x, y);
+            //Information sur la tuile que l'on a cliqué
             clientView.openTileMenuAt(this.coordinates);
-
             displayTileMenu = true;
+
             return false;
         } else {
-            this.clientView.closeAllSelectedTiles();
-            displayTileMenu = false;
+            if (this.buyTile) {
+                if (this.client.buyItem(10, 0, 0, 0)) {
+                    this.buyTile = false;
+                    this.selectedCity.addCityTile(this.clientView.getTileAt(this.clientView.getClickCoordinates()));
+                    this.clientView.updateMap();
+                }
+            } else {
+                this.clientView.closeAllSelectedTiles();
+                displayTileMenu = false;
+            }
+
             return false;
         }
     }
+
+    public GameInterface getServer() {
+		return this.client.getServer();
+	}
 
     @Override
     public boolean scrolled (float amountX, float amountY) {
@@ -183,6 +206,22 @@ public class ClientController extends InputAdapter {
         gameInfos.put("science", this.intToStringNotation(this.client.getSciencePoint()));
         gameInfos.put("faith", this.intToStringNotation(this.client.getFaithPoint()));
         return gameInfos;
+    }
+
+    public int getGoldPoint() {
+        return this.client.getGoldPoint();
+    }
+
+    public int getCulturePoint() {
+        return this.client.getCulturePoint();
+    }
+
+    public int getSciencePoint() {
+        return this.client.getSciencePoint();
+    }
+
+    public int getFaithPoint() {
+        return this.client.getFaithPoint();
     }
 
     private String intToStringNotation(int number) {
@@ -213,6 +252,11 @@ public class ClientController extends InputAdapter {
 
     public List<City> getCities() {
         return this.client.getCities();
+    }
+
+    public void buyTile(City city) {
+        this.buyTile = true;
+        this.selectedCity = city;
     }
 
 }

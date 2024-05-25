@@ -28,6 +28,8 @@ public class City {
     int health = 100;
     /** Puissance d'attaque de la ville */
     int attack = 10;
+    /** Rayon max de l'extension du territoire de la ville */
+    double territoryRange = 5.0;
 
     /** Nombre de points de science produit par une ville chaque tour */
     int sciencePerTurnProd;
@@ -61,10 +63,14 @@ public class City {
     /** Liste de l'ensemble des infrastructures construisent dans une ville */
     List<Infrastructure> infrastructures = new ArrayList<Infrastructure>();
     
-    /** Liste des tuilles appartenant à la ville */
+    /** Liste des tuiles appartenant à la ville */
     List<Tile> cityTiles = new ArrayList<Tile>();
-    /** Liste des tuilles voisines au territoire de la ville */
+    /** Liste des tuiles voisines au territoire de la ville */
     List<Tile> neighbourTiles = new ArrayList<Tile>();
+
+    //TODO : Ajouter le fait de prendre en compte les bordures pour faire les textures du territoire de la ville
+    ///** Liste des tuiles qui sont des bordures de la ville */
+    //List<String> borderSides = new ArrayList<String>(); // "top", "bottom", "left", "right"
 
     /**
      * Constructeur d'une ville
@@ -76,12 +82,13 @@ public class City {
         
         this.x = this.position.getX();
         this.y = this.position.getY();
-        //Ajout des cases appartenant à la ville : La tuille centrale
+        //Ajout des cases appartenant à la ville : La tuile centrale
         this.cityTiles.add(cityPosition);
 
-        //Ajout des cases voisines à la ville
-        for(int i = -1; i < 2; i =+ 2) {
-            for(int j = -1; j < 2; j =+ 2) {
+        // Ajout des cases voisines à la ville
+        for(int i = -1; i <= 1; i++) {
+            for(int j = -1; j <= 1; j++) {
+                if(i == 0 && j == 0) continue; // Skip the center tile
                 Tile newTile = this.owner.getWorldMap().at(x + i, y + j);
                 this.cityTiles.add(newTile);
                 addNeighbourTiles(newTile);
@@ -94,19 +101,40 @@ public class City {
 
     /* ============================== METHODE LIEE AUX TUILLES ============================== */
 
+    public void checkForNewTile(){
+        if(this.producedCulture >= this.cultureNeededForNewTile) {
+            this.addTile();
+            this.cultureNeededForNewTile += 20;
+            this.producedCulture = 0;
+        }
+    }
+ 
     private void addTile() {
-        //Tuille candidate à l'expension du territoire
+        //Tuile candidate à l'expension du territoire
         Tile possibleTile;
         Tile chosenTile = null;
         int indexChosenTile = 0;
         double maxTileStrategicValue = 0;
+
+        //Coefficient de réduction de la valeur d'une tuille en fonction de la distance entre la tuile et le centre ville
+        double coeffReductionDist = 0.3;
+
+        /** Variable qui donne la valeur stratégique d'une tuile en fonction de sa valeur de base ET
+         * de sa distance par rapport à la ville. L'objectif est d'éviter d'avoir des villes qui se répendent à
+         * l'infini vers une direction.
+         */
+        double localTileStrategicValue;
 
         //On ajoute les tuilles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuilles.
         for (int i = 0; i < neighbourTiles.size(); i++){
 
             possibleTile = neighbourTiles.get(i);
 
-            if(possibleTile.getBaseLandValue() > maxTileStrategicValue && possibleTile.getOwner() == null) {
+            //Formule un peu compliqué pour juste réduire la valeur strategique d'une tuile plus elle est loin.
+            localTileStrategicValue = possibleTile.getBaseLandValue() 
+            - this.position.distance(owner.getWorldMap().at(possibleTile.getX(), possibleTile.getY()))* coeffReductionDist;
+
+            if(localTileStrategicValue > maxTileStrategicValue && possibleTile.getOwner() == null) {
 
                 maxTileStrategicValue = possibleTile.getBaseLandValue();
                 chosenTile = possibleTile;
@@ -122,7 +150,7 @@ public class City {
         }
 
         //TODO : Si l'expension est impossible, on fait en sorte de renvoyer un message pour
-        // que cette fonction ne soit pas appeler chaque tour ???
+        // que cette fonction ne soit pas appeléd chaque tour ???
     }
 
     /**Méthode permettant d'ajouter les voisins d'une tuille à la liste des tuilles voisine à
@@ -131,23 +159,39 @@ public class City {
      * @param tile tuille dont on veut ajouter les voisins
      */
     private void addNeighbourTiles(Tile tile) {
+        //Récupération de la map
+        WorldMap map = this.owner.getWorldMap();
+
         //Ajout des cases voisines à la ville
-        //Case de gauche
-        if(this.x - 1 >= 0) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x - 1, this.y));
+        Tile leftTile = map.at(this.x - 1, this.y);
+        Tile rightTile = map.at(this.x + 1, this.y);
+        Tile downTile = map.at(this.x, this.y - 1);
+        Tile upTile = map.at(this.x, this.y + 1);
+
+
+        if(this.x - 1 >= 0 && leftTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(leftTile);
         }
         //Case de droite
-        if(this.x + 1 <= this.owner.getWorldMap().getWidth()) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x + 1, this.y));
+        if(this.x + 1 <= map.getWidth() && rightTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(rightTile);
         }
         //Case du dessus
-        if(this.y - 1 >= 0) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x, this.y - 1));
+        if(this.y - 1 >= 0 && downTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(downTile);
         }
         //Case du dessous
-        if(this.y + 1 <= this.owner.getWorldMap().getHeight()) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x, this.y + 1));
+        if(this.y + 1 <= map.getHeight() && upTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(upTile);
         }
+    }
+
+    /**
+     * Méthode permettant d'ajouter une tuile à la ville
+     */
+    public void addCityTile(Tile tile) {
+        this.cityTiles.add(tile);
+        System.out.println("Tile added to City : [" + tile.getX() + ", " + tile.getY() + " | " + tile.getLand() + "]\n");
     }
 
 
@@ -269,5 +313,21 @@ public class City {
 
     public int getY() {
         return this.y;
+    }
+
+    public List<Tile> getCityTiles() {
+        return this.cityTiles;
+    }
+
+    public List<Tile> getNeighbourTiles() {
+        return this.neighbourTiles;
+    }
+
+    public int getProducedCulture() {
+        return this.producedCulture;
+    }
+
+    public int getCultureNeededForNewTile() {
+        return this.cultureNeededForNewTile;
     }
 }

@@ -95,11 +95,19 @@ public class Client implements GameInterface {
         return this.cities;
     }
 
+    public List<City> getAllCities() {
+        return this.getCities();
+    }
+
     public List<Unite> getUnites() {
         if (this.canPassTurn()) {
             this.unites = this.server.getUnites();
         }
         return this.unites;
+    }
+
+    public List<Unite> getAllUnites() {
+        return this.getUnites();
     }
 
     public boolean createCity(Tile tile) {
@@ -122,5 +130,17 @@ public class Client implements GameInterface {
         } else {
             return this.clientId;
         }
+    }
+
+    public boolean buyItem(int gold, int culture, int science, int faith) {
+        if (this.canPassTurn()) {
+            return this.server.buyItem(gold, culture, science, faith);
+        } else {
+            return false;
+        }
+    }
+
+    public GameInterface getServer() {
+        return this.server;
     }
 }

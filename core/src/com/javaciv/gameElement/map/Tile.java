@@ -5,6 +5,7 @@ import com.javaciv.builder.HashMapFeature;
 import com.javaciv.builder.HashMapRessource;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
+import com.javaciv.gameElement.City;
 import com.javaciv.type.LandType;
 import com.javaciv.type.FeatureType;
 import com.javaciv.type.ProductionType;
@@ -45,6 +46,8 @@ public class Tile {
 
     /** Flotant indicateur de la valeur stratégique d'une tuille */
     double strategicValue;
+    /** Ville présente sur la case, initialement vide par pas de ville naturellement */
+    City city = null;
 
     /** Booléen décrivant si la tuille est traversable par une unité terrestre
      * Ceci ne peut changer car c'est une propriété géographique du terrain
@@ -166,7 +169,7 @@ public class Tile {
     /** permet de recuperer la ressource persente sur la tuile
      * @return la ressource de la tuile
      */
-    public Ressource  getRessource() {
+    public Ressource getRessource() {
         return this.ressource;
     }
 
@@ -231,6 +234,10 @@ public class Tile {
         return this.owner;
     }
 
+    public City getCity() {
+        return this.city;
+    }
+
     /** Permet de changer de position une tuille sur l'axe X, est utile UNIQUEMENT lors de la création de
      * la map, après cela, la position d'une tuile ne doit pas changer
      * TODO : Changer le degré de liberté de cette méthode ??
@@ -255,29 +262,29 @@ public class Tile {
         double rand = Math.random();
         switch(this.land){
             case DESERT :
-                this.feature = rand > 0.95 ? 
-                               HashMapFeature.getFeature(FeatureType.OASIS): 
-                               HashMapFeature.getFeature(FeatureType.BASE);
+                this.feature = rand > 0.95 ?
+                            HashMapFeature.getFeature(FeatureType.OASIS):
+                            HashMapFeature.getFeature(FeatureType.BASE);
             case PLAINE :
-                if(rand < 0.7) { 
-                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
-                } else if(rand < 0.8) { 
+                if(rand < 0.7) {
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+                } else if(rand < 0.8) {
                     this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
-                } else { 
+                } else {
                     this.feature = HashMapFeature.getFeature(FeatureType.RAINFOREST);
                 }
             case PRAIRIE :
-                if(rand < 0.7) { 
-                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
-                } else if(rand < 0.9) { 
+                if(rand < 0.7) {
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+                } else if(rand < 0.9) {
                     this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
-                } else { 
+                } else {
                     this.feature = HashMapFeature.getFeature(FeatureType.MARSH);
                 }
             case TOUNDRA :
-                this.feature = rand > 0.8 ? 
-                               HashMapFeature.getFeature(FeatureType.WOODS):
-                               HashMapFeature.getFeature(FeatureType.BASE);
+                this.feature = rand > 0.8 ?
+                            HashMapFeature.getFeature(FeatureType.WOODS):
+                            HashMapFeature.getFeature(FeatureType.BASE);
             default :
                 this.feature = HashMapFeature.getFeature(FeatureType.BASE);
         }
@@ -313,7 +320,7 @@ public class Tile {
                 if (rand < 0.3) {
                     this.ressource = HashMapRessource.getRessource(RessourceType.CERVIDE);
                 }
-            default :             
+            default :
         }
     }
 
@@ -346,5 +353,9 @@ public class Tile {
     */
     public void setOwner(Client owner) {
         this.owner = owner;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
     }
 }
