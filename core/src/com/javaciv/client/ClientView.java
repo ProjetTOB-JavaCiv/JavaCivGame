@@ -96,7 +96,7 @@ public class ClientView extends ScreenAdapter {
      */
     public ClientView(ClientController controller) {
         // Load configuration from `config.txt` file
-        loadConfiguration("config.txt");
+        loadConfiguration("config/config.txt");
 
         // Set the controller and the map
         
@@ -106,26 +106,26 @@ public class ClientView extends ScreenAdapter {
         // Load all the textures for the TileMap
         this.tileTextures = new Texture[] {
             //TODO : Mettre les textures dans un dossier + Faire correspondre les textures avec les types de terrain
-            new Texture(Gdx.files.internal("Grass.png")), // 0 -> Plaine
-            new Texture(Gdx.files.internal("Sand.png")), // 1 -> Desert
-            new Texture(Gdx.files.internal("Dirt.png")), // 2 -> Prairie
-            new Texture(Gdx.files.internal("Mountain.png")), // 3 -> Montagne
-            new Texture(Gdx.files.internal("Grass1.png")), // 4 -> Toundra
-            new Texture(Gdx.files.internal("Water.png")) // 5 -> Mer
+            new Texture(Gdx.files.internal("textures/tiles/Grass.png")), // 0 -> Plaine
+            new Texture(Gdx.files.internal("textures/tiles/Sand.png")), // 1 -> Desert
+            new Texture(Gdx.files.internal("textures/tiles/Dirt.png")), // 2 -> Foret
+            new Texture(Gdx.files.internal("textures/tiles/Mountain.png")), // 3 -> Montagne
+            new Texture(Gdx.files.internal("textures/tiles/Grass1.png")), // 4 -> Colline
+            new Texture(Gdx.files.internal("textures/tiles/Water.png")) // 5 -> Mer
         };
 
         this.cityTextures = new Texture[] {
-            new Texture(Gdx.files.internal("City.png"))
+            new Texture(Gdx.files.internal("textures/City.png"))
         };
 
         this.selectTextures = new Texture[] {
-            new Texture(Gdx.files.internal("redframe.png")),
+            new Texture(Gdx.files.internal("textures/Selected.png"))
             new Texture(Gdx.files.internal("whiteframe.png")),
             new Texture(Gdx.files.internal("dottedgreyframe.png"))
         };
 
         // Load the skin for the UI
-        this.skin = new Skin(Gdx.files.internal("skin.json"));
+        this.skin = new Skin(Gdx.files.internal("skin/skin.json"));
 
         this.topMenu = new Menu(
             new Actor[] {

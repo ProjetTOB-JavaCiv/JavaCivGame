@@ -42,4 +42,35 @@ class TestCity {
         assertEquals(city.getPopulation(), 1);
     }
 
+    @Test
+    void getName() {
+        assertEquals(city.getName(), "ville");
+    }
+
+    @Test
+    void renameCity() {
+        city.renameCity("New City");
+        assertEquals(city.getName(), "New City");
+    }
+
+    @Test
+    void getOwner() {
+        assertEquals(city.getOwner(), player);
+    }
+
+    @Test
+    void getX(){
+        assertEquals(city.getX(), 2);
+    }
+
+    @Test
+    void getY(){
+        assertEquals(city.getY(), 59);
+    }
+
+    @Test
+    void getPosition(){
+        assertEquals(city.getPosition(), tile);
+    }
+
 }

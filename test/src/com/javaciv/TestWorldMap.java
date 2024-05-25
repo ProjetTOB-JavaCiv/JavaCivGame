@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
-
+import java.util.HashMap;
+import java.util.HashSet;
+import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.map.WorldMap;
 
 public class TestWorldMap {
@@ -12,7 +14,33 @@ public class TestWorldMap {
 
     @BeforeEach
     void initMap() {
-        this.map = new WorldMap(10, 10);
+        map = new WorldMap(10, 10);
+    }
+
+    @Test
+    void at(){
+        Tile tile = map.at(1,2);
+        assertEquals(tile.getX(), 1);
+        assertEquals(tile.getY(), 2);
+    }
+
+    @Test
+    void getHeight(){
+        assertEquals(map.getHeight(), 10);
+    }
+
+    @Test
+    void getWidth(){
+        assertEquals(map.getWidth(), 10);
+    }
+
+    @Test
+    void nextTo(){
+        HashSet<Tile> voisins = map.nextTo(1,1);
+        assert(voisins.contains(map.at(1,2)));
+        assert(voisins.contains(map.at(2,1)));
+        assert(!voisins.contains(map.at(1,9)));
+        assert(!voisins.contains(map.at(1,1)));
     }
 
     @Test
@@ -25,4 +53,5 @@ public class TestWorldMap {
             System.out.println();
         }
     }
+
 }
