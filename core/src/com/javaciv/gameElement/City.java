@@ -28,6 +28,8 @@ public class City {
     int health = 100;
     /** Puissance d'attaque de la ville */
     int attack = 10;
+    /** Rayon max de l'extension du territoire de la ville */
+    double territoryRange = 5.0;
 
     /** Nombre de points de science produit par une ville chaque tour */
     int sciencePerTurnProd;
@@ -99,6 +101,14 @@ public class City {
 
     /* ============================== METHODE LIEE AUX TUILLES ============================== */
 
+    public void checkForNewTile(){
+        if(this.producedCulture >= this.cultureNeededForNewTile) {
+            this.addTile();
+            this.cultureNeededForNewTile += 20;
+            this.producedCulture = 0;
+        }
+    }
+ 
     private void addTile() {
         //Tuile candidate à l'expension du territoire
         Tile possibleTile;
@@ -106,12 +116,25 @@ public class City {
         int indexChosenTile = 0;
         double maxTileStrategicValue = 0;
 
-        //On ajoute les tuiles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuiles.
+        //Coefficient de réduction de la valeur d'une tuille en fonction de la distance entre la tuile et le centre ville
+        double coeffReductionDist = 0.3;
+
+        /** Variable qui donne la valeur stratégique d'une tuile en fonction de sa valeur de base ET
+         * de sa distance par rapport à la ville. L'objectif est d'éviter d'avoir des villes qui se répendent à
+         * l'infini vers une direction.
+         */
+        double localTileStrategicValue;
+
+        //On ajoute les tuilles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuilles.
         for (int i = 0; i < neighbourTiles.size(); i++){
 
             possibleTile = neighbourTiles.get(i);
 
-            if(possibleTile.getBaseLandValue() > maxTileStrategicValue && possibleTile.getOwner() == null) {
+            //Formule un peu compliqué pour juste réduire la valeur strategique d'une tuile plus elle est loin.
+            localTileStrategicValue = possibleTile.getBaseLandValue() 
+            - this.position.distance(owner.getWorldMap().at(possibleTile.getX(), possibleTile.getY()))* coeffReductionDist;
+
+            if(localTileStrategicValue > maxTileStrategicValue && possibleTile.getOwner() == null) {
 
                 maxTileStrategicValue = possibleTile.getBaseLandValue();
                 chosenTile = possibleTile;
@@ -136,22 +159,30 @@ public class City {
      * @param tile tuille dont on veut ajouter les voisins
      */
     private void addNeighbourTiles(Tile tile) {
+        //Récupération de la map
+        WorldMap map = this.owner.getWorldMap();
+
         //Ajout des cases voisines à la ville
-        //Case de gauche
-        if(this.x - 1 >= 0) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x - 1, this.y));
+        Tile leftTile = map.at(this.x - 1, this.y);
+        Tile rightTile = map.at(this.x + 1, this.y);
+        Tile downTile = map.at(this.x, this.y - 1);
+        Tile upTile = map.at(this.x, this.y + 1);
+
+
+        if(this.x - 1 >= 0 && leftTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(leftTile);
         }
         //Case de droite
-        if(this.x + 1 <= this.owner.getWorldMap().getWidth()) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x + 1, this.y));
+        if(this.x + 1 <= map.getWidth() && rightTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(rightTile);
         }
         //Case du dessus
-        if(this.y - 1 >= 0) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x, this.y - 1));
+        if(this.y - 1 >= 0 && downTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(downTile);
         }
         //Case du dessous
-        if(this.y + 1 <= this.owner.getWorldMap().getHeight()) {
-            neighbourTiles.add(this.owner.getWorldMap().at(this.x, this.y + 1));
+        if(this.y + 1 <= map.getHeight() && upTile.distance(this.position) < this.territoryRange) {
+            neighbourTiles.add(upTile);
         }
     }
 
@@ -292,5 +323,11 @@ public class City {
         return this.neighbourTiles;
     }
 
+    public int getProducedCulture() {
+        return this.producedCulture;
+    }
 
+    public int getCultureNeededForNewTile() {
+        return this.cultureNeededForNewTile;
+    }
 }

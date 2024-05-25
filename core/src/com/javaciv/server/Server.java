@@ -170,12 +170,19 @@ public class Server implements GameInterface {
 
 
     public void nextTurn() {
+
+        //Actualisation du nombre de point du joueur
         this.goldPoint.set(this.clientId, this.goldPoint.get(this.clientId) + this.getGoldPointProduction());
         this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) + this.getCulturePointProduction());
         this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) + this.getSciencePointProduction());
         this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) + this.getFaithPointProduction());
         this.clientId = (this.clientId + 1) % getClientCount();
         System.out.println("Next turn, clientId is : " + this.getClientId());
+
+        //Actualisation de l'état des villes : Ajout d'une nouvelle tuile.
+        for (City city : this.getCities()) {
+            city.checkForNewTile();
+        }
     }
 
     public int createClient(GameInterface client) {

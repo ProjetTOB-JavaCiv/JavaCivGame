@@ -30,6 +30,8 @@ public class ClientController extends InputAdapter {
 
     private boolean displayTileMenu = false;
 
+    private boolean displayCityMenu = false;
+
     private Vector2 coordinates = new Vector2(0, 0);
 
     private boolean buyTile = false;
@@ -76,6 +78,10 @@ public class ClientController extends InputAdapter {
 
     public boolean getDisplayTileMenu() {
         return this.displayTileMenu;
+    }
+
+    public boolean getDisplayCityMenu() {
+        return this.displayCityMenu;
     }
 
     public Vector2 getClickCoordinates() {
@@ -142,15 +148,21 @@ public class ClientController extends InputAdapter {
         this.displayTileMenu = displayTileMenu;
     }
 
+    public void setDisplayCityMenu(boolean displayCityMenu) {
+        this.displayCityMenu = displayCityMenu;
+    }
+
     @Override
     public boolean touchDown (int x, int y, int pointer, int button) {
         this.coordinates = new Vector2(x, y);
         if (button == Buttons.RIGHT){
             System.out.println("Touch down at (" + x + ", " + y + ")");
 
+            this.coordinates = new Vector2(x, y);
+            //Information sur la tuile que l'on a cliqué
             clientView.openTileMenuAt(this.coordinates);
-
             displayTileMenu = true;
+
             return false;
         } else {
             if (this.buyTile) {

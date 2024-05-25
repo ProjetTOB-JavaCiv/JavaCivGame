@@ -3,7 +3,6 @@
  * @brief This file contains the ClientView class.
  * @date 20/04/2024
  */
-
 package com.javaciv.client;
 
 import com.javaciv.gameElement.map.Tile;
@@ -88,6 +87,7 @@ public class ClientView extends ScreenAdapter {
     private Menu topMenu;
     private Menu tileMenu;
     private Menu playerMenu;
+    private Menu cityMenu;
     private List<Label> cityNames = new ArrayList<Label>();
     private List<Vector2> selectedTiles = new ArrayList<Vector2>();
 
@@ -193,8 +193,11 @@ public class ClientView extends ScreenAdapter {
                     public void clicked(InputEvent e, float x, float y){
                         System.out.print("Action 1 clicked, current case is : ");
                         System.out.println("[" + (int) getClickCoordinates().x + ", " + (int) getClickCoordinates().y + "]");
+                        //Calcul des coordonnées converti en int de la position de la ville
+                        int xPos = (int) tileMenuWorldCoordinates.x /tileSize;
+                        int yPos = (int) tileMenuWorldCoordinates.y /tileSize;
                         //controller.getWorldMap().at((int) getClickCoordinates().x, (int) getClickCoordinates().y).setLand(LandType.MONTAGNE);
-                        if (controller.addCity(controller.getWorldMap().at((int) tileMenuWorldCoordinates.x /tileSize, (int) tileMenuWorldCoordinates.y / tileSize ))) {
+                        if (controller.addCity(controller.getWorldMap().at(xPos, yPos))) {
                             // TODO : move this to as specific function with a loop over the cities
                             City city = controller.getCities().get(controller.getCities().size() - 1);
                             Label cityName = new Label(city.getName(), skin, "backgrounded");
@@ -207,6 +210,7 @@ public class ClientView extends ScreenAdapter {
                                 cityName
                             );
                             labelStage.addActor(cityName);
+                            controller.getWorldMap().at(xPos, yPos).setCity(city);
                         }
                     }
                 },
@@ -274,6 +278,26 @@ public class ClientView extends ScreenAdapter {
         );
 
         this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
+        
+        this.cityMenu = new Menu( 
+            new Actor[] {
+                /*new Label("City Menu" 
+                + getCityAt(getClickCoordonatesnotnull()).getProducedCulture() + " / " 
+                + getCityAt(getClickCoordonatesnotnull()).getCultureNeededForNewTile()
+                , this.skin, "default")*/
+                new Label("City Menu", this.skin, "default")
+            },
+            new ClickListener[] {
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        System.out.println("City Menu clicked !");
+                    }
+                }
+            }
+        );
+
+        this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());
 
         // Setup the stagess for the tilemap and for the menus
         this.mapStage = new Stage(new ScreenViewport());
@@ -316,6 +340,13 @@ public class ClientView extends ScreenAdapter {
                 + (int) tileMenuWorldCoordinates.y / this.tileSize
                 + "]");
         }
+
+        // Update the city menu
+        if (this.controller.getDisplayCityMenu()) {
+            ((Label) this.cityMenu.getMenuItems()[0]).setText("City Menu");
+        }
+
+        // Actualisation des informations sur le joueur
         ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
         ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
         ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
@@ -326,6 +357,9 @@ public class ClientView extends ScreenAdapter {
 
         this.playerMenu.resizeMenu();
         this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
+
+        this.cityMenu.resizeMenu();
+        this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());
 
         // Update camera with all the zoom and movement stuff
         float newZoom = this.camera.zoom * this.controller.getZoom();
@@ -348,6 +382,17 @@ public class ClientView extends ScreenAdapter {
             this.tileMenu.setVisible(false);
         }
         
+        if (this.controller.getDisplayCityMenu()) {
+            this.cityMenu.setVisible(true);
+            this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());
+        } else {
+            this.cityMenu.setVisible(false);
+        }
+        
+
+
+
+
         this.camera.position.x += this.camera.zoom * this.moveSpeed * this.controller.getMovement().x;
         this.camera.position.y += this.camera.zoom * this.moveSpeed * this.controller.getMovement().y;
 
@@ -368,8 +413,7 @@ public class ClientView extends ScreenAdapter {
         this.menuStage.addActor(this.topMenu);
         this.menuStage.addActor(this.tileMenu);
         this.menuStage.addActor(this.playerMenu);
-        
-
+        this.menuStage.addActor(this.cityMenu);
 
         // Draw the labelStage
         this.labelStage.act(Gdx.graphics.getDeltaTime());
@@ -422,11 +466,20 @@ public class ClientView extends ScreenAdapter {
     }
     /**
      * Renvoie la tuile à une position donnée.
-     * @param coords
-     * @return
+     * @param coords les coordonnées de la tuile
+     * @return la tuile selectionnée
      */
     public Tile getTileAt(Vector2 coords) {
         return this.controller.getWorldMap().at((int) coords.x, (int) coords.y);
+    }
+
+    /**
+     * Renvoie la ville à une position donnée.
+     * @param coords les coordonnées de la tuile
+     * @return la ville sur la tuile selectionnée
+     */
+    private City getCityAt(Vector2 coords) {
+        return this.controller.getWorldMap().at((int) coords.x, (int) coords.y).getCity();
     }
 
     /**
@@ -525,6 +578,11 @@ public class ClientView extends ScreenAdapter {
         );
     }
 
+    /** Uniquement utilisé dans client controller pour gerer l'ouverture du menu des villes */
+    public int getTileSize() {
+        return this.tileSize;
+    }
+
     /**
      * Met à jour la carte.
      */
@@ -576,6 +634,11 @@ public class ClientView extends ScreenAdapter {
         //}
     }
 
+    public void openCityMenuAt(){   
+        this.cityMenu.setPosition(Gdx.graphics.getWidth() - this.cityMenu.getWidth(), this.cityMenu.getHeight());     
+        this.controller.setDisplayCityMenu(true);
+    }
+
     public void closeAllSelectedTiles() {
         selectedTiles.clear();
     }
@@ -587,20 +650,22 @@ public class ClientView extends ScreenAdapter {
         int clickedY = (int) getMouseCoordinates().y;
         if (isCityClicked(clickedX, clickedY)) {
             System.out.println("City clicked at coordinates: [" + clickedX + ", " + clickedY + "]");
+            //Affichage du menu de la ville
+            openCityMenuAt();
         } else {
             System.out.println("No city clicked. Coordinates: [" + clickedX + ", " + clickedY + "]");
         }
     }
 
+    /** Méthode déterminant la présence d'une ville sur une tuile de coordonnées x et y.
+     * @param x abscisse sur la carte
+     * @param y ordonnées
+     * @return si une ville existe ou non
+    */
     public boolean isCityClicked(int x, int y) {
-        for (City city : controller.getCities()) {
-            if (city.getX() == x && city.getY() == y) {
-                return true;
-            }
-        }
-        return false;
+       return this.controller.getWorldMap().at(x, y).getCity() != null;
     }
-
+    
     private TextureRegion getTintedTextureRegion(Texture texture, Color color) {
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
