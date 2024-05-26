@@ -40,4 +40,10 @@ public interface Unite {
      * @return la nature du terrain sur lequel cette unité peut se deplacer
      */
     abstract public Tile getNatureDeplacement();
+
+    /**
+     * Permet d'afficher l'unite sous forme de chaine de caractere
+     * @return une chaine de caractere representant l'unite
+     */
+    public String toString();
 }

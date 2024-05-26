@@ -91,4 +91,12 @@ public class Civilian implements Unite {
     public int getCost() {
         return this.PRODUCTION_COST;
     }
+
+    /**
+     * Permet d'afficher l'unite sous forme de chaine de caractere
+     * @return une chaine de caractere representant l'unite
+     */
+    public String toString() {
+        return "[Civilian | " + this.name + " : " + this.actionPoint + "ap]";
+    }
 }

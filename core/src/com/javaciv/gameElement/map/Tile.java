@@ -5,6 +5,7 @@ import com.javaciv.builder.HashMapFeature;
 import com.javaciv.builder.HashMapRessource;
 import com.javaciv.gameElement.Civilian;
 import com.javaciv.gameElement.Military;
+import com.javaciv.gameElement.City;
 import com.javaciv.type.LandType;
 import com.javaciv.type.FeatureType;
 import com.javaciv.type.ProductionType;
@@ -43,14 +44,16 @@ public class Tile {
     /** Production de la tuile */
     ProductionType production;
 
-    /** Flotant indicateur de la valeur stratégique d'une tuille */
+    /** Flotant indicateur de la valeur stratégique d'une tuile */
     double strategicValue;
+    /** Ville présente sur la case, initialement vide par pas de ville naturellement */
+    City city = null;
 
-    /** Booléen décrivant si la tuille est traversable par une unité terrestre
+    /** Booléen décrivant si la tuile est traversable par une unité terrestre
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableByLandUnit;
-    /** Booléen décrivant si la tuille est traversable par une unité maritime
+    /** Booléen décrivant si la tuile est traversable par une unité maritime
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableBySeaUnit;
@@ -62,19 +65,19 @@ public class Tile {
     int fightModifier;
 
     /** Variable stockant l'unité militaire étant sur la case.
-     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
     */
     private Military miliratyOnTile;
     /** Variable stockant l'unité civile étant sur la case.
-     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
     */
     private Civilian civilianOnTile;
 
-    /** Booléen qui décrit si une tuille est occupé par une unité militaire
+    /** Booléen qui décrit si une tuile est occupé par une unité militaire
      */
     private boolean isMilitaryUnitOnTile = false;
 
-    /** Booléen qui décrit si une tuille est occupé par une unité civile
+    /** Booléen qui décrit si une tuile est occupé par une unité civile
      */
     private boolean isCivilianUnitOnTile = false;
 
@@ -145,6 +148,9 @@ public class Tile {
         return ProductionType.add(this.production, this.feature.getProduction(), this.ressource.getProduction());
     }
 
+    /** permet de savoir si la tuile est une colline
+     * @return vrai si la tuile est une colline, faux sinon
+    */
     public Boolean getHill() {
         return this.hill;
     }
@@ -166,7 +172,7 @@ public class Tile {
     /** permet de recuperer la ressource persente sur la tuile
      * @return la ressource de la tuile
      */
-    public Ressource  getRessource() {
+    public Ressource getRessource() {
         return this.ressource;
     }
 
@@ -206,22 +212,39 @@ public class Tile {
         return this.isMilitaryUnitOnTile;
     }
 
+    /**
+     * Permet de savoir si une unité est sur la tuile
+     * @return boolean indiquant si une unité est sur la tuile
+     */
     public boolean getIsTraversableByLandUnit() {
         return this.isTraversableByLandUnit;
     }
 
+    /**
+     * Permet de savoir si une unité est sur la tuile
+     * @return boolean indiquant si une unité est sur la tuile
+     */
     public boolean getIsTraversableBySeaUnit() {
         return this.isTraversableBySeaUnit;
     }
 
+    /** Permet de recuperer le modificateur de deplacement de la tuile
+     * @return le modificateur de deplacement de la tuile
+    */
     public int getMovementModifier() {
         return this.movementModifier + this.feature.getMovementModifier();
     }
 
+    /** Permet de recuperer le modificateur de combat de la tuile
+     * @return le modificateur de combat de la tuile
+    */
     public int getFightModifier() {
         return this.fightModifier + this.feature.getFightModifier();
     }
 
+    /** Permet de recuperer la valeur stratégique de la tuile
+     * @return la valeur stratégique de la tuile
+    */
     public double getBaseLandValue() {
         return this.strategicValue;
     }
@@ -231,7 +254,12 @@ public class Tile {
         return this.owner;
     }
 
-    /** Permet de changer de position une tuille sur l'axe X, est utile UNIQUEMENT lors de la création de
+    /** Renvoie la ville présente sur la case */
+    public City getCity() {
+        return this.city;
+    }
+
+    /** Permet de changer de position une tuile sur l'axe X, est utile UNIQUEMENT lors de la création de
      * la map, après cela, la position d'une tuile ne doit pas changer
      * TODO : Changer le degré de liberté de cette méthode ??
      */
@@ -239,7 +267,7 @@ public class Tile {
         this.x = x;
     }
 
-    /** Permet de changer de position une tuille sur l'axe Y, est utile UNIQUEMENT lors de la création de
+    /** Permet de changer de position une tuile sur l'axe Y, est utile UNIQUEMENT lors de la création de
      * la map, après cela, la position d'une tuile ne doit pas changer  */
     public void setY(int y) {
         this.y = y;
@@ -255,29 +283,29 @@ public class Tile {
         double rand = Math.random();
         switch(this.land){
             case DESERT :
-                this.feature = rand > 0.95 ? 
-                               HashMapFeature.getFeature(FeatureType.OASIS): 
-                               HashMapFeature.getFeature(FeatureType.BASE);
+                this.feature = rand > 0.95 ?
+                            HashMapFeature.getFeature(FeatureType.OASIS):
+                            HashMapFeature.getFeature(FeatureType.BASE);
             case PLAINE :
-                if(rand < 0.7) { 
-                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
-                } else if(rand < 0.8) { 
+                if(rand < 0.7) {
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+                } else if(rand < 0.8) {
                     this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
-                } else { 
+                } else {
                     this.feature = HashMapFeature.getFeature(FeatureType.RAINFOREST);
                 }
             case PRAIRIE :
-                if(rand < 0.7) { 
-                    this.feature = HashMapFeature.getFeature(FeatureType.BASE); 
-                } else if(rand < 0.9) { 
+                if(rand < 0.7) {
+                    this.feature = HashMapFeature.getFeature(FeatureType.BASE);
+                } else if(rand < 0.9) {
                     this.feature = HashMapFeature.getFeature(FeatureType.WOODS);
-                } else { 
+                } else {
                     this.feature = HashMapFeature.getFeature(FeatureType.MARSH);
                 }
             case TOUNDRA :
-                this.feature = rand > 0.8 ? 
-                               HashMapFeature.getFeature(FeatureType.WOODS):
-                               HashMapFeature.getFeature(FeatureType.BASE);
+                this.feature = rand > 0.8 ?
+                            HashMapFeature.getFeature(FeatureType.WOODS):
+                            HashMapFeature.getFeature(FeatureType.BASE);
             default :
                 this.feature = HashMapFeature.getFeature(FeatureType.BASE);
         }
@@ -313,7 +341,7 @@ public class Tile {
                 if (rand < 0.3) {
                     this.ressource = HashMapRessource.getRessource(RessourceType.CERVIDE);
                 }
-            default :             
+            default :
         }
     }
 
@@ -325,7 +353,7 @@ public class Tile {
     }
 
     /**
-     * Set une unité militaire sur la tuille
+     * Set une unité militaire sur la tuile
      * @param unit Unité militaire
      */
     public void setMilitaryUnitOnTile(Military unit) {
@@ -333,7 +361,7 @@ public class Tile {
         this.miliratyOnTile = unit;
     }
     /**
-     * Set une unité civile sur la tuille
+     * Set une unité civile sur la tuile
      * @param unit Unité civile
      */
     public void setCivilianUnitOnTile(Civilian unit) {
@@ -341,10 +369,17 @@ public class Tile {
         this.civilianOnTile = unit;
     }
 
-    /** Set la propriété d'un joueur sur une tuille 
-     * @param owner la civilisation qui va posséder la tuille
+    /** Set la propriété d'un joueur sur une tuile 
+     * @param owner la civilisation qui va posséder la tuile
     */
     public void setOwner(Client owner) {
         this.owner = owner;
+    }
+
+    /** Set la ville sur une tuile
+     * @param city la ville qui va être sur la tuile
+    */
+    public void setCity(City city) {
+        this.city = city;
     }
 }

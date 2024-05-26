@@ -8,12 +8,27 @@ public enum LandType {
 
     int land = 0;
 
+    /**
+     * Constructeur d'un type de terrain
+     * @param i un entier, le type de terrain
+     */
     LandType(int i) {
         this.land = i;
     }
 
+    /**
+     * Obtenir le type de terrain
+     * @return un entier, le type de terrain
+     */
     public int toInt() {
         return land;
     }
 
+    /**
+     * Obtenir le type de terrain sous forme de lettre
+     * @return une chaîne de caractères, le type de terrain sous forme de lettre
+     */
+    public String toFirstLetter() {
+        return this.toString().substring(0, 1);
+    }
 }

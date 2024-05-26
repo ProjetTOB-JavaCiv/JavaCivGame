@@ -24,6 +24,8 @@ public interface GameInterface {
     // L'id du joueur (côté serveur : l'id du joueur courant, côté client : l'id du client)
     int getClientId();
 
+    int getNextClientId();
+
 
     // L'or du joueur
     int getGoldPoint();
@@ -51,18 +53,38 @@ public interface GameInterface {
     int getFaithPointProduction();
 
 
+    // Les villes du joueur
     List<City> getCities();
 
+    // Les villes du jeu
+    List<City> getAllCities();
+
+    // Les unités du joueur
     List<Unite> getUnites();
+
+    // Les unités du jeu
+    List<Unite> getAllUnites();
+
 
     // The boolean is used to know if the city has been created
     boolean createCity(Tile tile);
 
-
     // Permet de passer au tour suivant
     void nextTurn();
 
-
     // Crée un joueur
     int createClient(GameInterface client);
+
+    // Achète un item en dépensant de l'or, de la culture, de la science et/ou de la foi
+    // Retourne vrai si l'achat a pu être effectué, faux sinon
+    boolean buyItem(int gold, int culture, int science, int faith);
+
+    // Permet de faire passer des informations de log
+    void setLog(String log);
+
+    // Permet de récupérer les informations de log
+    String getLog();
+
+    // Permet de sauvegarder la partie
+    void saveGame();
 }

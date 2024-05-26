@@ -132,4 +132,11 @@ public class Military implements Unite {
         return this.PRODUCTION_COST;
     }
 
+    /**
+     * Permet d'afficher l'unite sous forme de chaine de caractere
+     * @return une chaine de caractere representant l'unite
+     */
+    public String toString() {
+        return "[Military | " + this.name + " : " + this.pv + "pv, " + this.attack + "att, " + this.defense + "def, " + this.actionPoint + "ap]";
+    }
 }

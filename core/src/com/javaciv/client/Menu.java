@@ -39,6 +39,13 @@ public class Menu extends Table {
     // Define the menu items
     public Actor[] menuItems;
 
+    /**
+     * This is the constructor of the Menu class.
+     * @param menuItems the menu items
+     * @param menuActions the menu actions
+     * @param backgroundColor the background color
+     * @param row the orientation of the menu
+     */
     public Menu(Actor[] menuItems, ClickListener[] menuActions, Color backgroundColor, boolean row) {
         // Create a background object for the menu
         Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -75,28 +82,58 @@ public class Menu extends Table {
         //this.setDebug(true);
     }
 
+    /**
+     * This is the constructor of the Menu class.
+     * @param menuItems the menu items
+     * @param menuActions the menu actions
+     * @param backgroundColor the background color
+     */
     public Menu(Actor[] menuItems, ClickListener[] menuActions, Color backgroundColor) {
         this(menuItems, menuActions, backgroundColor, false);
     }
 
+    /**
+     * This is the constructor of the Menu class.
+     * @param menuItems the menu items
+     * @param menuActions the menu actions
+     * @param row the orientation of the menu
+     */
     public Menu(Actor[] menuItems, ClickListener[] menuActions, boolean row) {
         this(menuItems, menuActions, new Color(1, 1, 1, 0.8f), row);
     }
 
+    /**
+     * This is the constructor of the Menu class.
+     * @param menuItems the menu items
+     * @param menuActions the menu actions
+     */
     public Menu(Actor[] menuItems, ClickListener[] menuActions) {
         this(menuItems, menuActions, new Color(1, 1, 1, 0.8f), false);
     }
 
+    /**
+     * This function returns the list of items in the menu.
+     * @return the list of items in the menu
+     */ 
     public Actor[] getMenuItems() {
         return menuItems;
     }
 
+    /**
+     * This function sets the position of the top left corner of the menu.
+     * @param x the x coordinate
+     * @param y the y coordinate
+     */
     @Override
     public void setPosition(float x, float y) {
         // Set the position of the top left corner of the menu
         super.setPosition(x, y - getHeight());
     }
 
+    /**
+     * This function sets the background color of the menu.
+     * @param backgroundColor the background color
+     */
     public void setBackgroundColor(Color backgroundColor) {
         Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         background.setColor(backgroundColor);
@@ -105,6 +142,10 @@ public class Menu extends Table {
         this.setBackground(backgroundTexture);
     }
 
+    /**
+     * This function resizes the menu.
+     * The menu is resized to fit the items.
+     */
     public void resizeMenu() {
         if(row) {
             this.setHeight((getMaxItemHeight() + PADDING * 2) * menuItems.length);
@@ -115,6 +156,10 @@ public class Menu extends Table {
         }
     }
 
+    /**
+     * This function returns the maximum width of the items in the menu.
+     * @return the maximum width of the items in the menu
+     */
     private float getMaxItemWidth() {
         float maxItemWidth = 0;
         for(Actor item : menuItems) {
@@ -125,6 +170,10 @@ public class Menu extends Table {
         return maxItemWidth;
     }
 
+    /**
+     * This function returns the maximum height of the items in the menu.
+     * @return the maximum height of the items in the menu
+     */
     private float getMaxItemHeight() {
         float maxItemHeight = 0;
         for(Actor item : menuItems) {

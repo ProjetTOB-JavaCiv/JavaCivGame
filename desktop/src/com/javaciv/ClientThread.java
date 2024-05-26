@@ -8,14 +8,22 @@ package com.javaciv;
 
 import com.javaciv.client.Client;
 import com.javaciv.gameElement.map.WorldMap;
+import com.javaciv.Utils;
 
 public class ClientThread extends Thread {
     private Client client;
 
+    /**
+     * Constructor of the ClientThread class
+     * @param client the client
+     */
     public ClientThread(Client client) {
         this.client = client;
     }
 
+    /**
+     * This function is executed when the thread is started.
+     */
     @Override
     public void run() {
         while (true) {
@@ -26,6 +34,7 @@ public class ClientThread extends Thread {
                 e.printStackTrace();
             }
             if (this.client.canPassTurn()) {
+                // Display the client's points
                 System.out.println("==================================");
                 System.out.println("[Client " + this.client.getClientId() + "]");
                 System.out.println("Gold: " + this.client.getGoldPoint());
@@ -33,6 +42,11 @@ public class ClientThread extends Thread {
                 System.out.println("Science: " + this.client.getSciencePoint());
                 System.out.println("Faith: " + this.client.getFaithPoint());
                 System.out.println("==================================");
+                // Place random city on the map and pass the turn
+                this.client.createCity(this.client.getWorldMap().at(
+                    Utils.randomInt(0, this.client.getWorldMap().getWidth()),
+                    Utils.randomInt(0, this.client.getWorldMap().getHeight())
+                ));
                 this.client.nextTurn();
             }
         }

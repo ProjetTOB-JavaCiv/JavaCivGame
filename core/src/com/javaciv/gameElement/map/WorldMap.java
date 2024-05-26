@@ -227,7 +227,12 @@ public class WorldMap {
      * @return la tuile recherchée
      */
     public Tile at(int i, int j) {
-        return this.worldMap[i + j * this.width];
+        if (i < 0 || i >= this.width || j < 0 || j >= this.height) {
+            return this.worldMap[0];
+        }
+        else {
+            return this.worldMap[i + j * this.width];
+        }
     }
 
     /**
@@ -269,5 +274,19 @@ public class WorldMap {
      */
     public Tile[] getWorldMap() {
         return this.worldMap;
+    }
+
+    /**
+     * Renvoie la map sous forme de chaîne de caractères.
+     */
+    public String toString() {
+        String str = "";
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                str += this.at(i, j).getLand().toFirstLetter() + " ";
+            }
+            str += "\n";
+        }
+        return str;
     }
 }
