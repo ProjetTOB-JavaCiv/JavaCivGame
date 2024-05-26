@@ -191,7 +191,7 @@ public class City {
      */
     public void addCityTile(Tile tile) {
         this.cityTiles.add(tile);
-        System.out.println("Tile added to City : [" + tile.getX() + ", " + tile.getY() + " | " + tile.getLand() + "]\n");
+        //System.out.println("Tile added to City : [" + tile.getX() + ", " + tile.getY() + " | " + tile.getLand() + "]\n");
     }
 
 

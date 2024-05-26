@@ -11,11 +11,14 @@ import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.Infrastructure;
 import com.javaciv.gameElement.Unite;
 import com.javaciv.gameElement.City;
+import com.javaciv.type.LandType;
 import com.javaciv.client.Client;
 import com.javaciv.GameInterface;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
 
 public class Server implements GameInterface {
     private WorldMap worldMap;
@@ -160,6 +163,10 @@ public class Server implements GameInterface {
             return false;
         }
 
+        if(tile.getLand() == LandType.EAU) {
+            return false;
+        }
+
         for (City city : this.getCities()) {
             if (city.getPosition().distance(tile) == 0) {
                 return false;
@@ -229,5 +236,13 @@ public class Server implements GameInterface {
             }
             return false;
         }
+    }
+
+    public List<GameInterface> getClients() {
+        List<GameInterface> clients = new ArrayList<GameInterface>();
+        for (int i = 0; i < getClientCount(); i++) {
+            clients.add(this.clients.get(i));
+        }
+        return clients;
     }
 }

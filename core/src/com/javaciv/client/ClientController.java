@@ -110,7 +110,7 @@ public class ClientController extends InputAdapter {
                 this.zoom = -0.01f;
                 break;*/
             default:
-                System.out.println(keycode + " pressed");
+                //System.out.println(keycode + " pressed");
                 break;
         }
         return false;
@@ -138,7 +138,7 @@ public class ClientController extends InputAdapter {
                 this.zoom = 0.0f;
                 break;*/
             default:
-                System.out.println(keycode + " released");
+                //System.out.println(keycode + " released");
                 break;
         }
         return false;
@@ -156,7 +156,7 @@ public class ClientController extends InputAdapter {
     public boolean touchDown (int x, int y, int pointer, int button) {
         this.coordinates = new Vector2(x, y);
         if (button == Buttons.RIGHT){
-            System.out.println("Touch down at (" + x + ", " + y + ")");
+            //System.out.println("Touch down at (" + x + ", " + y + ")");
 
             this.coordinates = new Vector2(x, y);
             //Information sur la tuile que l'on a cliqué
