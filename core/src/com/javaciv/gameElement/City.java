@@ -330,4 +330,8 @@ public class City {
     public int getCultureNeededForNewTile() {
         return this.cultureNeededForNewTile;
     }
+
+    public String toString() {
+        return "City : " + this.name + " | Position : [" + this.x + ", " + this.y + "]";
+    }
 }

@@ -259,4 +259,19 @@ public class ClientController extends InputAdapter {
         this.selectedCity = city;
     }
 
+    public String getLog() {
+        return this.client.getLog();
+    }
+
+    public int getNextClientId() {
+        return this.client.getNextClientId();
+    }
+
+    public Client getClient(int clientId) {
+        return this.client.getClient(clientId);
+    }
+
+    public void saveGame() {
+        this.client.saveGame();
+    }
 }

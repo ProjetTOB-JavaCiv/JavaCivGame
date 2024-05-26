@@ -132,4 +132,7 @@ public class Military implements Unite {
         return this.PRODUCTION_COST;
     }
 
+    public String toString() {
+        return "[Military | " + this.name + " : " + this.pv + "pv, " + this.attack + "att, " + this.defense + "def, " + this.actionPoint + "ap]";
+    }
 }

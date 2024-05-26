@@ -275,4 +275,15 @@ public class WorldMap {
     public Tile[] getWorldMap() {
         return this.worldMap;
     }
+
+    public String toString() {
+        String str = "";
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                str += this.at(i, j).getLand().toFirstLetter() + " ";
+            }
+            str += "\n";
+        }
+        return str;
+    }
 }

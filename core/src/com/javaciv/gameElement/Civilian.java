@@ -91,4 +91,8 @@ public class Civilian implements Unite {
     public int getCost() {
         return this.PRODUCTION_COST;
     }
+
+    public String toString() {
+        return "[Civilian | " + this.name + " : " + this.actionPoint + "ap]";
+    }
 }

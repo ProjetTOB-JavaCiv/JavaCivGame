@@ -40,4 +40,6 @@ public interface Unite {
      * @return la nature du terrain sur lequel cette unité peut se deplacer
      */
     abstract public Tile getNatureDeplacement();
+
+    public String toString();
 }

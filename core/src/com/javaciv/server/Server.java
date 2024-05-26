@@ -18,6 +18,8 @@ import com.javaciv.GameInterface;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.io.File;
+import java.io.FileWriter;
 
 
 public class Server implements GameInterface {
@@ -153,6 +155,7 @@ public class Server implements GameInterface {
             this.cities.set(this.clientId, playerCities);
             return true;
         }
+        this.setLog("The tile is not available for a city.");
         return false;
     }
 
@@ -175,6 +178,10 @@ public class Server implements GameInterface {
         return true; 
     }
 
+    public int getNextClientId() {
+        return (this.clientId + 1) % getClientCount();
+    }
+
 
     public void nextTurn() {
 
@@ -183,7 +190,7 @@ public class Server implements GameInterface {
         this.culturePoint.set(this.clientId, this.culturePoint.get(this.clientId) + this.getCulturePointProduction());
         this.sciencePoint.set(this.clientId, this.sciencePoint.get(this.clientId) + this.getSciencePointProduction());
         this.faithPoint.set(this.clientId, this.faithPoint.get(this.clientId) + this.getFaithPointProduction());
-        this.clientId = (this.clientId + 1) % getClientCount();
+        this.clientId = this.getNextClientId();
         System.out.println("Next turn, clientId is : " + this.getClientId());
 
         //Actualisation de l'état des villes : Ajout d'une nouvelle tuile.
@@ -223,19 +230,31 @@ public class Server implements GameInterface {
                 return true;
         } else {
             if (this.goldPoint.get(this.clientId) < gold) {
-                System.out.println("Not enough gold to buy this item.");
+                //System.out.println("Not enough gold to buy this item.");
+                this.setLog("Not enough gold to buy this item.");
             }
             if (this.culturePoint.get(this.clientId) < culture) {
-                System.out.println("Not enough culture to buy this item.");
+                //System.out.println("Not enough culture to buy this item.");
+                this.setLog("Not enough culture to buy this item.");
             }
             if (this.sciencePoint.get(this.clientId) < science) {
-                System.out.println("Not enough science to buy this item.");
+                //System.out.println("Not enough science to buy this item.");
+                this.setLog("Not enough science to buy this item.");
             }
             if (this.faithPoint.get(this.clientId) < faith) {
-                System.out.println("Not enough faith to buy this item.");
+                //System.out.println("Not enough faith to buy this item.");
+                this.setLog("Not enough faith to buy this item.");
             }
             return false;
         }
+    }
+
+    public void setLog(String log) {
+        this.clients.get(this.clientId - 1).setLog(log);
+    }
+
+    public String getLog() {
+        return this.clients.get(this.clientId - 1).getLog();
     }
 
     public List<GameInterface> getClients() {
@@ -244,5 +263,57 @@ public class Server implements GameInterface {
             clients.add(this.clients.get(i));
         }
         return clients;
+    }
+
+    // Write the game state to a file
+    public void saveGame() {
+        // Open the file
+        File file = new File("save/gameState.txt");
+        // Write the game state
+        try {
+            FileWriter writer = new FileWriter(file);
+            // Print the world map
+            writer.write(this.worldMap.toString());
+            writer.write("\n\n=======================================\n");
+            // Print the clients
+            for (int i = 0; i < getClientCount(); i++) {
+                GameInterface client = this.clients.get(i);
+                if (client != null) {
+                    writer.write("Client n°" + client.getClientId());
+                    writer.write("\n---------------------------------------\n");
+                    // Print the cities
+                    writer.write("Cities :\n");
+                    if (client.getCities() != null) {
+                        for (City city : client.getCities()) {
+                            writer.write(" - " + city.toString() + "\n");
+                        }
+                    }
+                    writer.write("\n---------------------------------------\n");
+                    // Print the unites
+                    writer.write("Unites :\n");
+                    if (client.getUnites() != null) {
+                        for (Unite unite : client.getUnites()) {
+                            writer.write(" - " + unite.toString() + "\n");
+                        }
+                    }
+                    writer.write("\n---------------------------------------\n");
+                    writer.write("Ressources :\n");
+                    // Print the gold point
+                    writer.write(" - Gold : " + client.getGoldPoint() + "\n");
+                    // Print the culture point
+                    writer.write(" - Culture : " + client.getCulturePoint() + "\n");
+                    // Print the science point
+                    writer.write(" - Science : " + client.getSciencePoint() + "\n");
+                    // Print the faith point
+                    writer.write(" - Faith : " + client.getFaithPoint() + "\n");
+                    writer.write("\n=======================================\n\n");
+                }
+            }
+            // Close the file
+            writer.close();
+            this.setLog("Game saved in save/gameState.txt");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

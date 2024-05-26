@@ -11,6 +11,7 @@ import com.javaciv.gameElement.map.WorldMap;
 import com.javaciv.gameElement.map.Tile;
 import com.javaciv.gameElement.City;
 import com.javaciv.gameElement.Unite;
+import com.javaciv.server.Server;
 
 import java.util.List;
 
@@ -31,6 +32,9 @@ public class Client implements GameInterface {
 
     private List<Unite> unites;
 
+    // Used to send logs from the server to the client
+    private String log = "";
+
     public Client(GameInterface server) {
         this.server = server;
         this.clientId = createClient(this);
@@ -42,6 +46,10 @@ public class Client implements GameInterface {
 
     public int getClientId() {
         return this.clientId;
+    }
+
+    public int getNextClientId() {
+        return this.server.getNextClientId();
     }
 
     public int getGoldPoint() {
@@ -142,5 +150,21 @@ public class Client implements GameInterface {
 
     public GameInterface getServer() {
         return this.server;
+    }
+
+    public void setLog(String log) {
+        this.log = log;
+    }
+
+    public String getLog() {
+        return this.log;
+    }
+
+    public Client getClient(int clientId) {
+        return (Client) ((Server) this.server).getClients().get(clientId);
+    }
+
+    public void saveGame() {
+        this.server.saveGame();
     }
 }

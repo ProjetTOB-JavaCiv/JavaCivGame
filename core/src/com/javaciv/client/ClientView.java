@@ -89,6 +89,7 @@ public class ClientView extends ScreenAdapter {
     private Menu topMenu;
     private Menu tileMenu;
     private Menu playerMenu;
+    private Menu logMenu;
     private List<Label> cityNames = new ArrayList<Label>();
     private List<Vector2> selectedTiles = new ArrayList<Vector2>();
 
@@ -140,7 +141,9 @@ public class ClientView extends ScreenAdapter {
 
         this.topMenu = new Menu(
             new Actor[] {
-                new TextButton("Pass tour", this.skin, "default")
+                new TextButton("Pass tour", this.skin, "default"),
+                new TextButton("Save game", this.skin, "default"),
+                new TextButton("Exit game", this.skin, "default")
             },
             new ClickListener[] {
                 new ClickListener(){
@@ -149,11 +152,37 @@ public class ClientView extends ScreenAdapter {
                         //System.out.println("Button 1 clicked !");
                         controller.nextTurn();
                     }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        //System.out.println("Button 2 clicked !");
+                        controller.saveGame();
+                    }
+                },
+                new ClickListener(){
+                    @Override
+                    public void clicked(InputEvent e, float x, float y){
+                        //System.out.println("Button 3 clicked !");
+                        Gdx.app.exit();
+                        System.exit(0);
+                    }
                 }
             }
         );
 
         this.topMenu.setPosition(0, Gdx.graphics.getHeight());
+
+        this.logMenu = new Menu(
+            new Actor[] {
+                new Label("", this.skin, "default")
+            },
+            new ClickListener[] {
+                new ClickListener(){}
+            }
+        );
+
+        this.logMenu.setPosition(0, this.logMenu.getHeight());
 
         this.tileMenu = new Menu(
             new Actor[] {
@@ -308,6 +337,10 @@ public class ClientView extends ScreenAdapter {
             }
         }
 
+        ((Label) this.logMenu.getMenuItems()[0]).setText(this.controller.getLog());
+
+        this.logMenu.resizeMenu();
+
         // Actualisation des informations sur le joueur
         ((Label) this.playerMenu.getMenuItems()[0]).setText("Faith : " + this.controller.getGameInfos().get("faith"));
         ((Label) this.playerMenu.getMenuItems()[1]).setText("Gold : " + this.controller.getGameInfos().get("gold"));
@@ -359,6 +392,7 @@ public class ClientView extends ScreenAdapter {
 
         // Render the menus in the menuStage
         this.menuStage.addActor(this.topMenu);
+        this.menuStage.addActor(this.logMenu);
         this.menuStage.addActor(this.tileMenu);
         this.menuStage.addActor(this.playerMenu);
 
@@ -374,7 +408,7 @@ public class ClientView extends ScreenAdapter {
     }
 
     void renderCities() {
-        if (this.cityNames != null) {
+        if (this.cityNames != null && this.controller.getCities() != null) {
             for(int i = 0; i < this.cityNames.size(); i++) {
                 City city = this.controller.getCities().get(i);
                 Vector3 cityCoords = this.camera.project(new Vector3(city.getX() * this.tileSize, (city.getY() + 1) * this.tileSize, 0));

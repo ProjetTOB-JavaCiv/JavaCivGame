@@ -16,4 +16,7 @@ public enum LandType {
         return land;
     }
 
+    public String toFirstLetter() {
+        return this.toString().substring(0, 1);
+    }
 }
