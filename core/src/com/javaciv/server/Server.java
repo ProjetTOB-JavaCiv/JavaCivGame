@@ -226,12 +226,12 @@ public class Server implements GameInterface {
             return false;
         }
 
-        for (City city : this.getCities()) {
+        for (City city : this.getAllCities()) {
             if (city.getPosition().distance(tile) == 0) {
                 return false;
             }
         }
-        return true; 
+        return true;
     }
 
     /**
