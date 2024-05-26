@@ -276,6 +276,9 @@ public class WorldMap {
         return this.worldMap;
     }
 
+    /**
+     * Renvoie la map sous forme de chaîne de caractères.
+     */
     public String toString() {
         String str = "";
         for (int i = 0; i < this.height; i++) {

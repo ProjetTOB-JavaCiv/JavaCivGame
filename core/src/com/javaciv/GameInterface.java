@@ -53,21 +53,24 @@ public interface GameInterface {
     int getFaithPointProduction();
 
 
+    // Les villes du joueur
     List<City> getCities();
 
+    // Les villes du jeu
     List<City> getAllCities();
 
+    // Les unités du joueur
     List<Unite> getUnites();
 
+    // Les unités du jeu
     List<Unite> getAllUnites();
+
 
     // The boolean is used to know if the city has been created
     boolean createCity(Tile tile);
 
-
     // Permet de passer au tour suivant
     void nextTurn();
-
 
     // Crée un joueur
     int createClient(GameInterface client);
@@ -79,7 +82,9 @@ public interface GameInterface {
     // Permet de faire passer des informations de log
     void setLog(String log);
 
+    // Permet de récupérer les informations de log
     String getLog();
 
+    // Permet de sauvegarder la partie
     void saveGame();
 }

@@ -14,7 +14,7 @@ import com.javaciv.gameElement.map.WorldMap;
  */
 public class City {
 
-    /** Tuille ou se situe la ville */
+    /** tuile ou se situe la ville */
     Tile position;
     /** Coordonnée x de la ville */
     int x;
@@ -99,7 +99,7 @@ public class City {
 
     // TODO : Faire les méthodes de production d'unité.
 
-    /* ============================== METHODE LIEE AUX TUILLES ============================== */
+    /* ============================== METHODE LIEE AUX tuileS ============================== */
 
     public void checkForNewTile(){
         if(this.producedCulture >= this.cultureNeededForNewTile) {
@@ -116,7 +116,7 @@ public class City {
         int indexChosenTile = 0;
         double maxTileStrategicValue = 0;
 
-        //Coefficient de réduction de la valeur d'une tuille en fonction de la distance entre la tuile et le centre ville
+        //Coefficient de réduction de la valeur d'une tuile en fonction de la distance entre la tuile et le centre ville
         double coeffReductionDist = 0.3;
 
         /** Variable qui donne la valeur stratégique d'une tuile en fonction de sa valeur de base ET
@@ -125,7 +125,7 @@ public class City {
          */
         double localTileStrategicValue;
 
-        //On ajoute les tuilles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuilles.
+        //On ajoute les tuiles adjacentes à la ville en checkant l'état d'occupation des voisins de toutes les tuiles.
         for (int i = 0; i < neighbourTiles.size(); i++){
 
             possibleTile = neighbourTiles.get(i);
@@ -153,10 +153,10 @@ public class City {
         // que cette fonction ne soit pas appeléd chaque tour ???
     }
 
-    /**Méthode permettant d'ajouter les voisins d'une tuille à la liste des tuilles voisine à
+    /**Méthode permettant d'ajouter les voisins d'une tuile à la liste des tuiles voisine à
      * la frontière de la ville pour une potentielle ecityPositionxtension future, à la condition de ne pas
      * être déjà posédé par une autre ville.
-     * @param tile tuille dont on veut ajouter les voisins
+     * @param tile tuile dont on veut ajouter les voisins
      */
     private void addNeighbourTiles(Tile tile) {
         //Récupération de la map
@@ -192,6 +192,14 @@ public class City {
     public void addCityTile(Tile tile) {
         this.cityTiles.add(tile);
         //System.out.println("Tile added to City : [" + tile.getX() + ", " + tile.getY() + " | " + tile.getLand() + "]\n");
+        this.updatePointPerTurnProd(
+            tile.getProduction().getFood(),
+            tile.getProduction().getCulture(),
+            tile.getProduction().getFaith(),
+            tile.getProduction().getScience(),
+            tile.getProduction().getGold(),
+            tile.getProduction().getProduction()
+        );
     }
 
 
@@ -241,8 +249,14 @@ public class City {
      */
     public void buildInfrastructure(Infrastructure infrastructure) {
         this.infrastructures.add(infrastructure);
-        this.updatePointPerTurnProd(infrastructure.getFood(), infrastructure.getCulture(), 
-        infrastructure.getFaith(), infrastructure.getScience(), infrastructure.getGold(), infrastructure.getProduction());
+        this.updatePointPerTurnProd(
+            infrastructure.getFood(),
+            infrastructure.getCulture(),
+            infrastructure.getFaith(),
+            infrastructure.getScience(),
+            infrastructure.getGold(),
+            infrastructure.getProduction()
+        );
     }
 
 
@@ -279,58 +293,105 @@ public class City {
         return this.culturePerTurnProd;
     }
 
+    /** Méthode renvoyant le nombre de point de nourriture produit par tour dans une ville
+     * @return foodPerTurnProd
+     */
     public int getGoldPerTurnProd() {
         return this.goldPerTurnProd;
     }
 
+    /** Méthode renvoyant le nombre de point de production produit par tour dans une ville
+     * @return productionPerTurnProd
+     */
     public int getFaithPerTurnProd() {
         return this.faithPerTurnProd;
     }
 
+    /** Méthode renvoyant le nombre de point de science produit par tour dans une ville
+     * @return sciencePerTurnProd
+     */
     public int getSciencePerTurnProd() {
         return this.sciencePerTurnProd;
     }
 
+    /** Méthode renvoyant le nombre de point de production produit par tour dans une ville
+     * @return productionPerTurnProd
+     */
     public void renameCity(String newName) {
         this.name = newName;
     }
 
+    /** Méthode renvoyant le nom de la ville
+     * @return name
+     */
     public String getName() {
         return this.name;
     }
     
+    /** Méthode renvoyant le joueur possédant la ville
+     * @return owner
+     */
     public Client getOwner() {
         return this.owner;
     }
 
+    /** Méthode renvoyant la position de la ville
+     * @return position
+     */
     public Tile getPosition() {
         return this.position;
     }
 
+    /** Méthode renvoyant l'abscisse de la ville
+     * @return x
+     */
     public int getX() {
         return this.x;
     }
 
+    /** Méthode renvoyant l'ordonnée de la ville
+     * @return y
+     */
     public int getY() {
         return this.y;
     }
 
+    /**
+     * Méthode renvoyant la liste des tuiles appartenant à la ville
+     * @return cityTiles
+     */
     public List<Tile> getCityTiles() {
         return this.cityTiles;
     }
 
+    /**
+     * Méthode renvoyant la liste des tuiles voisines à la ville
+     * @return neighbourTiles
+     */
     public List<Tile> getNeighbourTiles() {
         return this.neighbourTiles;
     }
 
+    /**
+     * Méthode renvoyant la quantité de culture produite par la ville
+     * @return infrastructures
+     */
     public int getProducedCulture() {
         return this.producedCulture;
     }
 
+    /**
+     * Méthode renvoyant la quantité de nourriture produite par la ville
+     * @return infrastructures
+     */
     public int getCultureNeededForNewTile() {
         return this.cultureNeededForNewTile;
     }
 
+    /**
+     * Méthode renvoyant la liste des infrastructures construites dans la ville
+     * @return infrastructures
+     */
     public String toString() {
         return "City : " + this.name + " | Position : [" + this.x + ", " + this.y + "]";
     }

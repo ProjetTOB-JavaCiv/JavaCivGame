@@ -16,7 +16,7 @@ public final class HashMapLand {
             0, 0,
             LandType.PLAINE,
             true, false,
-            new ProductionType(1,0,0,0,0,1),
+            new ProductionType(1,0,0,0,2,1),
             2
         ));
 
@@ -24,7 +24,7 @@ public final class HashMapLand {
             0, 0,
             LandType.PRAIRIE,
             true, false,
-            new ProductionType(2,0,0,0,0,0),
+            new ProductionType(2,0,0,0,2,0),
             3
         ));
 
@@ -32,7 +32,7 @@ public final class HashMapLand {
             0, 0,
             LandType.TOUNDRA,
             true, false,
-            new ProductionType(1,0,0,0,0,0),
+            new ProductionType(1,0,0,2,0,0),
             2
         ));
 
@@ -48,7 +48,7 @@ public final class HashMapLand {
             0, 0,
             LandType.MONTAGNE,
             false, false,
-            new ProductionType(0,0,0,0,0,0),
+            new ProductionType(0,0,0,1,0,0),
             1
         ));
 

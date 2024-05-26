@@ -27,6 +27,7 @@ public class ClientThread extends Thread {
                 e.printStackTrace();
             }
             if (this.client.canPassTurn()) {
+                // Display the client's points
                 System.out.println("==================================");
                 System.out.println("[Client " + this.client.getClientId() + "]");
                 System.out.println("Gold: " + this.client.getGoldPoint());

@@ -128,8 +128,8 @@ public class ClientView extends ScreenAdapter {
 
         this.selectTextures = new Texture[] {
             new Texture(Gdx.files.internal("textures/Selected.png")),
-            new Texture(Gdx.files.internal("whiteframe.png")),
-            new Texture(Gdx.files.internal("dottedgreyframe.png"))
+            new Texture(Gdx.files.internal("textures/Territory1.png")),
+            new Texture(Gdx.files.internal("textures/Territory2.png"))
         };
 
         // Load the colors for the clients
@@ -470,6 +470,7 @@ public class ClientView extends ScreenAdapter {
      */
     private TiledMap loadMap(WorldMap map) {
         TiledMap tiledMap = new TiledMap();
+        // Create the first layer of the map (tiles)
         TiledMapTileLayer tiledMapLayer0 = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
         tiledMap.getLayers().add(tiledMapLayer0);
         
@@ -487,6 +488,7 @@ public class ClientView extends ScreenAdapter {
             }
         }
 
+        // Create the second layer of the map (cities)
         TiledMapTileLayer tiledMapLayer1 = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
         for (City city : this.controller.getServer().getAllCities()) {
             final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
@@ -501,6 +503,7 @@ public class ClientView extends ScreenAdapter {
         }
         tiledMap.getLayers().add(tiledMapLayer1);
 
+        // Create the third layer of the map (selected tiles)
         TiledMapTileLayer redFrameLayer = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
         for (Vector2 selectedTile : selectedTiles) {
             final TiledMapTileLayer.Cell cell = new TiledMapTileLayer.Cell();
@@ -515,6 +518,7 @@ public class ClientView extends ScreenAdapter {
         }
         tiledMap.getLayers().add(redFrameLayer);
 
+        // Create the fourth layer of the map (city territories)
         TiledMapTileLayer cityTerritory = new TiledMapTileLayer(map.getWidth(), map.getHeight(), this.tileSize, this.tileSize);
         for (City city : this.controller.getServer().getAllCities()) {
             for (Tile tile : city.getCityTiles()) {
@@ -570,6 +574,11 @@ public class ClientView extends ScreenAdapter {
         this.tiledMapRenderer.setMap(this.tiledMap);
     }
 
+    /**
+     * Renvoie si les coordonnées sont dans la map.
+     * @param coords les coordonnées
+     * @return si les coordonnées sont dans la map
+     */
     private boolean isInMap(Vector2 coords) {
         return
             coords.x >= 0 && 
@@ -578,6 +587,10 @@ public class ClientView extends ScreenAdapter {
             coords.y < this.controller.getWorldMap().getHeight();
     }
 
+    /**
+     * Renvoie le texte des coordonnées de la tuile cliquée.
+     * @return le texte des coordonnées de la tuile cliquée
+     */
     private String getClickCoordinatesText() {
         // Update tile menu coordinates text
         if (this.camera != null && isInMap(getClickCoordinates())) {
@@ -591,6 +604,10 @@ public class ClientView extends ScreenAdapter {
         }
     }
 
+    /**
+     * Renvoie les coordonnées de la tuile cliquée par l'utilisateur.
+     * @return les coordonnées de la tuile cliquée
+     */
     private Vector2 getClickCoordonatesnotnull() {
         if (this.camera != null) {
             return getClickCoordinates();
@@ -599,7 +616,10 @@ public class ClientView extends ScreenAdapter {
         }
     }
 
-
+    /**
+     * Ouvre le menu de la tuile à une position donnée.
+     * @param coordinates les coordonnées de la tuile
+     */
     public void openTileMenuAt(Vector2 coordinates) {
         //if (isInMap(coordinates)) {
             // Met à jour les coordonnées du menu de la tuile
@@ -612,11 +632,19 @@ public class ClientView extends ScreenAdapter {
         //}
     }
 
+    /**
+     * Ferme le menu de la tuile.
+     */
     public void closeAllSelectedTiles() {
         selectedTiles.clear();
     }
 
-
+    /**
+     * Renvoie si une tuile est sélectionnée.
+     * @param x l'abscisse de la tuile
+     * @param y l'ordonnée de la tuile
+     * @return si la tuile est sélectionnée
+     */
     public void Leftclicked(float x, float y){
         //System.out.println("Click at [" + x + ", " + y + "]");
         int clickedX = (int) getMouseCoordinates().x; 
@@ -638,6 +666,12 @@ public class ClientView extends ScreenAdapter {
         return this.controller.getWorldMap().at(x, y).getCity() != null;
     }
     
+    /**
+     * Renvoie la texture teintée d'une couleur.
+     * @param texture la texture
+     * @param color la couleur
+     * @return la texture teintée
+     */
     private TextureRegion getTintedTextureRegion(Texture texture, Color color) {
         if (!texture.getTextureData().isPrepared()) {
             texture.getTextureData().prepare();
@@ -660,6 +694,11 @@ public class ClientView extends ScreenAdapter {
         return new TextureRegion(newTexture);
     }
 
+    /**
+     * Renvoie le nom de la ville.
+     * @param city la ville
+     * @return le nom de la ville sous forme de Label
+     */
     private Label getCityName(City city) {
         Label cityName = new Label(city.getName(), skin, "backgrounded");
         Pixmap background = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -671,6 +710,9 @@ public class ClientView extends ScreenAdapter {
         return cityName;
     }
 
+    /**
+     * Initialise les couleurs des clients.
+     */
     private void initClientColors() {
         for (int i = 0; i < ((Server) this.controller.getServer()).getClientCount(); i++) {
             // Generate random color for each client
@@ -684,6 +726,9 @@ public class ClientView extends ScreenAdapter {
         }
     }
 
+    /**
+     * Initialise les textures des clients.
+     */
     private void initClientTextureRegions() {
         for (int i = 0; i < ((Server) this.controller.getServer()).getClientCount(); i++) {
             //System.out.println(getTintedTextureRegion(this.selectTextures[1], this.clientColors.get(i)) != null);
@@ -691,6 +736,9 @@ public class ClientView extends ScreenAdapter {
         }
     }
 
+    /**
+     * Libère les ressources utilisées par la vue.
+     */
     @Override public void dispose() {
         for(Texture t : this.tileTextures) {
             t.dispose();

@@ -44,16 +44,16 @@ public class Tile {
     /** Production de la tuile */
     ProductionType production;
 
-    /** Flotant indicateur de la valeur stratégique d'une tuille */
+    /** Flotant indicateur de la valeur stratégique d'une tuile */
     double strategicValue;
     /** Ville présente sur la case, initialement vide par pas de ville naturellement */
     City city = null;
 
-    /** Booléen décrivant si la tuille est traversable par une unité terrestre
+    /** Booléen décrivant si la tuile est traversable par une unité terrestre
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableByLandUnit;
-    /** Booléen décrivant si la tuille est traversable par une unité maritime
+    /** Booléen décrivant si la tuile est traversable par une unité maritime
      * Ceci ne peut changer car c'est une propriété géographique du terrain
      */
     final boolean isTraversableBySeaUnit;
@@ -65,19 +65,19 @@ public class Tile {
     int fightModifier;
 
     /** Variable stockant l'unité militaire étant sur la case.
-     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
     */
     private Military miliratyOnTile;
     /** Variable stockant l'unité civile étant sur la case.
-     * Il n'est pas obligatoire pour une tuille d'avoir une unité militaire dessus
+     * Il n'est pas obligatoire pour une tuile d'avoir une unité militaire dessus
     */
     private Civilian civilianOnTile;
 
-    /** Booléen qui décrit si une tuille est occupé par une unité militaire
+    /** Booléen qui décrit si une tuile est occupé par une unité militaire
      */
     private boolean isMilitaryUnitOnTile = false;
 
-    /** Booléen qui décrit si une tuille est occupé par une unité civile
+    /** Booléen qui décrit si une tuile est occupé par une unité civile
      */
     private boolean isCivilianUnitOnTile = false;
 
@@ -209,22 +209,39 @@ public class Tile {
         return this.isMilitaryUnitOnTile;
     }
 
+    /**
+     * Permet de savoir si une unité est sur la tuile
+     * @return boolean indiquant si une unité est sur la tuile
+     */
     public boolean getIsTraversableByLandUnit() {
         return this.isTraversableByLandUnit;
     }
 
+    /**
+     * Permet de savoir si une unité est sur la tuile
+     * @return boolean indiquant si une unité est sur la tuile
+     */
     public boolean getIsTraversableBySeaUnit() {
         return this.isTraversableBySeaUnit;
     }
 
+    /** Permet de recuperer le modificateur de deplacement de la tuile
+     * @return le modificateur de deplacement de la tuile
+    */
     public int getMovementModifier() {
         return this.movementModifier + this.feature.getMovementModifier();
     }
 
+    /** Permet de recuperer le modificateur de combat de la tuile
+     * @return le modificateur de combat de la tuile
+    */
     public int getFightModifier() {
         return this.fightModifier + this.feature.getFightModifier();
     }
 
+    /** Permet de recuperer la valeur stratégique de la tuile
+     * @return la valeur stratégique de la tuile
+    */
     public double getBaseLandValue() {
         return this.strategicValue;
     }
@@ -234,11 +251,12 @@ public class Tile {
         return this.owner;
     }
 
+    /** Renvoie la ville présente sur la case */
     public City getCity() {
         return this.city;
     }
 
-    /** Permet de changer de position une tuille sur l'axe X, est utile UNIQUEMENT lors de la création de
+    /** Permet de changer de position une tuile sur l'axe X, est utile UNIQUEMENT lors de la création de
      * la map, après cela, la position d'une tuile ne doit pas changer
      * TODO : Changer le degré de liberté de cette méthode ??
      */
@@ -246,7 +264,7 @@ public class Tile {
         this.x = x;
     }
 
-    /** Permet de changer de position une tuille sur l'axe Y, est utile UNIQUEMENT lors de la création de
+    /** Permet de changer de position une tuile sur l'axe Y, est utile UNIQUEMENT lors de la création de
      * la map, après cela, la position d'une tuile ne doit pas changer  */
     public void setY(int y) {
         this.y = y;
@@ -332,7 +350,7 @@ public class Tile {
     }
 
     /**
-     * Set une unité militaire sur la tuille
+     * Set une unité militaire sur la tuile
      * @param unit Unité militaire
      */
     public void setMilitaryUnitOnTile(Military unit) {
@@ -340,7 +358,7 @@ public class Tile {
         this.miliratyOnTile = unit;
     }
     /**
-     * Set une unité civile sur la tuille
+     * Set une unité civile sur la tuile
      * @param unit Unité civile
      */
     public void setCivilianUnitOnTile(Civilian unit) {
@@ -348,13 +366,16 @@ public class Tile {
         this.civilianOnTile = unit;
     }
 
-    /** Set la propriété d'un joueur sur une tuille 
-     * @param owner la civilisation qui va posséder la tuille
+    /** Set la propriété d'un joueur sur une tuile 
+     * @param owner la civilisation qui va posséder la tuile
     */
     public void setOwner(Client owner) {
         this.owner = owner;
     }
 
+    /** Set la ville sur une tuile
+     * @param city la ville qui va être sur la tuile
+    */
     public void setCity(City city) {
         this.city = city;
     }

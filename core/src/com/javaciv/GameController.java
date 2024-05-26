@@ -18,12 +18,19 @@ public class GameController extends Game {
 	private ClientController controller;
 	private ClientView view;
 
+	/**
+	 * This is the constructor of the GameController class.
+	 * @param client the client
+	 */
 	public GameController(Client client) {
-
 		this.client = client;
 		this.controller = new ClientController(client);
 	}
 
+	/**
+	 * This function returns the client.
+	 * @return the client
+	 */
 	public Client getClient() {
 		return this.client;
 	}
