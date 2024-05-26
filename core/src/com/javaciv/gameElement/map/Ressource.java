@@ -9,15 +9,28 @@ public class Ressource {
     /** production de la ressource */
     private final ProductionType production;
 
+    /**
+     * Constructeur de la classe Ressource
+     * @param ressourceType le type de la ressource
+     * @param production la production de la ressource
+     */
     public Ressource(RessourceType ressourceType, ProductionType production) {
         this.ressourceType = ressourceType;
         this.production = production;
     }
 
+    /**
+     * Permet d'obtenir le type de la ressource
+     * @return le type de la ressource
+     */
     public RessourceType getRessourceType() {
         return this.ressourceType;
     }
 
+    /**
+     * Permet d'obtenir la production de la ressource
+     * @return la production de la ressource
+     */
     public ProductionType getProduction() {
         return this.production;
     }

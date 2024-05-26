@@ -148,6 +148,9 @@ public class Tile {
         return ProductionType.add(this.production, this.feature.getProduction(), this.ressource.getProduction());
     }
 
+    /** permet de savoir si la tuile est une colline
+     * @return vrai si la tuile est une colline, faux sinon
+    */
     public Boolean getHill() {
         return this.hill;
     }

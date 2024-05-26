@@ -13,10 +13,17 @@ import com.javaciv.Utils;
 public class ClientThread extends Thread {
     private Client client;
 
+    /**
+     * Constructor of the ClientThread class
+     * @param client the client
+     */
     public ClientThread(Client client) {
         this.client = client;
     }
 
+    /**
+     * This function is executed when the thread is started.
+     */
     @Override
     public void run() {
         while (true) {
