@@ -189,8 +189,8 @@ public class ClientView extends ScreenAdapter {
                 new Label(getClickCoordinatesText(), this.skin, "default"),
                 new TextButton("Create City", this.skin, "default"),
                 new TextButton("Buy tile", this.skin, "default"),
-                new Label("Production: " + getTileAt(getClickCoordonatesnotnull()).getProduction().getProduction(), this.skin, "default"),
-                new Label("Food: " + getTileAt(getClickCoordonatesnotnull()).getProduction().getFood(), this.skin, "default")
+                new Label("Production : ", this.skin, "default"),
+                new Label("Food : ", this.skin, "default")
             },
             new ClickListener[] {
                 new ClickListener(){
@@ -347,8 +347,10 @@ public class ClientView extends ScreenAdapter {
         ((Label) this.playerMenu.getMenuItems()[2]).setText("Culture : " + this.controller.getGameInfos().get("culture"));
         ((Label) this.playerMenu.getMenuItems()[3]).setText("Science : " + this.controller.getGameInfos().get("science"));
 
-        ((Label) this.tileMenu.getMenuItems()[3]).setText("Production: " + getTileAt(getClickCoordonatesnotnull()).getProduction().getProduction());
-        ((Label) this.tileMenu.getMenuItems()[4]).setText("Food: " + getTileAt(getClickCoordonatesnotnull()).getProduction().getFood());
+        if (this.camera != null && isInMap(getClickCoordinates())) {
+            ((Label) this.tileMenu.getMenuItems()[3]).setText("Production : " + getTileAt(getTileMenuWorldCoordinates()).getProduction().getProduction());
+            ((Label) this.tileMenu.getMenuItems()[4]).setText("Food : " + getTileAt(getTileMenuWorldCoordinates()).getProduction().getFood());
+        }
 
         this.playerMenu.resizeMenu();
         this.playerMenu.setPosition(Gdx.graphics.getWidth() - this.playerMenu.getWidth(), Gdx.graphics.getHeight());
@@ -407,6 +409,9 @@ public class ClientView extends ScreenAdapter {
         this.menuStage.draw();
     }
 
+    /**
+     * Fais le rendu des noms des villes.
+     */
     void renderCities() {
         if (this.cityNames != null && this.controller.getCities() != null) {
             for(int i = 0; i < this.cityNames.size(); i++) {
@@ -415,6 +420,16 @@ public class ClientView extends ScreenAdapter {
                 this.cityNames.get(i).setPosition(cityCoords.x, cityCoords.y);
             }
         }
+    }
+
+    /**
+     * Récupère les coordonnée du menu de la tuile.
+     */
+    public Vector2 getTileMenuWorldCoordinates() {
+        if (tileMenuWorldCoordinates != null) {
+            return new Vector2((int) tileMenuWorldCoordinates.x / this.tileSize, (int) tileMenuWorldCoordinates.y / this.tileSize);
+        }
+        return new Vector2(0, 0);
     }
 
     /**
@@ -608,7 +623,7 @@ public class ClientView extends ScreenAdapter {
      * Renvoie les coordonnées de la tuile cliquée par l'utilisateur.
      * @return les coordonnées de la tuile cliquée
      */
-    private Vector2 getClickCoordonatesnotnull() {
+    private Vector2 getClickCoordinatesNotNull() {
         if (this.camera != null) {
             return getClickCoordinates();
         } else {
